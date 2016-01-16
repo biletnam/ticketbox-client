@@ -1,0 +1,192 @@
+{
+  "root": {
+    "events": {
+      "e1": {
+        "name": "Event 1",
+        "blocks": {
+          "b1": {
+            "name": "Block 1",
+            "cost": {
+              "normal": 10,
+              "reduced": 5
+            },
+            "seats": {
+              "s1": {
+                "reservation": {
+                  "timestamp": 1234567890,
+                  "uid": "uid1",
+                  "kind": "lock"
+                },
+                "name": "Seat One"
+              },
+              "s2": {
+                "name": "Seat Two"
+              },
+              "s3": {
+                "reservation": {
+                  "timestamp": 1234567890,
+                  "uid": "uid2",
+                  "kind": "reservation"
+                },
+                "name": "Seat Three"
+              }
+            }
+          }
+        }
+      }
+    },
+    "orders": {
+      "o1": {
+        "uid": "uid2",
+        "firstname": "John",
+        "lastname": "Doe",
+        "email": "john.doe@example.com",
+        "seats": {
+          "os1": {
+            "eventId": "e1",
+            "blockId": "b1",
+            "seatId": "s3",
+            "cost": "reduced"
+          }
+        }
+      }
+    },
+    "users": {
+      "admin": {
+        "name": "admin",
+        "email": "admin@example.com",
+        "kind": "admin"
+      },
+      "boxoffice": {
+        "name": "boxoffice",
+        "email": "boxoffice@example.com",
+        "kind": "boxoffice"
+      }
+    }
+  },
+
+  "users": {
+    "anonymous1": { "uid": "uid1", "provider": "anonymous" },
+    "anonymous2": { "uid": "uid2", "provider": "anonymous" },
+    "admin": { "uid": "admin", "provider": "password" },
+    "boxoffice": { "uid": "boxoffice", "provider": "password" }
+  },
+
+  "tests": {
+    "events": {
+      "canRead": [ "anonymous1", "anonymous2", "admin", "boxoffice" ],
+      "canWrite": [ {"auth": "admin", "data": { "name": "Event Name" } } ],
+      "cannotWrite": [
+        { "auth": "boxoffice", "data": { "name": "Event Name" } },
+        { "auth": "anonymous1", "data": { "name": "Event Name" } },
+        { "auth": "anonymous2", "data": { "name": "Event Name" } }
+      ]
+    },
+    "events/e1": {
+      "canRead": [ "anonymous1", "anonymous2", "admin", "boxoffice" ],
+      "canWrite": [ {"auth": "admin", "data": { "name": "Event Name" } } ],
+      "cannotWrite": [
+        { "auth": "boxoffice", "data": { "name": "Event Name" } },
+        { "auth": "anonymous1", "data": { "name": "Event Name" } },
+        { "auth": "anonymous2", "data": { "name": "Event Name" } }
+      ]
+    },
+    "events/e1/blocks": {
+      "canRead": [ "anonymous1", "anonymous2", "admin", "boxoffice" ],
+      "canWrite": [ {"auth": "admin", "data": { "name": "Block Name" } } ],
+      "cannotWrite": [
+        { "auth": "boxoffice", "data": { "name": "Block Name" } },
+        { "auth": "anonymous1", "data": { "name": "Block Name" } },
+        { "auth": "anonymous2", "data": { "name": "Block Name" } }
+      ]
+    },
+    "events/e1/blocks/b1": {
+      "canRead": [ "anonymous1", "anonymous2", "admin", "boxoffice" ],
+      "canWrite": [ {"auth": "admin", "data": { "name": "Block Name" } } ],
+      "cannotWrite": [
+        { "auth": "boxoffice", "data": { "name": "Block Name" } },
+        { "auth": "anonymous1", "data": { "name": "Block Name" } },
+        { "auth": "anonymous2", "data": { "name": "Block Name" } }
+      ]
+    },
+    "events/e1/blocks/b1/seats": {
+      "canRead": [ "anonymous1", "anonymous2", "admin", "boxoffice" ],
+      "canWrite": [ {"auth": "admin", "data": { "name": "Seat Name" } } ],
+      "cannotWrite": [
+        { "auth": "boxoffice", "data": { "name": "Seat Name" } },
+        { "auth": "anonymous1", "data": { "name": "Seat Name" } },
+        { "auth": "anonymous2", "data": { "name": "Seat Name" } }
+      ]
+    },
+    "events/e1/blocks/b1/seats/s1": {
+      "canRead": [ "anonymous1", "anonymous2", "admin", "boxoffice" ],
+      "canWrite": [ {"auth": "admin", "data": { "name": "Seat Name" } } ],
+      "cannotWrite": [
+        { "auth": "boxoffice", "data": { "name": "Seat Name" } },
+        { "auth": "anonymous1", "data": { "name": "Seat Name" } },
+        { "auth": "anonymous2", "data": { "name": "Seat Name" } }
+      ]
+    },
+    "events/e1/blocks/b1/seats/s1/reservation/timestamp": {
+      "canRead": [ "anonymous1", "anonymous2" ],
+      "canWrite": [ { "auth": "anonymous1", "data": 123456 } ],
+      "cannotWrite": [ { "auth": "anonymous2", "data": 123456 } ]
+    },
+    "events/e1/blocks/b1/seats/s2/reservation": {
+      "canRead": [ "anonymous1", "anonymous2" ],
+      "canWrite": [
+        { "auth": "anonymous1", "data": { "timestamp": 123456, "uid": "uid1", "kind": "lock" } },
+        { "auth": "anonymous2", "data": { "timestamp": 123456, "uid": "uid2", "kind": "lock" } } ]
+    },
+    "orders": {
+      "cannotRead": [ "anonymous1", "anonymous2" ],
+      "canWrite": [ { "auth": "anonymous2", "data": { "uid": "uid2", "firstname": "John", "lastname": "Doe", "email": "john.doe@example.com" } }  ],
+      "cannotWrite": [
+        { "auth": "anonymous1", "data": { "uid": "uid2", "firstname": "John", "lastname": "Doe", "email": "john.doe@example.com" } }
+      ]
+    },
+    "orders/o1": {
+      "canRead": [ "anonymous2" ],
+      "cannotRead": [ "anonymous1" ],
+      "canWrite": [ { "auth": "anonymous2", "data": { "uid": "uid2", "firstname": "John", "lastname": "Doe", "email": "john.doe@example.com" } } ],
+      "cannotWrite": [
+        { "auth": "anonymous1", "data": { "firstname": "John", "lastname": "Doe", "email": "john.doe@example.com" } },
+        { "auth": "anonymous2", "data": { "firstname": "John", "lastname": "Doe", "email": "This is not a mail address" } }
+      ]
+    },
+    "orders/o1/seats": {
+      "canRead": [ "anonymous2" ],
+      "cannotRead": [ "anonymous1" ],
+      "canWrite": [ { "auth": "anonymous2", "data": { "os1": { "eventId": "e1", "blockId": "b1", "seatId": "s3", "cost": "reduced" } } } ],
+      "cannotWrite": [
+        { "auth": "anonymous2", "data": { "os1": { "eventId": "e1", "blockId": "b1", "seatId": "s1", "cost": "reduced" } } },
+        { "auth": "anonymous2", "data": { "os1": { "eventId": "e1", "blockId": "b1", "seatId": "s2", "cost": "normal" } } },
+        { "auth": "anonymous2", "data": { "os1": { "eventId": "e1", "blockId": "b1", "seatId": "s3", "cost": "not in allowed values" } } }
+      ]
+    },
+    "users/admin": {
+      "canRead": [ "admin" ],
+      "canWrite": [ { "auth": "admin", "data": { "name": "NewName", "email": "new@example.com" } } ],
+      "cannotWrite": [
+        { "auth": "admin", "data": { "name": "NewName", "email": "new_example.com" } },
+        { "auth": "boxoffice", "data": { "name": "NewName", "email": "new@example.com" } },
+        { "auth": "anonymous1", "data": { "name": "NewName", "email": "new@example.com" } },
+        { "auth": "anonymous2", "data": { "name": "NewName", "email": "new@example.com" } }
+      ]
+    },
+    "users/boxoffice": {
+      "canRead": [ "admin", "boxoffice" ],
+      "canWrite": [
+        { "auth": "admin", "data": { "name": "NewName", "email": "new@example.com" } },
+        { "auth": "admin", "data": { "kind": "admin" } },
+        { "auth": "boxoffice", "data": { "name": "NewName", "email": "new@example.com" } }
+      ],
+      "cannotWrite": [
+        { "auth": "boxoffice", "data": { "kind": "admin" } },
+        { "auth": "boxoffice", "data": { "name": "NewName", "email": "new_example.com" } },
+        { "auth": "anonymous1", "data": { "name": "NewName", "email": "new@example.com" } },
+        { "auth": "anonymous2", "data": { "name": "NewName", "email": "new@example.com" } }
+      ]
+    }
+  }
+}

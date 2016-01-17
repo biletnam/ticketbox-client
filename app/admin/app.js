@@ -1,0 +1,19 @@
+'use strict';
+
+angular.module('ticketbox.admin', [
+        'ticketbox.config',
+        'ticketbox.admin.login',
+        'ticketbox.admin.events'])
+
+    .config(['$routeProvider', function ($routeProvider) {
+        $routeProvider.otherwise({
+            redirectTo: '/login'
+        });
+    }])
+
+    .run(['$rootScope', 'auth', function($rootScope, auth) {
+        // track status of authentication
+        auth.$onAuth(function(user) {
+            $rootScope.loggedIn = !!user;
+        });
+    }]);

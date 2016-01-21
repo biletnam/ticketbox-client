@@ -1,6 +1,7 @@
 <div class="row">
     <div class="four columns">&nbsp;</div>
     <div class="four columns">
+        <h1>Login</h1>
         <form ng-submit="login(email, password)">
             <p>
                 <label for="email">Email</label>
@@ -8,10 +9,13 @@
             </p>
             <p>
                 <label for="password">Password</label>
-                <input id="password" type="text" ng-model="password">
+                <input id="password" type="password" ng-model="password">
             </p>
             <p>
                 <input type="submit" value="Login">
+            </p>
+            <p>
+                {{err}}
             </p>
         </form>
     </div>

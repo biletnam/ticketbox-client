@@ -12,7 +12,7 @@ angular.module('ticketbox.admin.login', ['ticketbox.firebase.utils', 'ngRoute'])
     .controller('LoginCtrl', function ($scope, passwordAuth, $location) {
         $scope.login = function (email, pass) {
             $scope.err = null;
-            passwordAuth.login({email: email, password: pass})
+            passwordAuth.login(email, pass)
                 .then(function (/* user */) {
                     $location.path('/events');
                 }, function (err) {

@@ -2,36 +2,43 @@
   "root": {
     "events": {
       "e1": {
-        "name": "Event 1",
-        "blocks": {
-          "b1": {
-            "name": "Block 1",
-            "cost": {
-              "normal": 10,
-              "reduced": 5
-            },
-            "seats": {
-              "s1": {
-                "reservation": {
-                  "timestamp": 1234567890,
-                  "uid": "uid1",
-                  "kind": "lock"
-                },
-                "name": "Seat One"
-              },
-              "s2": {
-                "name": "Seat Two"
-              },
-              "s3": {
-                "reservation": {
-                  "timestamp": 1234567890,
-                  "uid": "uid2",
-                  "kind": "reservation"
-                },
-                "name": "Seat Three"
-              }
-            }
-          }
+        "name": "Event 1"
+      }
+    },
+    "blocks": {
+      "b1": {
+        "name": "Block 1"
+      }
+    },
+    "categories": {
+      "c1": {
+        "name": "Category 1"
+      }
+    },
+    "seats": {
+      "s1": {
+        "name": "Seat One",
+        "blockId": "b1",
+        "categoryId": "c1",
+        "reservation": {
+          "timestamp": 1234567890,
+          "uid": "uid1",
+          "kind": "lock"
+        }
+      },
+      "s2": {
+        "name": "Seat Two",
+        "blockId": "b1",
+        "categoryId": "c1"
+      },
+      "s3": {
+        "name": "Seat Three",
+        "blockId": "b1",
+        "categoryId": "c1",
+        "reservation": {
+          "timestamp": 1234567890,
+          "uid": "uid2",
+          "kind": "reservation"
         }
       }
     },
@@ -44,9 +51,8 @@
         "seats": {
           "os1": {
             "eventId": "e1",
-            "blockId": "b1",
             "seatId": "s3",
-            "cost": "reduced"
+            "priceKind": "reduced"
           }
         }
       }
@@ -88,10 +94,11 @@
       "cannotWrite": [
         { "auth": "boxoffice", "data": { "name": "Event Name" } },
         { "auth": "anonymous1", "data": { "name": "Event Name" } },
-        { "auth": "anonymous2", "data": { "name": "Event Name" } }
+        { "auth": "anonymous2", "data": { "name": "Event Name" } },
+        { "auth": "admin", "data": { "name": "" } }
       ]
     },
-    "events/e1/blocks": {
+    "blocks": {
       "canRead": [ "anonymous1", "anonymous2", "admin", "boxoffice" ],
       "canWrite": [ {"auth": "admin", "data": { "name": "Block Name" } } ],
       "cannotWrite": [
@@ -100,16 +107,36 @@
         { "auth": "anonymous2", "data": { "name": "Block Name" } }
       ]
     },
-    "events/e1/blocks/b1": {
+    "blocks/b1": {
       "canRead": [ "anonymous1", "anonymous2", "admin", "boxoffice" ],
       "canWrite": [ {"auth": "admin", "data": { "name": "Block Name" } } ],
       "cannotWrite": [
         { "auth": "boxoffice", "data": { "name": "Block Name" } },
         { "auth": "anonymous1", "data": { "name": "Block Name" } },
-        { "auth": "anonymous2", "data": { "name": "Block Name" } }
+        { "auth": "anonymous2", "data": { "name": "Block Name" } },
+        { "auth": "admin", "data": { "name": "" } }
       ]
     },
-    "events/e1/blocks/b1/seats": {
+    "categories": {
+      "canRead": [ "anonymous1", "anonymous2", "admin", "boxoffice" ],
+      "canWrite": [ {"auth": "admin", "data": { "name": "Category Name" } } ],
+      "cannotWrite": [
+        { "auth": "boxoffice", "data": { "name": "Category Name" } },
+        { "auth": "anonymous1", "data": { "name": "Category Name" } },
+        { "auth": "anonymous2", "data": { "name": "Category Name" } }
+      ]
+    },
+    "categories/c1": {
+      "canRead": [ "anonymous1", "anonymous2", "admin", "boxoffice" ],
+      "canWrite": [ {"auth": "admin", "data": { "name": "Category Name" } } ],
+      "cannotWrite": [
+        { "auth": "boxoffice", "data": { "name": "Category Name" } },
+        { "auth": "anonymous1", "data": { "name": "Category Name" } },
+        { "auth": "anonymous2", "data": { "name": "Category Name" } },
+        { "auth": "admin", "data": { "name": "" } }
+      ]
+    },
+    "seats": {
       "canRead": [ "anonymous1", "anonymous2", "admin", "boxoffice" ],
       "canWrite": [ {"auth": "admin", "data": { "name": "Seat Name" } } ],
       "cannotWrite": [
@@ -118,21 +145,22 @@
         { "auth": "anonymous2", "data": { "name": "Seat Name" } }
       ]
     },
-    "events/e1/blocks/b1/seats/s1": {
+    "seats/s1": {
       "canRead": [ "anonymous1", "anonymous2", "admin", "boxoffice" ],
       "canWrite": [ {"auth": "admin", "data": { "name": "Seat Name" } } ],
       "cannotWrite": [
         { "auth": "boxoffice", "data": { "name": "Seat Name" } },
         { "auth": "anonymous1", "data": { "name": "Seat Name" } },
-        { "auth": "anonymous2", "data": { "name": "Seat Name" } }
+        { "auth": "anonymous2", "data": { "name": "Seat Name" } },
+        { "auth": "admin", "data": { "name": "" } }
       ]
     },
-    "events/e1/blocks/b1/seats/s1/reservation/timestamp": {
+    "seats/s1/reservation/timestamp": {
       "canRead": [ "anonymous1", "anonymous2" ],
       "canWrite": [ { "auth": "anonymous1", "data": 123456 } ],
       "cannotWrite": [ { "auth": "anonymous2", "data": 123456 } ]
     },
-    "events/e1/blocks/b1/seats/s2/reservation": {
+    "seats/s2/reservation": {
       "canRead": [ "anonymous1", "anonymous2" ],
       "canWrite": [
         { "auth": "anonymous1", "data": { "timestamp": 123456, "uid": "uid1", "kind": "lock" } },
@@ -157,11 +185,11 @@
     "orders/o1/seats": {
       "canRead": [ "anonymous2" ],
       "cannotRead": [ "anonymous1" ],
-      "canWrite": [ { "auth": "anonymous2", "data": { "os1": { "eventId": "e1", "blockId": "b1", "seatId": "s3", "cost": "reduced" } } } ],
+      "canWrite": [ { "auth": "anonymous2", "data": { "os1": { "eventId": "e1", "seatId": "s3", "priceKind": "reduced" } } } ],
       "cannotWrite": [
-        { "auth": "anonymous2", "data": { "os1": { "eventId": "e1", "blockId": "b1", "seatId": "s1", "cost": "reduced" } } },
-        { "auth": "anonymous2", "data": { "os1": { "eventId": "e1", "blockId": "b1", "seatId": "s2", "cost": "normal" } } },
-        { "auth": "anonymous2", "data": { "os1": { "eventId": "e1", "blockId": "b1", "seatId": "s3", "cost": "not in allowed values" } } }
+        { "auth": "anonymous2", "data": { "os1": { "eventId": "e1", "seatId": "s1", "priceKind": "reduced" } } },
+        { "auth": "anonymous2", "data": { "os1": { "eventId": "e1", "seatId": "s2", "priceKind": "normal" } } },
+        { "auth": "anonymous2", "data": { "os1": { "eventId": "e1", "seatId": "s3", "priceKind": "not in allowed values" } } }
       ]
     },
     "users/admin": {

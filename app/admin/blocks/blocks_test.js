@@ -1,19 +1,19 @@
 'use strict';
 
-describe('ticketbox.admin.events', function () {
+describe('ticketbox.admin.blocks', function () {
     var $firebaseArray, $timeout, scope, ref, array;
 
     var FIXTURE_DATA = {
         'id1': {
-            'name': 'This is event 1'
+            'name': 'This is block 1'
         },
         'id2': {
-            'name': 'This is event 2'
+            'name': 'This is block 2'
         }
     };
 
     beforeEach(function () {
-        module('ticketbox.admin.events');
+        module('ticketbox.admin.blocks');
 
         inject(function (_$firebaseArray_, _$timeout_, _$rootScope_, $controller) {
             $firebaseArray = _$firebaseArray_;
@@ -24,43 +24,43 @@ describe('ticketbox.admin.events', function () {
                 return _makeArray(FIXTURE_DATA, ref);
             };
 
-            $controller('EventsCtrl', {$scope: scope, array: array});
+            $controller('BlocksCtrl', {$scope: scope, array: array});
             scope.$digest();
         });
     });
 
-    describe('EventsCtrl', function () {
-        describe('$scope.events', function() {
-           it('should contain all items', function() {
-               expect(scope.events.$getRecord('id1')).not.toBeNull();
-               expect(scope.events.$getRecord('id2')).not.toBeNull();
-           });
+    describe('BlocksCtrl', function () {
+        describe('$scope.blocks', function() {
+            it('should contain all items', function() {
+                expect(scope.blocks.$getRecord('id1')).not.toBeNull();
+                expect(scope.blocks.$getRecord('id2')).not.toBeNull();
+            });
         });
 
         describe('$scope.add()', function() {
             it('should add an item', function () {
-                var initialDataLength = scope.events.length;
-                scope.add('new event name');
+                var initialDataLength = scope.blocks.length;
+                scope.add('new block name');
                 _flush();
-                var eventualDataLength = scope.events.length;
+                var eventualDataLength = scope.blocks.length;
                 expect(eventualDataLength).toEqual(initialDataLength + 1);
             });
 
-            it('should empty the newEventName variable', function () {
-                scope.newEventName = 'newEventNameValue';
-                scope.add('new event name');
+            it('should empty the newBlockName variable', function () {
+                scope.newBlockName = 'newBlockNameValue';
+                scope.add('new block name');
                 _flush();
-                expect(scope.newEventName).toEqual('');
+                expect(scope.newBlockName).toEqual('');
             });
         });
 
         describe('$scope.remove()', function () {
             it('should remove an item', function () {
-                var item = scope.events.$getRecord('id1');
-                expect(scope.events).toContain(item);
+                var item = scope.blocks.$getRecord('id1');
+                expect(scope.blocks).toContain(item);
                 scope.remove(item);
                 _flush();
-                expect(scope.events).not.toContain(item);
+                expect(scope.blocks).not.toContain(item);
             });
         });
     });

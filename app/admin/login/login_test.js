@@ -1,15 +1,16 @@
 'use strict';
 
 describe('ticketbox.admin.login', function () {
-    var $firebaseObject, passwordAuth, scope, location, deferred;
+    var passwordAuth, scope, location, deferred;
 
     beforeEach(function() {
         module('ticketbox.admin.login');
 
-        inject(function (_$firebaseObject_, _$rootScope_, _passwordAuth_, _$location_, $controller, $q) {
-            $firebaseObject = _$firebaseObject_;
+        inject(function (_$firebaseObject_, _$rootScope_, _$location_, $controller, $q) {
             scope = _$rootScope_.$new();
-            passwordAuth = _passwordAuth_;
+            passwordAuth = {
+                login: function(email, pass) { }
+            };
             location = _$location_;
             deferred = $q.defer();
 

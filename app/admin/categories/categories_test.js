@@ -1,19 +1,19 @@
 'use strict';
 
-describe('ticketbox.admin.events', function () {
+describe('ticketbox.admin.categories', function () {
     var $firebaseArray, $timeout, scope, ref, array;
 
     var FIXTURE_DATA = {
         'id1': {
-            'name': 'This is event 1'
+            'name': 'This is category 1'
         },
         'id2': {
-            'name': 'This is event 2'
+            'name': 'This is category 2'
         }
     };
 
     beforeEach(function () {
-        module('ticketbox.admin.events');
+        module('ticketbox.admin.categories');
 
         inject(function (_$firebaseArray_, _$timeout_, _$rootScope_, $controller) {
             $firebaseArray = _$firebaseArray_;
@@ -24,43 +24,43 @@ describe('ticketbox.admin.events', function () {
                 return _makeArray(FIXTURE_DATA, ref);
             };
 
-            $controller('EventsCtrl', {$scope: scope, array: array});
+            $controller('CategoriesCtrl', {$scope: scope, array: array});
             scope.$digest();
         });
     });
 
-    describe('EventsCtrl', function () {
-        describe('$scope.events', function() {
-           it('should contain all items', function() {
-               expect(scope.events.$getRecord('id1')).not.toBeNull();
-               expect(scope.events.$getRecord('id2')).not.toBeNull();
-           });
+    describe('CategoriesCtrl', function () {
+        describe('$scope.categories', function() {
+            it('should contain all items', function() {
+                expect(scope.categories.$getRecord('id1')).not.toBeNull();
+                expect(scope.categories.$getRecord('id2')).not.toBeNull();
+            });
         });
 
         describe('$scope.add()', function() {
             it('should add an item', function () {
-                var initialDataLength = scope.events.length;
-                scope.add('new event name');
+                var initialDataLength = scope.categories.length;
+                scope.add('new category name');
                 _flush();
-                var eventualDataLength = scope.events.length;
+                var eventualDataLength = scope.categories.length;
                 expect(eventualDataLength).toEqual(initialDataLength + 1);
             });
 
-            it('should empty the newEventName variable', function () {
-                scope.newEventName = 'newEventNameValue';
-                scope.add('new event name');
+            it('should empty the newCategoryName variable', function () {
+                scope.newCategoryName = 'newCategoryNameValue';
+                scope.add('new category name');
                 _flush();
-                expect(scope.newEventName).toEqual('');
+                expect(scope.newCategoryName).toEqual('');
             });
         });
 
         describe('$scope.remove()', function () {
             it('should remove an item', function () {
-                var item = scope.events.$getRecord('id1');
-                expect(scope.events).toContain(item);
+                var item = scope.categories.$getRecord('id1');
+                expect(scope.categories).toContain(item);
                 scope.remove(item);
                 _flush();
-                expect(scope.events).not.toContain(item);
+                expect(scope.categories).not.toContain(item);
             });
         });
     });

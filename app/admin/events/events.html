@@ -1,6 +1,17 @@
-<h1>Events</h1>
-<ul>
-    <li ng-foreach="event in events">
-        {{event.name}}
-    </li>
-</ul>
+<div class="row">
+    <div class="twelve columns">&nbsp;</div>
+        <h1>Events</h1>
+        <form ng-submit="add(newEventName)">
+            <table>
+                <tr ng-repeat="event in events">
+                    <td>{{event.name}}</td>
+                    <td><a ng-click="remove(event)" class="button">Remove</a></td>
+                </tr>
+                <tr>
+                    <td><input type="text" ng-model="newEventName" placeholder="New Event Name"></td>
+                    <td><input type="submit" class="button button-primary" value="Save"></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,17 @@
+<div class="row">
+    <div class="twelve columns">&nbsp;</div>
+    <h1>Blocks</h1>
+    <form ng-submit="add(newBlockName)">
+        <table>
+            <tr ng-repeat="block in blocks">
+                <td>{{block.name}}</td>
+                <td><a ng-click="remove(block)" class="button">Remove</a></td>
+            </tr>
+            <tr>
+                <td><input type="text" ng-model="newBlockName" placeholder="New Block Name"></td>
+                <td><input type="submit" class="button button-primary" value="Save"></td>
+            </tr>
+        </table>
+    </form>
+</div>
+</div>

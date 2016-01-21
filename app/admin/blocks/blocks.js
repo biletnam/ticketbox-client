@@ -1,25 +1,25 @@
 'use strict';
 
-angular.module('ticketbox.admin.events', ['ticketbox.firebase.utils', 'ngRoute'])
+angular.module('ticketbox.admin.blocks', ['ticketbox.firebase.utils', 'ngRoute'])
 
     .config(['$routeProvider', function ($routeProvider) {
-        $routeProvider.when('/events', {
-            controller: 'EventsCtrl',
-            templateUrl: 'admin/events/events.html'
+        $routeProvider.when('/blocks', {
+            controller: 'BlocksCtrl',
+            templateUrl: 'admin/blocks/blocks.html'
         });
     }])
 
-    .controller('EventsCtrl', function ($scope, $location, array) {
+    .controller('BlocksCtrl', function ($scope, $location, array) {
         $scope.err = null;
 
-        $scope.events = array('/events');
+        $scope.blocks = array('/blocks');
 
-        $scope.newEventName = '';
+        $scope.newBlockName = '';
 
         $scope.add = function(name) {
-            $scope.events.$add({ 'name': name }).then(
+            $scope.blocks.$add({ 'name': name }).then(
                 function () {
-                    $scope.newEventName = '';
+                    $scope.newBlockName = '';
                 },
                 function (err) {
                     $scope.err = _errMessage(err);
@@ -27,14 +27,14 @@ angular.module('ticketbox.admin.events', ['ticketbox.firebase.utils', 'ngRoute']
             );
         };
 
-        $scope.remove = function(event) {
-            $scope.events.$remove(event).then(
+        $scope.remove = function(block) {
+            $scope.blocks.$remove(block).then(
                 function () {
                 },
                 function (err) {
                     $scope.err = _errMessage(err);
                 }
-            );;
+            );
         };
 
         function _errMessage(err) {

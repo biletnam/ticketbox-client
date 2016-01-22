@@ -6,7 +6,8 @@ angular.module('ticketbox.admin', [
         'ticketbox.admin.logout',
         'ticketbox.admin.events',
         'ticketbox.admin.blocks',
-        'ticketbox.admin.categories'])
+        'ticketbox.admin.categories',
+        'ticketbox.admin.seats'])
 
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider.otherwise({

@@ -1,0 +1,22 @@
+<div class="row">
+    <div class="twelve columns">&nbsp;</div>
+    <h1>Seats</h1>
+    <form ng-submit="add(namePrefix, startSeatNumber, endSeatNumber)">
+        <table>
+            <tr ng-repeat="seat in seats">
+                <td colspan="2">{{seat.name}}</td>
+                <td><a ng-click="remove(seat)" class="button">Remove</a></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="text" ng-model="namePattern" placeholder="Name Pattern"></td>
+                <td>* use {i} where you want to put the seat number</td>
+            </tr>
+            <tr>
+                <td><input type="number" ng-model="startSeatNumber" min="0"></td>
+                <td><input type="number" ng-model="endSeatNumber" min="startSeatNumber"></td>
+                <td><input type="submit" class="button button-primary" value="Save"></td>
+            </tr>
+        </table>
+    </form>
+    <p>{{err}}</p>
+</div>

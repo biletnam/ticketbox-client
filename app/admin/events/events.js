@@ -19,10 +19,13 @@ angular.module('ticketbox.admin.events', ['ticketbox.firebase.utils', 'ngRoute']
         $scope.add = function(name) {
             $scope.events.$add({ 'name': name }).then(
                 function () {
-                    $scope.newEventName = '';
                 },
                 function (err) {
                     $scope.err = _errMessage(err);
+                }
+            ).finally(
+                function() {
+                    $scope.newEventName = '';
                 }
             );
         };

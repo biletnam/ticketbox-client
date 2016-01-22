@@ -19,10 +19,13 @@ angular.module('ticketbox.admin.categories', ['ticketbox.firebase.utils', 'ngRou
         $scope.add = function(name) {
             $scope.categories.$add({ 'name': name }).then(
                 function () {
-                    $scope.newCategoryName = '';
                 },
                 function (err) {
                     $scope.err = _errMessage(err);
+                }
+            ).finally(
+                function() {
+                    $scope.newCategoryName = '';
                 }
             );
         };

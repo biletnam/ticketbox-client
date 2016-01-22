@@ -19,10 +19,13 @@ angular.module('ticketbox.admin.blocks', ['ticketbox.firebase.utils', 'ngRoute']
         $scope.add = function(name) {
             $scope.blocks.$add({ 'name': name }).then(
                 function () {
-                    $scope.newBlockName = '';
                 },
                 function (err) {
                     $scope.err = _errMessage(err);
+                }
+            ).finally(
+                function() {
+                    $scope.newBlockName = '';
                 }
             );
         };

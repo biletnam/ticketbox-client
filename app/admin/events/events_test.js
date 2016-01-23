@@ -20,8 +20,10 @@ describe('ticketbox.admin.events', function () {
             $timeout = _$timeout_;
             scope = _$rootScope_.$new();
             ref = _stubRef();
-            array = function() {
-                return _makeArray(FIXTURE_DATA, ref);
+            array = {
+                byPath: function() {
+                    return _makeArray(FIXTURE_DATA, ref);
+                }
             };
 
             $controller('EventsCtrl', {$scope: scope, array: array});

@@ -12,7 +12,7 @@ angular.module('ticketbox.admin.events', ['ticketbox.firebase.utils', 'ngRoute']
     .controller('EventsCtrl', function ($scope, $location, array) {
         $scope.err = null;
 
-        $scope.events = array('/events');
+        $scope.events = array.byPath('/events');
 
         $scope.newEventName = '';
 

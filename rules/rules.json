@@ -20,6 +20,9 @@
         "name": {
           ".validate": "newData.isString() && newData.val().length > 0"
         },
+        "seatplan": {
+          ".validate": "newData.isString()"
+        },
         "$other": {
           ".validate": false
         }
@@ -40,7 +43,11 @@
     "seats": {
       ".read": true,
       ".write": "auth !== null && auth.provider === 'password' && root.child('users').child(auth.uid).child('kind').val() === 'admin'",
+      ".indexOn": "blockId",
       "$seatId": {
+        "blockId": {
+          ".validate": "root.child('blocks').child(newData.val()).exists()"
+        },
         "name": {
           ".validate": "newData.isString() && newData.val().length > 0"
         },

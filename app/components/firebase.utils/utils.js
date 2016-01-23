@@ -11,9 +11,26 @@ angular.module('ticketbox.firebase.utils', ['firebase', 'ticketbox.config'])
     })
 
     .service('array', function($firebaseArray, ref) {
-        return function(path) {
-            var array = $firebaseArray(ref(path));
-            return array;
+        return {
+            byPath: function(path) {
+                var array = $firebaseArray(ref(path));
+                return array;
+            },
+            byChildValue: function(path, child, value) {
+                var query = ref(path).orderByChild(child).startAt(value).endAt(value);
+                var array = $firebaseArray(query);
+                return array;
+            }
+        }
+    })
+
+    .service('object', function($firebaseObject, ref) {
+        return {
+            byId: function(path, id) {
+                var query = ref(path + '/' + id);
+                var object = $firebaseObject(query);
+                return object;
+            }
         }
     })
 

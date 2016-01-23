@@ -100,7 +100,10 @@
     },
     "blocks": {
       "canRead": [ "anonymous1", "anonymous2", "admin", "boxoffice" ],
-      "canWrite": [ {"auth": "admin", "data": { "name": "Block Name" } } ],
+      "canWrite": [
+        {"auth": "admin", "data": { "name": "Block Name", "seatplan": "seatplan-image-data" } },
+        {"auth": "admin", "data": { "name": "Block Name" } }
+      ],
       "cannotWrite": [
         { "auth": "boxoffice", "data": { "name": "Block Name" } },
         { "auth": "anonymous1", "data": { "name": "Block Name" } },
@@ -109,7 +112,10 @@
     },
     "blocks/b1": {
       "canRead": [ "anonymous1", "anonymous2", "admin", "boxoffice" ],
-      "canWrite": [ {"auth": "admin", "data": { "name": "Block Name" } } ],
+      "canWrite": [
+        {"auth": "admin", "data": { "name": "Block Name", "seatplan": "seatplan-image-data" } },
+        {"auth": "admin", "data": { "name": "Block Name" } }
+      ],
       "cannotWrite": [
         { "auth": "boxoffice", "data": { "name": "Block Name" } },
         { "auth": "anonymous1", "data": { "name": "Block Name" } },
@@ -138,21 +144,22 @@
     },
     "seats": {
       "canRead": [ "anonymous1", "anonymous2", "admin", "boxoffice" ],
-      "canWrite": [ {"auth": "admin", "data": { "name": "Seat Name" } } ],
+      "canWrite": [ {"auth": "admin", "data": { "blockId": "b1", "name": "Seat Name" } } ],
       "cannotWrite": [
-        { "auth": "boxoffice", "data": { "name": "Seat Name" } },
-        { "auth": "anonymous1", "data": { "name": "Seat Name" } },
-        { "auth": "anonymous2", "data": { "name": "Seat Name" } }
+        { "auth": "boxoffice", "data": { "blockId": "b1", "name": "Seat Name" } },
+        { "auth": "anonymous1", "data": { "blockId": "b1", "name": "Seat Name" } },
+        { "auth": "anonymous2", "data": { "blockId": "b1", "name": "Seat Name" } }
       ]
     },
     "seats/s1": {
       "canRead": [ "anonymous1", "anonymous2", "admin", "boxoffice" ],
-      "canWrite": [ {"auth": "admin", "data": { "name": "Seat Name" } } ],
+      "canWrite": [ {"auth": "admin", "data": { "blockId": "b1", "name": "Seat Name" } } ],
       "cannotWrite": [
-        { "auth": "boxoffice", "data": { "name": "Seat Name" } },
-        { "auth": "anonymous1", "data": { "name": "Seat Name" } },
-        { "auth": "anonymous2", "data": { "name": "Seat Name" } },
-        { "auth": "admin", "data": { "name": "" } }
+        { "auth": "boxoffice", "data": { "blockId": "b1", "name": "Seat Name" } },
+        { "auth": "anonymous1", "data": { "blockId": "b1", "name": "Seat Name" } },
+        { "auth": "anonymous2", "data": { "blockId": "b1", "name": "Seat Name" } },
+        { "auth": "admin", "data": { "blockId": "b1", "name": "" } },
+        { "auth": "admin", "data": { "blockId": "doesNotExist", "name": "Seat Name"} }
       ]
     },
     "seats/s1/reservation/timestamp": {

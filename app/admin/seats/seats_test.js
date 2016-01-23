@@ -1,7 +1,7 @@
 'use strict';
 
 describe('ticketbox.admin.seats', function () {
-    var $firebaseArray, $timeout, scope, ref, array;
+    var $firebaseArray, $firebaseObject, $timeout, scope, ref, array, object, arrayModification, blockId;
 
     var FIXTURE_DATA = {
         'id1': {
@@ -15,17 +15,36 @@ describe('ticketbox.admin.seats', function () {
     beforeEach(function () {
         module('ticketbox.admin.seats');
 
-        inject(function (_$firebaseArray_, _$timeout_, _$rootScope_, $controller) {
+        inject(function (_$firebaseArray_, _$firebaseObject_, _$timeout_, _$rootScope_, $controller) {
             $firebaseArray = _$firebaseArray_;
+            $firebaseObject = _$firebaseObject_;
             $timeout = _$timeout_;
             scope = _$rootScope_.$new();
             ref = _stubRef();
-            array = function() {
-                return _makeArray(FIXTURE_DATA, ref);
+            array = {
+                byPath: function() {
+                    return _makeArray(FIXTURE_DATA, ref);
+                },
+                byChildValue: function() {
+                    return _makeArray(FIXTURE_DATA, ref);
+                }
+            };
+            object = {
+                byId: function() {
+                    return _makeObject(FIXTURE_DATA, ref);
+                }
+            };
+            arrayModification = {
+                removeAll: function() {
+                }
             };
 
-            $controller('SeatsCtrl', {$scope: scope, array: array});
+            blockId = 'b1';
+
+            $controller('SeatsCtrl', {$scope: scope, array: array, object: object, arrayModification: arrayModification});
             scope.$digest();
+
+            scope.filterSeats(blockId);
         });
     });
 
@@ -39,7 +58,7 @@ describe('ticketbox.admin.seats', function () {
 
         describe('$scope.add()', function() {
             it('should add 5 items with name new seat', function () {
-                scope.add('new seat', 1, 3);
+                scope.add(blockId, 'new seat', 1, 3);
                 _flush();
                 var numberOfSeatsWithNameNewSeat = 0;
                 for (var key in scope.seats) {
@@ -52,7 +71,7 @@ describe('ticketbox.admin.seats', function () {
 
             it('should add 5 items with number in name pattern', function () {
                 var initialDataLength = scope.seats.length;
-                scope.add('new seat {i}', 1, 3);
+                scope.add(blockId, 'new seat {i}', 1, 3);
                 _flush();
                 var names = [];
                 for (var key in scope.seats) {
@@ -67,21 +86,21 @@ describe('ticketbox.admin.seats', function () {
 
             it('should empty the namePrefix variable', function () {
                 scope.namePattern = 'name pattern';
-                scope.add('new seat', 1, 1);
+                scope.add(blockId, 'new seat', 1, 1);
                 _flush();
                 expect(scope.namePattern).toEqual('');
             });
 
             it('should reset the startSeatNumber variable', function () {
                 scope.startSeatNumber = 100;
-                scope.add('new seat', 1, 1);
+                scope.add(blockId, 'new seat', 1, 1);
                 _flush();
                 expect(scope.startSeatNumber).toEqual(1);
             });
 
             it('should reset the endSeatNumber variable', function () {
                 scope.endSeatNumber = 150;
-                scope.add('new seat', 1, 1);
+                scope.add(blockId, 'new seat', 1, 1);
                 _flush();
                 expect(scope.endSeatNumber).toEqual(1);
             });
@@ -96,13 +115,34 @@ describe('ticketbox.admin.seats', function () {
                 expect(scope.seats).not.toContain(item);
             });
         });
+
+        describe('$scope.removeAll()', function() {
+            it('should call arrayModification.removeAll()', function() {
+                var removeAllSpy = spyOn(arrayModification, 'removeAll').and.returnValue({ then: function() {}});
+                scope.removeAll(scope.seats);
+                expect(removeAllSpy).toHaveBeenCalledWith(scope.seats);
+            });
+        });
     });
 
     function _makeArray(initialData, ref) {
         if (!ref) {
             ref = _stubRef();
         }
-        var obj = $firebaseArray(ref);
+        var array = $firebaseArray(ref);
+        if (angular.isDefined(initialData)) {
+            ref.ref().set(initialData);
+            ref.flush();
+            $timeout.flush();
+        }
+        return array;
+    }
+
+    function _makeObject(initialData, ref) {
+        if (!ref) {
+            ref = _stubRef();
+        }
+        var obj = $firebaseObject(ref);
         if (angular.isDefined(initialData)) {
             ref.ref().set(initialData);
             ref.flush();

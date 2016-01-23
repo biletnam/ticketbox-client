@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('ticketbox.admin.seats', ['ticketbox.firebase.utils', 'ngRoute'])
+angular.module('ticketbox.admin.seats', ['ticketbox.firebase.utils', 'ticketbox.controller.utils', 'ngRoute'])
 
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/seats', {
@@ -9,16 +9,23 @@ angular.module('ticketbox.admin.seats', ['ticketbox.firebase.utils', 'ngRoute'])
         });
     }])
 
-    .controller('SeatsCtrl', function ($scope, $location, $q, array) {
+    .controller('SeatsCtrl', function ($scope, $location, $q, array, object, arrayModification) {
         $scope.err = null;
 
-        $scope.seats = array('/seats');
+        $scope.blocks = array.byPath('/blocks');
+        $scope.block = null;
+        $scope.seats = [];
 
         $scope.namePattern = '';
         $scope.startSeatNumber = 1;
         $scope.endSeatNumber = 1;
 
-        $scope.add = function(namePattern, startNumber, endNumber) {
+        $scope.filterSeats = function(blockId) {
+            $scope.block = object.byId('/blocks', blockId);
+            $scope.seats = array.byChildValue('/seats', 'blockId', blockId);
+        };
+
+        $scope.add = function(blockId, namePattern, startNumber, endNumber) {
             var promises = [];
             for (var seatNumber = startNumber; seatNumber <= endNumber; seatNumber += 1) {
                 var name = '';
@@ -27,7 +34,7 @@ angular.module('ticketbox.admin.seats', ['ticketbox.firebase.utils', 'ngRoute'])
                 } else {
                     name = namePattern;
                 }
-                promises.push($scope.seats.$add({ 'name': name }));
+                promises.push($scope.seats.$add({ 'blockId': blockId, 'name': name }));
             }
             $q.all(promises).then(
                 function() {
@@ -51,7 +58,17 @@ angular.module('ticketbox.admin.seats', ['ticketbox.firebase.utils', 'ngRoute'])
                 function (err) {
                     $scope.err = _errMessage(err);
                 }
-            );;
+            );
+        };
+
+        $scope.removeAll = function() {
+            arrayModification.removeAll($scope.seats).then(
+                function() {
+                },
+                function(err) {
+                    _errMessage(err);
+                }
+            );
         };
 
         function _errMessage(err) {

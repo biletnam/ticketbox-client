@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('ticketbox.admin.blocks', ['ticketbox.firebase.utils', 'ngRoute'])
+angular.module('ticketbox.admin.blocks', ['ticketbox.firebase.utils', 'ticketbox.controller.utils', 'ticketbox.view.upload', 'ngRoute'])
 
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/blocks', {
@@ -9,15 +9,16 @@ angular.module('ticketbox.admin.blocks', ['ticketbox.firebase.utils', 'ngRoute']
         });
     }])
 
-    .controller('BlocksCtrl', function ($scope, $location, array) {
+    .controller('BlocksCtrl', function ($scope, $location, array, arrayModification) {
         $scope.err = null;
 
-        $scope.blocks = array('/blocks');
+        $scope.blocks = array.byPath('/blocks');
 
         $scope.newBlockName = '';
+        $scope.newSeatplan = '';
 
-        $scope.add = function(name) {
-            $scope.blocks.$add({ 'name': name }).then(
+        $scope.add = function(name, seatplan) {
+            $scope.blocks.$add({ 'name': name, 'seatplan': seatplan }).then(
                 function () {
                 },
                 function (err) {
@@ -26,18 +27,25 @@ angular.module('ticketbox.admin.blocks', ['ticketbox.firebase.utils', 'ngRoute']
             ).finally(
                 function() {
                     $scope.newBlockName = '';
+                    $scope.newSeatplan = '';
                 }
             );
         };
 
         $scope.remove = function(block) {
-            $scope.blocks.$remove(block).then(
-                function () {
+            array.byChildValue('/seats', 'blockId', block.$id).$loaded(
+                function(s) {
+                    arrayModification.removeAll(s).then(
+                        function () {
+                            $scope.blocks.$remove(block);
+                        }
+                        ,function (err) {
+                            _errMessage(err);
+                        });
                 },
-                function (err) {
+                function(err) {
                     $scope.err = _errMessage(err);
-                }
-            );
+                });
         };
 
         function _errMessage(err) {

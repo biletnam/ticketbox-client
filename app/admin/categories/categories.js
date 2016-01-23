@@ -12,7 +12,7 @@ angular.module('ticketbox.admin.categories', ['ticketbox.firebase.utils', 'ngRou
     .controller('CategoriesCtrl', function ($scope, $location, array) {
         $scope.err = null;
 
-        $scope.categories = array('/categories');
+        $scope.categories = array.byPath('/categories');
 
         $scope.newCategoryName = '';
 

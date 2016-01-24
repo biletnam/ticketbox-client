@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('ticketbox.admin.events', ['ticketbox.firebase.utils', 'ngRoute'])
+angular.module('ticketbox.admin.events', ['ticketbox.firebase.utils', 'ticketbox.controller.utils', 'ngRoute'])
 
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/events', {
@@ -9,38 +9,23 @@ angular.module('ticketbox.admin.events', ['ticketbox.firebase.utils', 'ngRoute']
         });
     }])
 
-    .controller('EventsCtrl', function ($scope, $location, array) {
-        $scope.err = null;
+    .controller('EventsCtrl', function ($scope, $location, array, error) {
+        $scope.error = null;
 
         $scope.events = array.byPath('/events');
 
         $scope.newEventName = '';
 
         $scope.add = function(name) {
-            $scope.events.$add({ 'name': name }).then(
-                function () {
-                },
-                function (err) {
-                    $scope.err = _errMessage(err);
-                }
-            ).finally(
-                function() {
+            $scope.events.$add({ 'name': name })
+                .then(function () { }, error)
+                .finally(function() {
                     $scope.newEventName = '';
                 }
             );
         };
 
         $scope.remove = function(event) {
-            $scope.events.$remove(event).then(
-                function () {
-                },
-                function (err) {
-                    $scope.err = _errMessage(err);
-                }
-            );;
+            $scope.events.$remove(event).then(function () { }, error);
         };
-
-        function _errMessage(err) {
-            return angular.isObject(err) && err.code ? err.code : err + '';
-        }
     });

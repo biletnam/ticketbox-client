@@ -9,15 +9,15 @@ angular.module('ticketbox.admin', [
         'ticketbox.admin.categories',
         'ticketbox.admin.seats'])
 
-    .config(['$routeProvider', function ($routeProvider) {
+    .config(function ($routeProvider) {
         $routeProvider.otherwise({
             redirectTo: '/login'
         });
-    }])
+    })
 
-    .run(['$rootScope', 'auth', function($rootScope, auth) {
+    .run(function($rootScope, auth) {
         // track status of authentication
         auth.$onAuth(function(user) {
             $rootScope.loggedIn = !!user;
         });
-    }]);
+    });

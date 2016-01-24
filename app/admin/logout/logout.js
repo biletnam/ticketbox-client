@@ -10,7 +10,6 @@ angular.module('ticketbox.admin.logout', ['ticketbox.firebase.utils', 'ngRoute']
     }])
 
     .controller('LogoutCtrl', function ($scope, passwordAuth, $location) {
-        $scope.err = null;
         passwordAuth.logout();
         $location.path('/login');
     });

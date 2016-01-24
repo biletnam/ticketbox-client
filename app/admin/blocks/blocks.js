@@ -9,8 +9,8 @@ angular.module('ticketbox.admin.blocks', ['ticketbox.firebase.utils', 'ticketbox
         });
     }])
 
-    .controller('BlocksCtrl', function ($scope, $location, array, arrayModification) {
-        $scope.err = null;
+    .controller('BlocksCtrl', function ($scope, $location, array, arrayModification, error) {
+        $scope.error = null;
 
         $scope.blocks = array.byPath('/blocks');
 
@@ -22,7 +22,7 @@ angular.module('ticketbox.admin.blocks', ['ticketbox.firebase.utils', 'ticketbox
                 function () {
                 },
                 function (err) {
-                    $scope.err = _errMessage(err);
+                    $scope.error = error(err);
                 }
             ).finally(
                 function() {
@@ -33,22 +33,11 @@ angular.module('ticketbox.admin.blocks', ['ticketbox.firebase.utils', 'ticketbox
         };
 
         $scope.remove = function(block) {
-            array.byChildValue('/seats', 'blockId', block.$id).$loaded(
-                function(s) {
-                    arrayModification.removeAll(s).then(
-                        function () {
-                            $scope.blocks.$remove(block);
-                        }
-                        ,function (err) {
-                            _errMessage(err);
-                        });
-                },
-                function(err) {
-                    $scope.err = _errMessage(err);
-                });
+            array.byChildValue('/seats', 'blockId', block.$id).$loaded(function(s) {
+                arrayModification.removeAll(s)
+                    .then(function () {
+                        $scope.blocks.$remove(block);
+                    }, error);
+            }, error);
         };
-
-        function _errMessage(err) {
-            return angular.isObject(err) && err.code ? err.code : err + '';
-        }
     });

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('ticketbox.admin.login', ['ticketbox.firebase.utils', 'ngRoute'])
+angular.module('ticketbox.admin.login', ['ticketbox.firebase.utils', 'ticketbox.controller.utils', 'ngRoute'])
 
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/login', {
@@ -9,18 +9,11 @@ angular.module('ticketbox.admin.login', ['ticketbox.firebase.utils', 'ngRoute'])
         });
     }])
 
-    .controller('LoginCtrl', function ($scope, passwordAuth, $location) {
+    .controller('LoginCtrl', function ($scope, passwordAuth, $location, error) {
         $scope.login = function (email, pass) {
-            $scope.err = null;
             passwordAuth.login(email, pass)
-                .then(function (/* user */) {
+                .then(function () {
                     $location.path('/events');
-                }, function (err) {
-                    $scope.err = _errMessage(err);
-                });
+                }, error);
         };
-
-        function _errMessage(err) {
-            return angular.isObject(err) && err.code ? err.code : err + '';
-        }
     });

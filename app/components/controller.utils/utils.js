@@ -17,4 +17,11 @@ angular.module('ticketbox.controller.utils', [])
                 return $q.all(promises);
             }
         }
+    })
+
+    .service('error', function($rootScope, $timeout) {
+        return function(err) {
+            $rootScope.error = angular.isObject(err) && err.code ? err.code : err + '';
+            $timeout(function() { $rootScope.error = undefined; }, 2000);
+        }
     });

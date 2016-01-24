@@ -9,8 +9,8 @@ angular.module('ticketbox.admin.seats', ['ticketbox.firebase.utils', 'ticketbox.
         });
     }])
 
-    .controller('SeatsCtrl', function ($scope, $location, $q, array, object, arrayModification) {
-        $scope.err = null;
+    .controller('SeatsCtrl', function ($scope, $location, $q, array, object, arrayModification, error) {
+        $scope.error = null;
 
         $scope.blocks = array.byPath('/blocks');
         $scope.block = null;
@@ -36,14 +36,9 @@ angular.module('ticketbox.admin.seats', ['ticketbox.firebase.utils', 'ticketbox.
                 }
                 promises.push($scope.seats.$add({ 'blockId': blockId, 'name': name }));
             }
-            $q.all(promises).then(
-                function() {
-                },
-                function(err) {
-                    _errMessage(err);
-                }
-            ).finally(
-                function() {
+            $q.all(promises)
+                .then(function() { }, error)
+                .finally(function() {
                     $scope.namePattern = '';
                     $scope.startSeatNumber = 1;
                     $scope.endSeatNumber = 1;
@@ -52,26 +47,10 @@ angular.module('ticketbox.admin.seats', ['ticketbox.firebase.utils', 'ticketbox.
         };
 
         $scope.remove = function(seat) {
-            $scope.seats.$remove(seat).then(
-                function () {
-                },
-                function (err) {
-                    $scope.err = _errMessage(err);
-                }
-            );
+            $scope.seats.$remove(seat).then(function () { }, error);
         };
 
         $scope.removeAll = function() {
-            arrayModification.removeAll($scope.seats).then(
-                function() {
-                },
-                function(err) {
-                    _errMessage(err);
-                }
-            );
+            arrayModification.removeAll($scope.seats).then(function() { }, error);
         };
-
-        function _errMessage(err) {
-            return angular.isObject(err) && err.code ? err.code : err + '';
-        }
     });

@@ -1,12 +1,13 @@
 'use strict';
 
 describe('ticketbox.admin.login', function () {
-    var passwordAuth, scope, location, deferred;
+    var passwordAuth, rootScope, scope, location, deferred;
 
     beforeEach(function() {
         module('ticketbox.admin.login');
 
         inject(function (_$firebaseObject_, _$rootScope_, _$location_, $controller, $q) {
+            rootScope = _$rootScope_;
             scope = _$rootScope_.$new();
             passwordAuth = {
                 login: function(email, pass) { }
@@ -14,7 +15,7 @@ describe('ticketbox.admin.login', function () {
             location = _$location_;
             deferred = $q.defer();
 
-            $controller('LoginCtrl', {$scope: scope, passwordAuth: passwordAuth, $location: location});
+            $controller('LoginCtrl', {$rootScope: rootScope, $scope: scope, passwordAuth: passwordAuth, $location: location});
             scope.$digest();
         });
     });
@@ -34,7 +35,7 @@ describe('ticketbox.admin.login', function () {
                 scope.$apply();
 
                 expect(pathSpy).toHaveBeenCalledWith('/events');
-                expect(scope.err).toBeNull();
+                expect(rootScope.error).toBeUndefined();
             });
 
             it('should save error to $scope.err', function() {
@@ -46,7 +47,7 @@ describe('ticketbox.admin.login', function () {
                 scope.$apply();
 
                 expect(pathSpy).not.toHaveBeenCalled();
-                expect(scope.err).toEqual('error message');
+                expect(rootScope.error).toEqual('error message');
             });
         });
     });

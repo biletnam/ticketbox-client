@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('ticketbox.view.upload', [])
+angular.module('ticketbox.components.upload', [])
 
     .directive('ngImageUpload', function() {
         function _create(scope, element, attrs) {

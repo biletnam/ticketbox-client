@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('ticketbox.controller.utils', [])
+angular.module('ticketbox.components.utils', [])
     .service('arrayModification', function($q) {
         return {
             removeAll: function(items) {

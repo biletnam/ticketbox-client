@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('ticketbox.admin.logout', ['ticketbox.firebase.utils', 'ngRoute'])
+angular.module('ticketbox.admin.logout', ['ticketbox.components.firebase', 'ngRoute'])
 
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/logout', {

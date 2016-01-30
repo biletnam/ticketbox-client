@@ -1,7 +1,7 @@
 'use strict';
 
 describe('ticketbox.admin.seats', function () {
-    var $firebaseArray, $firebaseObject, $timeout, scope, ref, array, object, arrayModification, blockId;
+    var $firebaseArray, $firebaseObject, $timeout, scope, ref, fbarray, fbobject, arrayModification, blockId;
 
     var FIXTURE_DATA = {
         'id1': {
@@ -21,7 +21,7 @@ describe('ticketbox.admin.seats', function () {
             $timeout = _$timeout_;
             scope = _$rootScope_.$new();
             ref = _stubRef();
-            array = {
+            fbarray = {
                 byPath: function() {
                     return _makeArray(FIXTURE_DATA, ref);
                 },
@@ -29,7 +29,7 @@ describe('ticketbox.admin.seats', function () {
                     return _makeArray(FIXTURE_DATA, ref);
                 }
             };
-            object = {
+            fbobject = {
                 byId: function() {
                     return _makeObject(FIXTURE_DATA, ref);
                 }
@@ -41,7 +41,7 @@ describe('ticketbox.admin.seats', function () {
 
             blockId = 'b1';
 
-            $controller('SeatsCtrl', {$scope: scope, array: array, object: object, arrayModification: arrayModification});
+            $controller('SeatsCtrl', {$scope: scope, fbarray: fbarray, fbobject: fbobject, arrayModification: arrayModification});
             scope.$digest();
 
             scope.filterSeats(blockId);
@@ -125,27 +125,27 @@ describe('ticketbox.admin.seats', function () {
         });
     });
 
-    function _makeArray(initialData, ref) {
-        if (!ref) {
-            ref = _stubRef();
+    function _makeArray(initialData, fbref) {
+        if (!fbref) {
+            fbref = _stubRef();
         }
-        var array = $firebaseArray(ref);
+        var fbarray = $firebaseArray(fbref);
         if (angular.isDefined(initialData)) {
-            ref.ref().set(initialData);
-            ref.flush();
+            fbref.ref().set(initialData);
+            fbref.flush();
             $timeout.flush();
         }
-        return array;
+        return fbarray;
     }
 
-    function _makeObject(initialData, ref) {
-        if (!ref) {
-            ref = _stubRef();
+    function _makeObject(initialData, fbref) {
+        if (!fbref) {
+            fbref = _stubRef();
         }
-        var obj = $firebaseObject(ref);
+        var obj = $firebaseObject(fbref);
         if (angular.isDefined(initialData)) {
-            ref.ref().set(initialData);
-            ref.flush();
+            fbref.ref().set(initialData);
+            fbref.flush();
             $timeout.flush();
         }
         return obj;

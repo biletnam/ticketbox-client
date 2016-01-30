@@ -1,7 +1,7 @@
 'use strict';
 
 describe('ticketbox.admin.events', function () {
-    var $firebaseArray, $timeout, scope, ref, array;
+    var $firebaseArray, $timeout, scope, ref, fbarray;
 
     var FIXTURE_DATA = {
         'id1': {
@@ -20,13 +20,13 @@ describe('ticketbox.admin.events', function () {
             $timeout = _$timeout_;
             scope = _$rootScope_.$new();
             ref = _stubRef();
-            array = {
+            fbarray = {
                 byPath: function() {
                     return _makeArray(FIXTURE_DATA, ref);
                 }
             };
 
-            $controller('EventsCtrl', {$scope: scope, array: array});
+            $controller('EventsCtrl', {$scope: scope, fbarray: fbarray});
             scope.$digest();
         });
     });

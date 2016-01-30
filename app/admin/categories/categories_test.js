@@ -1,7 +1,7 @@
 'use strict';
 
 describe('ticketbox.admin.categories', function () {
-    var $firebaseArray, $timeout, scope, ref, array;
+    var $firebaseArray, $timeout, scope, ref, fbarray;
 
     var FIXTURE_DATA = {
         'id1': {
@@ -20,13 +20,13 @@ describe('ticketbox.admin.categories', function () {
             $timeout = _$timeout_;
             scope = _$rootScope_.$new();
             ref = _stubRef();
-            array = {
+            fbarray = {
                 byPath: function() {
                     return _makeArray(FIXTURE_DATA, ref);
                 }
             };
 
-            $controller('CategoriesCtrl', {$scope: scope, array: array});
+            $controller('CategoriesCtrl', {$scope: scope, fbarray: fbarray});
             scope.$digest();
         });
     });

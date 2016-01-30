@@ -1,7 +1,7 @@
 'use strict';
 
 describe('ticketbox.admin.blocks', function () {
-    var $firebaseArray, $timeout, scope, ref, array;
+    var $firebaseArray, $timeout, scope, ref, fbarray;
 
     var FIXTURE_DATA = {
         'id1': {
@@ -20,13 +20,13 @@ describe('ticketbox.admin.blocks', function () {
             $timeout = _$timeout_;
             scope = _$rootScope_.$new();
             ref = _stubRef();
-            array = {
+            fbarray = {
                 byPath: function () {
                     return _makeArray(FIXTURE_DATA, ref);
                 }
             };
 
-            $controller('BlocksCtrl', {$scope: scope, array: array});
+            $controller('BlocksCtrl', {$scope: scope, fbarray: fbarray});
             scope.$digest();
         });
     });
@@ -64,7 +64,7 @@ describe('ticketbox.admin.blocks', function () {
                         removeAll: function () {
                         }
                     };
-                    array.byChildValue = function() {
+                    fbarray.byChildValue = function() {
                         return {
                             $loaded: function() {
                                 arrayModification.removeAll();
@@ -72,7 +72,7 @@ describe('ticketbox.admin.blocks', function () {
                         }
                     };
 
-                    $controller('BlocksCtrl', {$scope: scope, array: array, arrayModification: arrayModification});
+                    $controller('BlocksCtrl', {$scope: scope, fbarray: fbarray, arrayModification: arrayModification});
                     scope.$digest();
                 });
             });
@@ -87,17 +87,17 @@ describe('ticketbox.admin.blocks', function () {
         });
     });
 
-    function _makeArray(initialData, ref) {
-        if (!ref) {
-            ref = _stubRef();
+    function _makeArray(initialData, fbref) {
+        if (!fbref) {
+            fbref = _stubRef();
         }
-        var array = $firebaseArray(ref);
+        var fbarray = $firebaseArray(fbref);
         if (angular.isDefined(initialData)) {
-            ref.ref().set(initialData);
-            ref.flush();
+            fbref.ref().set(initialData);
+            fbref.flush();
             $timeout.flush();
         }
-        return array;
+        return fbarray;
     }
 
     function _stubRef() {

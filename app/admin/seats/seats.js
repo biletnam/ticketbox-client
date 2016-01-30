@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('ticketbox.admin.seats', ['ticketbox.firebase.utils', 'ticketbox.controller.utils', 'ngRoute'])
+angular.module('ticketbox.admin.seats', ['ticketbox.components.firebase', 'ticketbox.components.utils', 'ngRoute'])
 
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/seats', {
@@ -9,10 +9,10 @@ angular.module('ticketbox.admin.seats', ['ticketbox.firebase.utils', 'ticketbox.
         });
     }])
 
-    .controller('SeatsCtrl', function ($scope, $location, $q, array, object, arrayModification, error) {
+    .controller('SeatsCtrl', function ($scope, $location, $q, fbarray, fbobject, arrayModification, error) {
         $scope.error = null;
 
-        $scope.blocks = array.byPath('/blocks');
+        $scope.blocks = fbarray.byPath('/blocks');
         $scope.block = null;
         $scope.seats = [];
 
@@ -21,8 +21,8 @@ angular.module('ticketbox.admin.seats', ['ticketbox.firebase.utils', 'ticketbox.
         $scope.endSeatNumber = 1;
 
         $scope.filterSeats = function(blockId) {
-            $scope.block = object.byId('/blocks', blockId);
-            $scope.seats = array.byChildValue('/seats', 'blockId', blockId);
+            $scope.block = fbobject.byId('/blocks', blockId);
+            $scope.seats = fbarray.byChildValue('/seats', 'blockId', blockId);
         };
 
         $scope.add = function(blockId, namePattern, startNumber, endNumber) {

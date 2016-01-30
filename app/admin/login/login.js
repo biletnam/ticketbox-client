@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('ticketbox.admin.login', ['ticketbox.firebase.utils', 'ticketbox.controller.utils', 'ngRoute'])
+angular.module('ticketbox.admin.login', ['ticketbox.components.firebase', 'ticketbox.components.utils', 'ngRoute'])
 
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/login', {

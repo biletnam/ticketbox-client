@@ -15,9 +15,9 @@ angular.module('ticketbox.admin', [
         });
     })
 
-    .run(function($rootScope, auth) {
+    .run(function($rootScope, fbauth) {
         // track status of authentication
-        auth.$onAuth(function(user) {
+        fbauth.$onAuth(function(user) {
             $rootScope.loggedIn = !!user;
         });
     });

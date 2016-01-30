@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('ticketbox.admin.categories', ['ticketbox.firebase.utils', 'ticketbox.controller.utils', 'ngRoute'])
+angular.module('ticketbox.admin.categories', ['ticketbox.components.firebase', 'ticketbox.components.utils', 'ngRoute'])
 
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/categories', {
@@ -9,10 +9,10 @@ angular.module('ticketbox.admin.categories', ['ticketbox.firebase.utils', 'ticke
         });
     }])
 
-    .controller('CategoriesCtrl', function ($scope, $location, array, error) {
+    .controller('CategoriesCtrl', function ($scope, $location, fbarray, error) {
         $scope.error = null;
 
-        $scope.categories = array.byPath('/categories');
+        $scope.categories = fbarray.byPath('/categories');
 
         $scope.newCategoryName = '';
 

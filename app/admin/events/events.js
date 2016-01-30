@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('ticketbox.admin.events', ['ticketbox.firebase.utils', 'ticketbox.controller.utils', 'ngRoute'])
+angular.module('ticketbox.admin.events', ['ticketbox.components.firebase', 'ticketbox.components.utils', 'ngRoute'])
 
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/events', {
@@ -9,10 +9,10 @@ angular.module('ticketbox.admin.events', ['ticketbox.firebase.utils', 'ticketbox
         });
     }])
 
-    .controller('EventsCtrl', function ($scope, $location, array, error) {
+    .controller('EventsCtrl', function ($scope, $location, fbarray, error) {
         $scope.error = null;
 
-        $scope.events = array.byPath('/events');
+        $scope.events = fbarray.byPath('/events');
 
         $scope.newEventName = '';
 

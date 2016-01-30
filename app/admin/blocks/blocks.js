@@ -18,18 +18,12 @@ angular.module('ticketbox.admin.blocks', ['ticketbox.firebase.utils', 'ticketbox
         $scope.newSeatplan = '';
 
         $scope.add = function(name, seatplan) {
-            $scope.blocks.$add({ 'name': name, 'seatplan': seatplan }).then(
-                function () {
-                },
-                function (err) {
-                    $scope.error = error(err);
-                }
-            ).finally(
-                function() {
+            $scope.blocks.$add({ 'name': name, 'seatplan': seatplan })
+                .then(function () { }, error)
+                .finally(function() {
                     $scope.newBlockName = '';
                     $scope.newSeatplan = '';
-                }
-            );
+                });
         };
 
         $scope.remove = function(block) {

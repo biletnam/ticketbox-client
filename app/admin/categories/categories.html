@@ -9,12 +9,12 @@
                 </tr>
                 <tr>
                     <td><input type="number" ng-model="newCategoryPrice" placeholder="Price" class="narrow"></td>
-                    <td><input type="number" ng-model="newCategoryReducedPrice" placeholder="Red. Pr." class="narrow">
-                    </td>
+                    <td><input type="number" ng-model="newCategoryReducedPrice" placeholder="Red. Pr." class="narrow"></td>
                     <td class="buttons"><input type="submit" class="button button-primary" value="Save"></td>
                 </tr>
                 <tr ng-repeat="category in categories">
-                    <td colspan="2">{{category.name}}</td>
+                    <td>{{category.name}}</td>
+                    <td>{{category.price}}/{{category.reducedPrice}}</td>
                     <td class="buttons"><a ng-click="remove(category)" class="button">Remove</a></td>
                 </tr>
             </table>

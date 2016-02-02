@@ -10,8 +10,6 @@ angular.module('ticketbox.admin.events', ['ticketbox.components.firebase', 'tick
     }])
 
     .controller('EventsCtrl', function ($scope, $location, fbarray, error) {
-        $scope.error = null;
-
         $scope.events = fbarray.byPath('/events');
 
         $scope.newEventName = '';
@@ -21,8 +19,7 @@ angular.module('ticketbox.admin.events', ['ticketbox.components.firebase', 'tick
                 .then(function () { }, error)
                 .finally(function() {
                     $scope.newEventName = '';
-                }
-            );
+                });
         };
 
         $scope.remove = function(event) {

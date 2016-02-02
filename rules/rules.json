@@ -8,6 +8,21 @@
         "name": {
           ".validate": "newData.isString() && newData.val().length > 0"
         },
+        "blocks": {
+          ".read": true,
+          ".write": "auth !== null && auth.provider === 'password' && root.child('users').child(auth.uid).child('kind').val() === 'admin'",
+          "$eventBlockId": {
+            "blockId": {
+              ".validate": "newData.isString() && newData.val().length > 0 && root.child('blocks').child(newData.parent().child('blockId').val()).exists()"
+            },
+            "categoryId": {
+              ".validate": "newData.isString() && newData.val().length > 0 && root.child('categories').child(newData.parent().child('categoryId').val()).exists()"
+            },
+            "$other": {
+              ".validate": false
+            }
+          }
+        },
         "$other": {
           ".validate": false
         }

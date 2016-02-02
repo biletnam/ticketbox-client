@@ -5,6 +5,7 @@ angular.module('ticketbox.admin', [
         'ticketbox.admin.login',
         'ticketbox.admin.logout',
         'ticketbox.admin.events',
+        'ticketbox.admin.event',
         'ticketbox.admin.blocks',
         'ticketbox.admin.categories',
         'ticketbox.admin.seats'])

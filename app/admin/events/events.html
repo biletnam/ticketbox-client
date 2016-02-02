@@ -5,11 +5,14 @@
             <table>
                 <tr>
                     <td><input type="text" ng-model="newEventName" placeholder="New Event Name"></td>
-                    <td><input type="submit" class="button button-primary" value="Save"></td>
+                    <td class="buttons"><input type="submit" class="button button-primary" value="Save"></td>
                 </tr>
                 <tr ng-repeat="event in events">
                     <td>{{event.name}}</td>
-                    <td><a ng-click="remove(event)" class="button">Remove</a></td>
+                    <td class="buttons">
+                        <a href="#/events/{{event.$id}}" class="button">Edit</a>
+                        <a ng-click="remove(event)" class="button">Remove</a>
+                    </td>
                 </tr>
             </table>
         </form>

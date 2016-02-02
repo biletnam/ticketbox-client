@@ -106,6 +106,26 @@
         { "auth": "admin", "data": { "name": "" } }
       ]
     },
+    "events/e1/blocks": {
+      "canRead": [ "anonymous1", "anonymous2", "admin", "boxoffice" ],
+      "canWrite": [ {"auth": "admin", "data": { "blockId": "b1", "categoryId": "c1" } } ],
+      "cannotWrite": [
+        { "auth": "boxoffice", "data": { "blockId": "b1", "categoryId": "c1" } },
+        { "auth": "anonymous1", "data": { "blockId": "b1", "categoryId": "c1" } },
+        { "auth": "anonymous2", "data": { "blockId": "b1", "categoryId": "c1" } }
+      ]
+    },
+    "events/e1/blocks/eb1": {
+      "canRead": [ "anonymous1", "anonymous2", "admin", "boxoffice" ],
+      "canWrite": [ {"auth": "admin", "data": { "blockId": "b1", "categoryId": "c1" } } ],
+      "cannotWrite": [
+        { "auth": "boxoffice", "data": { "blockId": "b1", "categoryId": "c1" } },
+        { "auth": "anonymous1", "data": { "blockId": "b1", "categoryId": "c1" } },
+        { "auth": "anonymous2", "data": { "blockId": "b1", "categoryId": "c1" } },
+        { "auth": "admin", "data": { "name": "" } },
+        { "auth": "admin", "data": { "blockId": "b7", "categoryId": "c1" } }
+      ]
+    },
     "blocks": {
       "canRead": [ "anonymous1", "anonymous2", "admin", "boxoffice" ],
       "canWrite": [

@@ -9,6 +9,8 @@ module.exports = function (config) {
             'app/bower_components/angular-mocks/angular-mocks.js',
             'app/bower_components/mockfirebase/browser/mockfirebase.js',
             'app/bower_components/angularfire/dist/angularfire.js',
+            'app/bower_components/underscore/underscore.js',
+            'app/bower_components/ocanvas/index.js',
             'app/config_sample.js',
             'app/components/*/*.js',
             'app/admin/app.js',

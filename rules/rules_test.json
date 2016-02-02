@@ -35,6 +35,14 @@
         "name": "Seat Three",
         "blockId": "b1",
         "categoryId": "c1",
+        "x0": 0,
+        "y0": 1,
+        "x1": 2,
+        "y1": 3,
+        "x2": 4,
+        "y2": 5,
+        "x3": 6,
+        "y3": 7,
         "reservation": {
           "timestamp": 1234567890,
           "uid": "uid2",
@@ -144,7 +152,10 @@
     },
     "seats": {
       "canRead": [ "anonymous1", "anonymous2", "admin", "boxoffice" ],
-      "canWrite": [ {"auth": "admin", "data": { "blockId": "b1", "name": "Seat Name" } } ],
+      "canWrite": [
+        {"auth": "admin", "data": { "blockId": "b1", "name": "Seat Name" } },
+        {"auth": "admin", "data": { "blockId": "b1", "name": "Seat Name", "x0": 0, "y0": 1, "x1": 2, "y1": 3, "x2": 4, "y2": 5, "x3": 6, "y3": 7 } }
+      ],
       "cannotWrite": [
         { "auth": "boxoffice", "data": { "blockId": "b1", "name": "Seat Name" } },
         { "auth": "anonymous1", "data": { "blockId": "b1", "name": "Seat Name" } },
@@ -153,13 +164,17 @@
     },
     "seats/s1": {
       "canRead": [ "anonymous1", "anonymous2", "admin", "boxoffice" ],
-      "canWrite": [ {"auth": "admin", "data": { "blockId": "b1", "name": "Seat Name" } } ],
+      "canWrite": [
+        {"auth": "admin", "data": { "blockId": "b1", "name": "Seat Name" } },
+        {"auth": "admin", "data": { "blockId": "b1", "name": "Seat Name", "x0": 0, "y0": 1, "x1": 2, "y1": 3, "x2": 4, "y2": 5, "x3": 6, "y3": 7 } }
+      ],
       "cannotWrite": [
         { "auth": "boxoffice", "data": { "blockId": "b1", "name": "Seat Name" } },
         { "auth": "anonymous1", "data": { "blockId": "b1", "name": "Seat Name" } },
         { "auth": "anonymous2", "data": { "blockId": "b1", "name": "Seat Name" } },
         { "auth": "admin", "data": { "blockId": "b1", "name": "" } },
-        { "auth": "admin", "data": { "blockId": "doesNotExist", "name": "Seat Name"} }
+        { "auth": "admin", "data": { "blockId": "doesNotExist", "name": "Seat Name"} },
+        { "auth": "admin", "data": { "blockId": "b1", "name": "Seat Name", "x0": "a", "y0": 1, "x1": 2, "y1": 3, "x2": 4, "y2": 5, "x3": 6, "y3": 7 } }
       ]
     },
     "seats/s1/reservation/timestamp": {

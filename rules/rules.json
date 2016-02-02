@@ -51,18 +51,29 @@
         "name": {
           ".validate": "newData.isString() && newData.val().length > 0"
         },
-        "coordinates": {
-          "$coordinate": {
-            "x": {
-              ".validate": "newData.isNumber()"
-            },
-            "y": {
-              ".validate": "newData.isNumber()"
-            },
-            "$other": {
-              ".validate": false
-            }
-          }
+        "x0": {
+          ".validate": "newData.isNumber()"
+        },
+        "y0": {
+          ".validate": "newData.isNumber()"
+        },
+        "x1": {
+          ".validate": "newData.isNumber()"
+        },
+        "y1": {
+          ".validate": "newData.isNumber()"
+        },
+        "x2": {
+          ".validate": "newData.isNumber()"
+        },
+        "y2": {
+          ".validate": "newData.isNumber()"
+        },
+        "x3": {
+          ".validate": "newData.isNumber()"
+        },
+        "y3": {
+          ".validate": "newData.isNumber()"
         },
         "reservation": {
           ".read": true,

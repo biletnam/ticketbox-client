@@ -1,7 +1,7 @@
 'use strict';
 
 describe('ticketbox.admin.seats', function () {
-    var $firebaseArray, $firebaseObject, $timeout, scope, ref, fbarray, fbobject, arrayModification, blockId;
+    var $firebaseArray, $firebaseObject, $timeout, scope, ref, fbarray, fbobject, arrayModification, blockId, geometry;
 
     var FIXTURE_DATA = {
         'id1': {
@@ -15,7 +15,7 @@ describe('ticketbox.admin.seats', function () {
     beforeEach(function () {
         module('ticketbox.admin.seats');
 
-        inject(function (_$firebaseArray_, _$firebaseObject_, _$timeout_, _$rootScope_, $controller) {
+        inject(function (_$firebaseArray_, _$firebaseObject_, _$timeout_, _$rootScope_, $controller, _geometry_) {
             $firebaseArray = _$firebaseArray_;
             $firebaseObject = _$firebaseObject_;
             $timeout = _$timeout_;
@@ -39,12 +39,13 @@ describe('ticketbox.admin.seats', function () {
                 }
             };
 
-            blockId = 'b1';
-
             $controller('SeatsCtrl', {$scope: scope, fbarray: fbarray, fbobject: fbobject, arrayModification: arrayModification});
             scope.$digest();
 
+            blockId = 'b1';
             scope.filterSeats(blockId);
+
+            geometry = _geometry_;
         });
     });
 
@@ -58,7 +59,7 @@ describe('ticketbox.admin.seats', function () {
 
         describe('$scope.add()', function() {
             it('should add 5 items with name new seat', function () {
-                scope.add(blockId, 'new seat', 1, 3);
+                scope.add(blockId, 'new seat', 1, 3, []);
                 _flush();
                 var numberOfSeatsWithNameNewSeat = 0;
                 for (var key in scope.seats) {
@@ -71,7 +72,7 @@ describe('ticketbox.admin.seats', function () {
 
             it('should add 5 items with number in name pattern', function () {
                 var initialDataLength = scope.seats.length;
-                scope.add(blockId, 'new seat {i}', 1, 3);
+                scope.add(blockId, 'new seat {i}', 1, 3, []);
                 _flush();
                 var names = [];
                 for (var key in scope.seats) {
@@ -86,21 +87,21 @@ describe('ticketbox.admin.seats', function () {
 
             it('should empty the namePrefix variable', function () {
                 scope.namePattern = 'name pattern';
-                scope.add(blockId, 'new seat', 1, 1);
+                scope.add(blockId, 'new seat', 1, 1, []);
                 _flush();
                 expect(scope.namePattern).toEqual('');
             });
 
             it('should reset the startSeatNumber variable', function () {
                 scope.startSeatNumber = 100;
-                scope.add(blockId, 'new seat', 1, 1);
+                scope.add(blockId, 'new seat', 1, 1, []);
                 _flush();
                 expect(scope.startSeatNumber).toEqual(1);
             });
 
             it('should reset the endSeatNumber variable', function () {
                 scope.endSeatNumber = 150;
-                scope.add(blockId, 'new seat', 1, 1);
+                scope.add(blockId, 'new seat', 1, 1, []);
                 _flush();
                 expect(scope.endSeatNumber).toEqual(1);
             });
@@ -121,6 +122,43 @@ describe('ticketbox.admin.seats', function () {
                 var removeAllSpy = spyOn(arrayModification, 'removeAll').and.returnValue({ then: function() {}});
                 scope.removeAll(scope.seats);
                 expect(removeAllSpy).toHaveBeenCalledWith(scope.seats);
+            });
+        });
+    });
+
+    describe('geometry', function () {
+        describe('calculateSeatCoordinates', function() {
+            it('should return given coordinates when one seat is given', function() {
+                var coordinates = [
+                    { x: 0, y: 1 },
+                    { x: 1, y: 1 },
+                    { x: 1, y: 0 },
+                    { x: 0, y: 0 }
+                ];
+                var seatCoordinates = geometry.calculateSeatCoordinates(coordinates, 1, 0);
+                expect(seatCoordinates).toEqual({ x0: 0, y0: 1, x1: 0, y1: 0, x2: 1, y2: 0, x3: 1, y3: 1 });
+            });
+
+            it('should return coordinates of first seat', function() {
+                var coordinates = [
+                    { x: 0, y: 1 },
+                    { x: 2, y: 1 },
+                    { x: 2, y: 0 },
+                    { x: 0, y: 0 }
+                ];
+                var seatCoordinates = geometry.calculateSeatCoordinates(coordinates, 2, 0);
+                expect(seatCoordinates).toEqual({ x0: 0, y0: 1, x1: 0, y1: 0, x2: 1, y2: 0, x3: 1, y3: 1 });
+            });
+
+            it('should return coordinates of second seat', function() {
+                var coordinates = [
+                    { x: 0, y: 1 },
+                    { x: 2, y: 1 },
+                    { x: 2, y: 0 },
+                    { x: 0, y: 0 }
+                ];
+                var seatCoordinates = geometry.calculateSeatCoordinates(coordinates, 2, 1);
+                expect(seatCoordinates).toEqual({ x0: 1, y0: 1, x1: 1, y1: 0, x2: 2, y2: 0, x3: 2, y3: 1 });
             });
         });
     });

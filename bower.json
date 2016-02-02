@@ -12,6 +12,8 @@
     "firebase": "2.2.2",
     "angularfire": "~1.0.0",
     "mockfirebase": "~0.10.3",
-    "skeleton-css": "^2.0.4"
+    "skeleton-css": "^2.0.4",
+    "ocanvas": "http://cdnjs.cloudflare.com/ajax/libs/ocanvas/2.8.1/ocanvas.js",
+    "underscore": "^1.8.3"
   }
 }

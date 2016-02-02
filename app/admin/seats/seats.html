@@ -1,38 +1,44 @@
 <div class="row">
-    <div class="twelve columns">&nbsp;</div>
-    <h1>Seats</h1>
-
-    <table>
-        <tr>
-            <td>Block:</td>
-            <td>
-                <select ng-model="blockId" ng-change="filterSeats(blockId)" required>
-                    <option ng-repeat="block in blocks" value="{{block.$id}}">{{block.name}}</option>
-                </select>
-            </td>
-            <td>
-                <button ng-click="removeAll()" ng-show="seats.length > 0">Remove all</button>
-            </td>
-        </tr>
-    </table>
-    <div ng-show="block != null && block.seatplan != ''">
-        <img ng-src="{{block.seatplan}}">
-    </div>
-    <form ng-show="block != null && block.seatplan == ''" ng-submit="add(blockId, namePattern, startSeatNumber, endSeatNumber)">
+    <div class="twelve columns">
+        <h1>Seats</h1>
         <table>
-            <tr ng-repeat="seat in seats">
-                <td colspan="2">{{seat.name}}</td>
-                <td><a ng-click="remove(seat)" class="button">Remove</a></td>
-            </tr>
             <tr>
-                <td colspan="2"><input type="text" ng-model="namePattern" placeholder="Name Pattern"></td>
-                <td>* use {i} where you want to put the seat number</td>
-            </tr>
-            <tr>
-                <td><input type="number" ng-model="startSeatNumber" min="0"></td>
-                <td><input type="number" ng-model="endSeatNumber" min="startSeatNumber"></td>
-                <td><input type="submit" class="button button-primary" value="Save"></td>
+                <td>Block:</td>
+                <td>
+                    <select ng-model="blockId" ng-change="filterSeats(blockId)" required>
+                        <option ng-repeat="block in blocks" value="{{block.$id}}">{{block.name}}</option>
+                    </select>
+                </td>
+                <td>
+                    <button ng-click="removeAll()" ng-show="seats.length > 0">Remove all</button>
+                </td>
             </tr>
         </table>
-    </form>
+    </div>
+</div>
+<div class="row">
+    <div class="six columns">
+        <form ng-show="block != null" ng-submit="add(blockId, namePattern, startSeatNumber, endSeatNumber, coordinates)">
+            <table>
+                <tr>
+                    <td colspan="2"><input type="text" ng-model="namePattern" placeholder="Name Pattern"></td>
+                    <td>* use {i} where you want to put the seat number</td>
+                </tr>
+                <tr>
+                    <td><input type="number" ng-model="startSeatNumber" min="1" class="narrow"></td>
+                    <td><input type="number" ng-model="endSeatNumber" min="1" class="narrow"></td>
+                    <td class="buttons"><input type="submit" class="button button-primary" value="Save"></td>
+                </tr>
+                <tr ng-repeat="seat in seats">
+                    <td colspan="2">{{seat.name}}</td>
+                    <td class="buttons"><a ng-click="remove(seat)" class="button">Remove</a></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div class="six columns">
+        <div ng-show="block != null && block.seatplan != ''">
+            <ng-seat-definition ng-if="block != null && block.seatplan != ''" src="block.seatplan" seats="seats" coordinates="coordinates">
+        </div>
+    </div>
 </div>

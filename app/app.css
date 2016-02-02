@@ -1,3 +1,11 @@
 .table-with-images td {
     vertical-align: top;
 }
+
+td.buttons {
+    text-align:right;
+}
+
+input.narrow {
+    width:100px;
+}

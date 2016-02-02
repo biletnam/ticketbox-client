@@ -1,16 +1,23 @@
 <div class="row">
-    <div class="twelve columns">&nbsp;</div>
-    <h1>Categories</h1>
-    <form ng-submit="add(newCategoryName)">
-        <table>
-            <tr ng-repeat="category in categories">
-                <td>{{category.name}}</td>
-                <td><a ng-click="remove(category)" class="button">Remove</a></td>
-            </tr>
-            <tr>
-                <td><input type="text" ng-model="newCategoryName" placeholder="Name"></td>
-                <td><input type="submit" class="button button-primary" value="Save"></td>
-            </tr>
-        </table>
-    </form>
+    <div class="twelve columns">
+        <h1>Categories</h1>
+        <form ng-submit="add(newCategoryName, newCategoryPrice, newCategoryReducedPrice)">
+            <table>
+                <tr>
+                    <td colspan="2"><input type="text" ng-model="newCategoryName" placeholder="Name"></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><input type="number" ng-model="newCategoryPrice" placeholder="Price" class="narrow"></td>
+                    <td><input type="number" ng-model="newCategoryReducedPrice" placeholder="Red. Pr." class="narrow">
+                    </td>
+                    <td class="buttons"><input type="submit" class="button button-primary" value="Save"></td>
+                </tr>
+                <tr ng-repeat="category in categories">
+                    <td colspan="2">{{category.name}}</td>
+                    <td class="buttons"><a ng-click="remove(category)" class="button">Remove</a></td>
+                </tr>
+            </table>
+        </form>
+    </div>
 </div>

@@ -15,12 +15,16 @@ angular.module('ticketbox.admin.categories', ['ticketbox.components.firebase', '
         $scope.categories = fbarray.byPath('/categories');
 
         $scope.newCategoryName = '';
+        $scope.newCategoryPrice = '';
+        $scope.newCategoryReducedPrice = '';
 
-        $scope.add = function(name) {
-            $scope.categories.$add({ 'name': name })
+        $scope.add = function(name, price, reducedPrice) {
+            $scope.categories.$add({ 'name': name, 'price': price, 'reducedPrice': reducedPrice })
                 .then(function () { }, error)
                 .finally(function() {
                     $scope.newCategoryName = '';
+                    $scope.newCategoryPrice = '';
+                    $scope.newCategoryReducedPrice = '';
                 }
             );
         };

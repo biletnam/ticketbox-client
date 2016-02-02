@@ -133,7 +133,7 @@
     },
     "categories": {
       "canRead": [ "anonymous1", "anonymous2", "admin", "boxoffice" ],
-      "canWrite": [ {"auth": "admin", "data": { "name": "Category Name" } } ],
+      "canWrite": [ {"auth": "admin", "data": { "name": "Category Name", "price": 1, "reducedPrice": 2 } } ],
       "cannotWrite": [
         { "auth": "boxoffice", "data": { "name": "Category Name" } },
         { "auth": "anonymous1", "data": { "name": "Category Name" } },
@@ -142,12 +142,13 @@
     },
     "categories/c1": {
       "canRead": [ "anonymous1", "anonymous2", "admin", "boxoffice" ],
-      "canWrite": [ {"auth": "admin", "data": { "name": "Category Name" } } ],
+      "canWrite": [ {"auth": "admin", "data": { "name": "Category Name", "price": 1, "reducedPrice": 2 } } ],
       "cannotWrite": [
         { "auth": "boxoffice", "data": { "name": "Category Name" } },
         { "auth": "anonymous1", "data": { "name": "Category Name" } },
         { "auth": "anonymous2", "data": { "name": "Category Name" } },
-        { "auth": "admin", "data": { "name": "" } }
+        { "auth": "admin", "data": { "name": "" } },
+        { "auth": "admin", "data": { "name": "Category Name", "price": "a", "reducedPrice": 2 } }
       ]
     },
     "seats": {

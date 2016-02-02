@@ -42,7 +42,7 @@ describe('ticketbox.admin.categories', function () {
         describe('$scope.add()', function() {
             it('should add an item', function () {
                 var initialDataLength = scope.categories.length;
-                scope.add('new category name');
+                scope.add('new category name', 1, 2);
                 _flush();
                 var eventualDataLength = scope.categories.length;
                 expect(eventualDataLength).toEqual(initialDataLength + 1);
@@ -50,9 +50,23 @@ describe('ticketbox.admin.categories', function () {
 
             it('should empty the newCategoryName variable', function () {
                 scope.newCategoryName = 'newCategoryNameValue';
-                scope.add('new category name');
+                scope.add('new category name', 1, 2);
                 _flush();
                 expect(scope.newCategoryName).toEqual('');
+            });
+
+            it('should empty the newCategoryPrice variable', function () {
+                scope.newCategoryName = 'newCategoryPriceValue';
+                scope.add('new category name', 1, 2);
+                _flush();
+                expect(scope.newCategoryPrice).toEqual('');
+            });
+
+            it('should empty the newCategoryReducedPrice variable', function () {
+                scope.newCategoryName = 'newCategoryReducedPriceValue';
+                scope.add('new category name', 1, 2);
+                _flush();
+                expect(scope.newCategoryReducedPrice).toEqual('');
             });
         });
 

@@ -35,6 +35,12 @@
         "name": {
           ".validate": "newData.isString() && newData.val().length > 0"
         },
+        "price": {
+          ".validate": "newData.isNumber()"
+        },
+        "reducedPrice": {
+          ".validate": "newData.isNumber()"
+        },
         "$other": {
           ".validate": false
         }

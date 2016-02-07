@@ -14,8 +14,6 @@ angular.module('ticketbox.admin.seats', [
     }])
 
     .controller('SeatsCtrl', function ($scope, $location, $q, fbarray, fbobject, arrayModification, geometry, error) {
-        $scope.error = null;
-
         $scope.blocks = fbarray.byPath('/blocks');
         $scope.block = null;
         $scope.seats = [];

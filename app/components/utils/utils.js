@@ -24,4 +24,15 @@ angular.module('ticketbox.components.utils', [])
             $rootScope.error = angular.isObject(err) && err.code ? err.code : err + '';
             $timeout(function() { $rootScope.error = undefined; }, 2000);
         }
+    })
+
+    .filter('nameFilter', function() {
+        return function(id, dictionary) {
+            var item = dictionary.$getRecord(id);
+            if (item !== null) {
+                return item.name;
+            } else {
+                return '';
+            }
+        }
     });

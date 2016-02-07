@@ -1,0 +1,18 @@
+<div class="row">
+    <div class="twelve columns">
+        <h1>Seats</h1>
+        <div ng-show="block != null && block.seatplan != ''">
+            <ng-seat-selection ng-if="block != null && block.seatplan != ''" src="block.seatplan" seats="seats" handlers="handlers">
+        </div>
+        <div ng-show="block != null && block.seatplan == ''">
+            <form ng-submit="reserve(numberOfSeats)">
+                <table>
+                    <tr>
+                        <td><input type="number" ng-model="numberOfSeats" placeholder="Number of seats" min="1" max="20"></td>
+                        <td class="buttons"><input type="submit" class="button button-primary" value="Reserve"></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>

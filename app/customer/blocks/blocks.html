@@ -1,0 +1,12 @@
+<div class="row">
+    <div class="twelve columns">
+        <h1>Blocks</h1>
+        <table>
+            <tr ng-repeat="eventBlock in eventBlocks">
+                <td>
+                    <a href="#/seats/{{event.$id}}/{{eventBlock.categoryId}}/{{eventBlock.blockId}}">{{eventBlock.blockId | nameFilter:blocks}} - {{eventBlock.categoryId | nameFilter:categories}}</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

@@ -28,15 +28,4 @@ angular.module('ticketbox.admin.event', ['ticketbox.components.firebase', 'ticke
         $scope.removeBlock = function(eventBlock) {
             $scope.eventBlocks.$remove(eventBlock).then(function () { }, error);
         };
-    })
-
-    .filter('nameFilter', function() {
-        return function(id, dictionary) {
-            var item = dictionary.$getRecord(id);
-            if (item !== null) {
-                return item.name;
-            } else {
-                return '';
-            }
-        }
     });

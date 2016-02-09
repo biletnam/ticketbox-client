@@ -14,7 +14,12 @@ angular.module('ticketbox.customer', [
     })
 
     .run(function($rootScope, $location, fbauth, error) {
-        fbauth.$authAnonymously().then(function(authData) {
+        var authData = fbauth.$getAuth();
+        if (authData) {
             $rootScope.authData = authData;
-        }, error);
+        } else {
+            fbauth.$authAnonymously().then(function(authData) {
+                $rootScope.authData = authData;
+            }, error);
+        }
     });

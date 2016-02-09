@@ -23,6 +23,25 @@
             }
           }
         },
+        "reservations": {
+          ".read": true,
+          "$seatId": {
+            ".write": true,
+            ".validate": "!data.exists() || data.child('uid').val() === auth.uid",
+            "timestamp": {
+              ".validate": "newData.isNumber()"
+            },
+            "uid": {
+              ".validate": "newData.isString() && newData.val() === auth.uid"
+            },
+            "kind": {
+              ".validate": "newData.isString() && (newData.val() === 'lock' || newData.val() === 'reservation')"
+            },
+            "$other": {
+              ".validate": false
+            }
+          }
+        },
         "$other": {
           ".validate": false
         }
@@ -95,62 +114,6 @@
         },
         "y3": {
           ".validate": "newData.isNumber()"
-        },
-        "reservation": {
-          ".read": true,
-          ".write": "auth !== null && auth.provider === 'anonymous' && (!data.exists() || data.child('uid').val() === auth.uid)",
-          "timestamp": {
-            ".validate": "newData.isNumber()"
-          },
-          "uid": {
-            ".validate": "newData.isString() && newData.val() === auth.uid"
-          },
-          "kind": {
-            ".validate": "newData.isString() && (newData.val() === 'lock' || newData.val() === 'reservation')"
-          },
-          "$other": {
-            ".validate": false
-          }
-        },
-        "$other": {
-          ".validate": false
-        }
-      }
-    },
-    "orders": {
-      ".write": "auth !== null && auth.provider === 'anonymous' && newData.child('uid').val() === auth.uid",
-      "$orderId": {
-        ".read": "auth !== null && auth.provider === 'anonymous' && data.child('uid').val() === auth.uid",
-        ".write": "auth !== null && auth.provider === 'anonymous' && data.child('uid').val() === auth.uid",
-        "uid": {
-          ".validate": "newData.isString() && newData.val() === auth.uid"
-        },
-        "firstname": {
-          ".validate": "newData.isString() && newData.val().length > 0"
-        },
-        "lastname": {
-          ".validate": "newData.isString() && newData.val().length > 0"
-        },
-        "email": {
-          ".validate": "newData.isString() && newData.val().matches(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}$/i)"
-        },
-        "seats": {
-          ".read": "auth !== null && auth.provider === 'anonymous' && data.parent().child('uid').val() === auth.uid",
-          "$orderSeatId": {
-            ".write": "auth !== null && auth.provider === 'anonymous' && data.parent().parent().child('uid').val() === auth.uid && !data.exists()",
-            "eventId": {
-              ".validate": "root.child('events').child(newData.val()).exists()"
-            },
-            "seatId": {
-              ".validate": "auth !== null && auth.provider === 'anonymous' && root.child('events').child(newData.parent().child('eventId').val()).exists() && root.child('seats').child(newData.val()).child('reservation').exists() && root.child('seats').child(newData.val()).child('reservation').child('uid').val() === auth.uid"
-            },
-            "priceKind": {
-              ".validate": "newData.isString() && (newData.val() === 'normal' || newData.val() === 'reduced')"
-            },
-            "$other": {
-              ".validate": false
-            }
-          }
         },
         "$other": {
           ".validate": false

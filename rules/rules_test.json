@@ -2,7 +2,25 @@
   "root": {
     "events": {
       "e1": {
-        "name": "Event 1"
+        "name": "Event 1",
+        "blocks": {
+          "eb1": {
+            "blockId": "b1",
+            "categoryId": "c1"
+          }
+        },
+        "reservations": {
+          "s1": {
+            "timestamp": 1234567890,
+            "uid": "anonymous1",
+            "kind": "lock"
+          },
+          "s2": {
+            "timestamp": 1234567890,
+            "uid": "anonymous2",
+            "kind": "lock"
+          }
+        }
       }
     },
     "blocks": {
@@ -19,12 +37,7 @@
       "s1": {
         "name": "Seat One",
         "blockId": "b1",
-        "categoryId": "c1",
-        "reservation": {
-          "timestamp": 1234567890,
-          "uid": "uid1",
-          "kind": "lock"
-        }
+        "categoryId": "c1"
       },
       "s2": {
         "name": "Seat Two",
@@ -42,27 +55,7 @@
         "x2": 4,
         "y2": 5,
         "x3": 6,
-        "y3": 7,
-        "reservation": {
-          "timestamp": 1234567890,
-          "uid": "uid2",
-          "kind": "reservation"
-        }
-      }
-    },
-    "orders": {
-      "o1": {
-        "uid": "uid2",
-        "firstname": "John",
-        "lastname": "Doe",
-        "email": "john.doe@example.com",
-        "seats": {
-          "os1": {
-            "eventId": "e1",
-            "seatId": "s3",
-            "priceKind": "reduced"
-          }
-        }
+        "y3": 7
       }
     },
     "users": {
@@ -80,8 +73,8 @@
   },
 
   "users": {
-    "anonymous1": { "uid": "uid1", "provider": "anonymous" },
-    "anonymous2": { "uid": "uid2", "provider": "anonymous" },
+    "anonymous1": { "uid": "anonymous1", "provider": "anonymous" },
+    "anonymous2": { "uid": "anonymous2", "provider": "anonymous" },
     "admin": { "uid": "admin", "provider": "password" },
     "boxoffice": { "uid": "boxoffice", "provider": "password" }
   },
@@ -124,6 +117,18 @@
         { "auth": "anonymous2", "data": { "blockId": "b1", "categoryId": "c1" } },
         { "auth": "admin", "data": { "name": "" } },
         { "auth": "admin", "data": { "blockId": "b7", "categoryId": "c1" } }
+      ]
+    },
+    "events/e1/reservations/s1": {
+      "canRead": [ "anonymous1", "anonymous2" ],
+      "canWrite": [ { "auth": "anonymous1", "data": 123456 } ],
+      "cannotWrite": [ { "auth": "anonymous2", "data": 123456 } ]
+    },
+    "events/e1/reservations/s3": {
+      "canRead": [ "anonymous1", "anonymous2" ],
+      "canWrite": [
+        { "auth": "anonymous1", "data": { "uid": "anonymous1", "timestamp": 123456, "kind": "lock" } },
+        { "auth": "anonymous2", "data": { "uid": "anonymous2", "timestamp": 123456, "kind": "lock" } }
       ]
     },
     "blocks": {
@@ -196,43 +201,6 @@
         { "auth": "admin", "data": { "blockId": "b1", "name": "" } },
         { "auth": "admin", "data": { "blockId": "doesNotExist", "name": "Seat Name"} },
         { "auth": "admin", "data": { "blockId": "b1", "name": "Seat Name", "x0": "a", "y0": 1, "x1": 2, "y1": 3, "x2": 4, "y2": 5, "x3": 6, "y3": 7 } }
-      ]
-    },
-    "seats/s1/reservation/timestamp": {
-      "canRead": [ "anonymous1", "anonymous2" ],
-      "canWrite": [ { "auth": "anonymous1", "data": 123456 } ],
-      "cannotWrite": [ { "auth": "anonymous2", "data": 123456 } ]
-    },
-    "seats/s2/reservation": {
-      "canRead": [ "anonymous1", "anonymous2" ],
-      "canWrite": [
-        { "auth": "anonymous1", "data": { "timestamp": 123456, "uid": "uid1", "kind": "lock" } },
-        { "auth": "anonymous2", "data": { "timestamp": 123456, "uid": "uid2", "kind": "lock" } } ]
-    },
-    "orders": {
-      "cannotRead": [ "anonymous1", "anonymous2" ],
-      "canWrite": [ { "auth": "anonymous2", "data": { "uid": "uid2", "firstname": "John", "lastname": "Doe", "email": "john.doe@example.com" } }  ],
-      "cannotWrite": [
-        { "auth": "anonymous1", "data": { "uid": "uid2", "firstname": "John", "lastname": "Doe", "email": "john.doe@example.com" } }
-      ]
-    },
-    "orders/o1": {
-      "canRead": [ "anonymous2" ],
-      "cannotRead": [ "anonymous1" ],
-      "canWrite": [ { "auth": "anonymous2", "data": { "uid": "uid2", "firstname": "John", "lastname": "Doe", "email": "john.doe@example.com" } } ],
-      "cannotWrite": [
-        { "auth": "anonymous1", "data": { "firstname": "John", "lastname": "Doe", "email": "john.doe@example.com" } },
-        { "auth": "anonymous2", "data": { "firstname": "John", "lastname": "Doe", "email": "This is not a mail address" } }
-      ]
-    },
-    "orders/o1/seats": {
-      "canRead": [ "anonymous2" ],
-      "cannotRead": [ "anonymous1" ],
-      "canWrite": [ { "auth": "anonymous2", "data": { "os1": { "eventId": "e1", "seatId": "s3", "priceKind": "reduced" } } } ],
-      "cannotWrite": [
-        { "auth": "anonymous2", "data": { "os1": { "eventId": "e1", "seatId": "s1", "priceKind": "reduced" } } },
-        { "auth": "anonymous2", "data": { "os1": { "eventId": "e1", "seatId": "s2", "priceKind": "normal" } } },
-        { "auth": "anonymous2", "data": { "os1": { "eventId": "e1", "seatId": "s3", "priceKind": "not in allowed values" } } }
       ]
     },
     "users/admin": {

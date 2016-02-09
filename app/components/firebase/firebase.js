@@ -34,6 +34,23 @@ angular.module('ticketbox.components.firebase', ['firebase', 'ticketbox.config']
         }
     })
 
+    .service('reservation', function(fbref, $rootScope) {
+        return {
+            reserve: function(eventId, seatId) {
+                var ref = fbref('/events/' + eventId + '/reservations/' + seatId);
+                ref.set({
+                    'uid': $rootScope.authData.uid,
+                    'kind': 'lock',
+                    'timestamp': Firebase.ServerValue.TIMESTAMP
+                });
+            },
+            release: function(eventId, seatId) {
+                var ref = fbref('/events/' + eventId + '/reservations/' + seatId);
+                ref.remove();
+            }
+        }
+    })
+
     .factory('fbauth', function($firebaseAuth, fbref) {
         return $firebaseAuth(fbref());
     })

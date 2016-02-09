@@ -1,7 +1,19 @@
 'use strict';
 
 describe('ticketbox.customer.seats', function () {
-    var $firebaseArray, $firebaseObject, $timeout, scope, ref, fbarray, fbobject, byIdSpy, byPathSpy, byChildValueSpy;
+    var $firebaseArray,
+        $firebaseObject,
+        $timeout,
+        scope,
+        ref,
+        fbarray,
+        fbobject,
+        reservation,
+        byPathSpy,
+        byChildValueSpy,
+        byIdSpy,
+        reserveSpy,
+        releaseSpy;
     var FIXTURE_DATA = {
         'id1': {
             'name': 'This is the first object'
@@ -14,7 +26,7 @@ describe('ticketbox.customer.seats', function () {
     beforeEach(function () {
         module('ticketbox.customer.seats');
 
-        inject(function (_$firebaseArray_, _$firebaseObject_, _$timeout_, _$rootScope_, _fbarray_, _fbobject_, $controller) {
+        inject(function (_$firebaseArray_, _$firebaseObject_, _$timeout_, _$rootScope_, _fbarray_, _fbobject_, _reservation_, $controller) {
             $firebaseArray = _$firebaseArray_;
             $firebaseObject = _$firebaseObject_;
             $timeout = _$timeout_;
@@ -28,13 +40,17 @@ describe('ticketbox.customer.seats', function () {
             fbobject = _fbobject_;
             byIdSpy = spyOn(fbobject, 'byId').and.returnValue(_makeObject(FIXTURE_DATA, ref));
 
+            reservation = _reservation_;
+            reserveSpy = spyOn(reservation, 'reserve');
+            releaseSpy = spyOn(reservation, 'release');
+
             var routeParams = {
                 eventId: 'eid1',
                 blockId: 'bid1',
                 categoryId: 'cid1'
             };
 
-            $controller('SeatsCtrl', {$scope: scope, fbarray: fbarray, fbobject: fbobject, $routeParams: routeParams});
+            $controller('SeatsCtrl', {$scope: scope, fbarray: fbarray, fbobject: fbobject, reservation: reservation, $routeParams: routeParams});
             scope.$digest();
         });
     });
@@ -61,6 +77,47 @@ describe('ticketbox.customer.seats', function () {
         describe('$scope.seats', function () {
             it('should fetch seats', function () {
                 expect(byChildValueSpy).toHaveBeenCalledWith('/seats', 'blockId', 'bid1');
+            });
+        });
+
+        describe('$scope.reservations', function () {
+            it('should fetch reservations for event', function() {
+                expect(byPathSpy).toHaveBeenCalledWith('/events/eid1/reservations');
+            });
+        });
+
+        describe('$scope.handlers.click()', function() {
+            it('should reserve seat if the seat is free', function() {
+                var seat = { $id: 's1' };
+                var element = undefined;
+                var reservationState = 'free';
+                expect(reserveSpy).not.toHaveBeenCalled();
+                expect(releaseSpy).not.toHaveBeenCalled();
+                scope.handlers.click(seat, element, reservationState);
+                expect(reserveSpy).toHaveBeenCalled();
+                expect(releaseSpy).not.toHaveBeenCalled();
+            });
+
+            it('should release the seat if the seat is locked by myself', function() {
+                var seat = { $id: 's1' };
+                var element = undefined;
+                var reservationState = 'lockedByMyself';
+                expect(reserveSpy).not.toHaveBeenCalled();
+                expect(releaseSpy).not.toHaveBeenCalled();
+                scope.handlers.click(seat, element, reservationState);
+                expect(reserveSpy).not.toHaveBeenCalled();
+                expect(releaseSpy).toHaveBeenCalled();
+            });
+
+            it('should do nothing if the seat is locked', function() {
+                var seat = { $id: 's1' };
+                var element = undefined;
+                var reservationState = 'locked';
+                expect(reserveSpy).not.toHaveBeenCalled();
+                expect(releaseSpy).not.toHaveBeenCalled();
+                scope.handlers.click(seat, element, reservationState);
+                expect(reserveSpy).not.toHaveBeenCalled();
+                expect(releaseSpy).not.toHaveBeenCalled();
             });
         });
     });

@@ -5,7 +5,8 @@ angular.module('ticketbox.customer', [
         'ticketbox.components.utils',
         'ticketbox.customer.events',
         'ticketbox.customer.blocks',
-        'ticketbox.customer.seats'])
+        'ticketbox.customer.seats',
+        'ticketbox.customer.checkout'])
 
     .config(function ($routeProvider) {
         $routeProvider.otherwise({

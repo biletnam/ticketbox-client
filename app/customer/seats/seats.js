@@ -13,12 +13,12 @@ angular.module('ticketbox.customer.seats', [
         });
     }])
 
-    .controller('SeatsCtrl', function ($scope, $routeParams, fbarray, fbobject, reservation, error) {
+    .controller('SeatsCtrl', function ($scope, $routeParams, fbarray, fbobject, locker, error) {
         $scope.event = fbobject.byId('/events', $routeParams.eventId);
         $scope.category = fbobject.byId('/categories', $routeParams.categoryId);
         $scope.block = fbobject.byId('/blocks', $routeParams.blockId);
         $scope.seats = fbarray.byChildValue('/seats', 'blockId', $routeParams.blockId);
-        $scope.reservations = fbarray.byPath('/events/' + $routeParams.eventId + '/reservations');
+        $scope.reservations = locker.getLocksOfEvent($routeParams.eventId);
 
         $scope.handlers = {
             draw: function(seat, element, reservationState) {
@@ -29,9 +29,9 @@ angular.module('ticketbox.customer.seats', [
             },
             click: function(seat, element, reservationState) {
                 if (reservationState == 'free') {
-                    reservation.reserve($scope.event.$id, seat.$id);
+                    locker.lock($scope.event.$id, seat.$id);
                 } else if (reservationState == 'lockedByMyself') {
-                    reservation.release($scope.event.$id, seat.$id);
+                    locker.unlock($scope.event.$id, seat.$id);
                 }
             },
             mouseenter: function(seat, element, reservationState) {
@@ -56,8 +56,8 @@ angular.module('ticketbox.customer.seats', [
                 };
             } else if (reservationState == 'lockedByMyself') {
                 return {
-                    'background': '#33f',
-                    'stroke': '1px solid #aaa',
+                    'background': '#f33',
+                    'stroke': '2px solid #aaa',
                     'opacity': 0.4
                 };
             } else if (reservationState == 'locked') {
@@ -70,7 +70,7 @@ angular.module('ticketbox.customer.seats', [
         }
     })
 
-    .directive('ngSeatSelection', function (canvasImage, $rootScope) {
+    .directive('ngSeatSelection', function (canvasImage, $rootScope, separator) {
         var currentPolygons = [];
 
         function _refreshSeats(scope, canvas, seats, reservations) {
@@ -81,7 +81,7 @@ angular.module('ticketbox.customer.seats', [
 
             _.each(seats, function (seat) {
                 var reservation = _.find(reservations, function(r) {
-                    return r.$id == seat.$id;
+                    return r.$id.split(separator)[1] == seat.$id;
                 });
                 var reservationState = '';
                 if (reservation === undefined) {
@@ -133,23 +133,29 @@ angular.module('ticketbox.customer.seats', [
             var canvasId = 'ngSelectableImageCanvas';
 
             scope.$watch('src', function (newSrc, oldSrc) {
-                canvas = canvasImage.createCanvasObject(newSrc, canvasId);
-                if (seats != null) {
-                    _refreshSeats(scope, canvas, seats);
+                if (newSrc !== undefined) {
+                    canvas = canvasImage.createCanvasObject(newSrc, canvasId);
+                    if (seats != null) {
+                        _refreshSeats(scope, canvas, seats);
+                    }
                 }
             }, true);
 
             scope.$watch('seats', function (newSeats, oldSeats) {
-                seats = newSeats;
-                if (canvas != null) {
-                    _refreshSeats(scope, canvas, newSeats, reservations);
+                if (newSeats !== undefined) {
+                    seats = newSeats;
+                    if (canvas != null) {
+                        _refreshSeats(scope, canvas, newSeats, reservations);
+                    }
                 }
             }, true);
 
             scope.$watch('reservations', function(newReservations, oldReservations) {
-                reservations = newReservations;
-                if (canvas != null) {
-                    _refreshSeats(scope, canvas, seats, newReservations);
+                if (newReservations !== undefined) {
+                    reservations = newReservations;
+                    if (canvas != null) {
+                        _refreshSeats(scope, canvas, seats, newReservations);
+                    }
                 }
             }, true);
         }

@@ -1,6 +1,7 @@
 <div class="row">
     <div class="twelve columns">
         <h1>Seats</h1>
+        <p>{{event.name}}, {{block.displayName}}</p>
         <div ng-show="block != null && block.seatplan != ''">
             <ng-seat-selection ng-if="block != null && block.seatplan != ''" src="block.seatplan" seats="seats" reservations="reservations" handlers="handlers">
         </div>
@@ -14,5 +15,10 @@
                 </table>
             </form>
         </div>
+    </div>
+</div>
+<div class="row">
+    <div class="twelve columns">
+        <a href="#/checkout" class="button button-primary">Checkout</a>
     </div>
 </div>

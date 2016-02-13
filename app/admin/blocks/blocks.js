@@ -15,13 +15,15 @@ angular.module('ticketbox.admin.blocks', ['ticketbox.components.firebase', 'tick
         $scope.blocks = fbarray.byPath('/blocks');
 
         $scope.newBlockName = '';
+        $scope.newBlockDisplayName = '';
         $scope.newSeatplan = '';
 
-        $scope.add = function(name, seatplan) {
-            $scope.blocks.$add({ 'name': name, 'seatplan': seatplan })
+        $scope.add = function(name, displayName, seatplan) {
+            $scope.blocks.$add({ 'name': name, 'displayName': displayName, 'seatplan': seatplan })
                 .then(function () { }, error)
                 .finally(function() {
                     $scope.newBlockName = '';
+                    $scope.newBlockDisplayName = '';
                     $scope.newSeatplan = '';
                 });
         };

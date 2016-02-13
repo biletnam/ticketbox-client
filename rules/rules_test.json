@@ -8,19 +8,26 @@
             "blockId": "b1",
             "categoryId": "c1"
           }
-        },
-        "reservations": {
-          "s1": {
-            "timestamp": 1234567890,
-            "uid": "anonymous1",
-            "kind": "lock"
-          },
-          "s2": {
-            "timestamp": 1234567890,
-            "uid": "anonymous2",
-            "kind": "lock"
-          }
         }
+      }
+    },
+    "reservations": {
+      "e1_s1": {
+        "timestamp": 1234567890,
+        "uid": "anonymous1",
+        "orderId": "o1"
+      },
+      "e1_s2": {
+        "timestamp": 1234567890,
+        "uid": "anonymous2"
+      }
+    },
+    "orders": {
+      "o1": {
+        "uid": "anonymous1",
+        "firstname": "John",
+        "lastname": "Doe",
+        "email": "john.doe@example.com"
       }
     },
     "blocks": {
@@ -119,16 +126,34 @@
         { "auth": "admin", "data": { "blockId": "b7", "categoryId": "c1" } }
       ]
     },
-    "events/e1/reservations/s1": {
+    "reservations": {
+      "canRead": [ "anonymous1", "anonymous2", "admin", "boxoffice" ]
+    },
+    "reservations/e1_s1": {
       "canRead": [ "anonymous1", "anonymous2" ],
       "canWrite": [ { "auth": "anonymous1", "data": 123456 } ],
       "cannotWrite": [ { "auth": "anonymous2", "data": 123456 } ]
     },
-    "events/e1/reservations/s3": {
+    "reservations/e1_s3": {
       "canRead": [ "anonymous1", "anonymous2" ],
       "canWrite": [
-        { "auth": "anonymous1", "data": { "uid": "anonymous1", "timestamp": 123456, "kind": "lock" } },
-        { "auth": "anonymous2", "data": { "uid": "anonymous2", "timestamp": 123456, "kind": "lock" } }
+        { "auth": "anonymous1", "data": { "uid": "anonymous1", "timestamp": 123456 } },
+        { "auth": "anonymous2", "data": { "uid": "anonymous2", "timestamp": 123456 } }
+      ],
+      "cannotWrite": [
+        { "auth": "anonymous1", "data": { "uid": "anonymous2", "timestamp": 123456 } }
+      ]
+    },
+    "orders": {
+      "canRead": [ "admin", "boxoffice" ],
+      "cannotRead": [ "anonymous1", "anonymous2" ],
+      "canWrite": [ { "auth": "anonymous2", "data": { "uid": "anonymous2", "firstname": "John", "lastname": "Doe", "email": "john.doe@example.com" } } ]
+    },
+    "orders/o1": {
+      "canRead": [ "admin", "boxoffice", "anonymous1" ],
+      "cannotRead": [ "anonymous2" ],
+      "canWrite": [
+        { "auth": "anonymous1", "data": { "uid": "anonymous1", "firstname": "John", "lastname": "Doe", "email": "john.doe@example.com" } }
       ]
     },
     "blocks": {

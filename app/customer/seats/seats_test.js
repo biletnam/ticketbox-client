@@ -8,12 +8,12 @@ describe('ticketbox.customer.seats', function () {
         ref,
         fbarray,
         fbobject,
-        reservation,
+        locker,
         byPathSpy,
         byChildValueSpy,
         byIdSpy,
-        reserveSpy,
-        releaseSpy;
+        lockSpy,
+        unlockSpy;
     var FIXTURE_DATA = {
         'id1': {
             'name': 'This is the first object'
@@ -26,7 +26,7 @@ describe('ticketbox.customer.seats', function () {
     beforeEach(function () {
         module('ticketbox.customer.seats');
 
-        inject(function (_$firebaseArray_, _$firebaseObject_, _$timeout_, _$rootScope_, _fbarray_, _fbobject_, _reservation_, $controller) {
+        inject(function (_$firebaseArray_, _$firebaseObject_, _$timeout_, _$rootScope_, _fbarray_, _fbobject_, _locker_, $controller) {
             $firebaseArray = _$firebaseArray_;
             $firebaseObject = _$firebaseObject_;
             $timeout = _$timeout_;
@@ -40,9 +40,9 @@ describe('ticketbox.customer.seats', function () {
             fbobject = _fbobject_;
             byIdSpy = spyOn(fbobject, 'byId').and.returnValue(_makeObject(FIXTURE_DATA, ref));
 
-            reservation = _reservation_;
-            reserveSpy = spyOn(reservation, 'reserve');
-            releaseSpy = spyOn(reservation, 'release');
+            locker = _locker_;
+            lockSpy = spyOn(locker, 'lock');
+            unlockSpy = spyOn(locker, 'unlock');
 
             var routeParams = {
                 eventId: 'eid1',
@@ -50,7 +50,7 @@ describe('ticketbox.customer.seats', function () {
                 categoryId: 'cid1'
             };
 
-            $controller('SeatsCtrl', {$scope: scope, fbarray: fbarray, fbobject: fbobject, reservation: reservation, $routeParams: routeParams});
+            $controller('SeatsCtrl', {$scope: scope, fbarray: fbarray, fbobject: fbobject, locker: locker, $routeParams: routeParams});
             scope.$digest();
         });
     });
@@ -82,7 +82,7 @@ describe('ticketbox.customer.seats', function () {
 
         describe('$scope.reservations', function () {
             it('should fetch reservations for event', function() {
-                expect(byPathSpy).toHaveBeenCalledWith('/events/eid1/reservations');
+                expect(byChildValueSpy).toHaveBeenCalledWith('/reservations', 'eventId', 'eid1');
             });
         });
 
@@ -91,33 +91,33 @@ describe('ticketbox.customer.seats', function () {
                 var seat = { $id: 's1' };
                 var element = undefined;
                 var reservationState = 'free';
-                expect(reserveSpy).not.toHaveBeenCalled();
-                expect(releaseSpy).not.toHaveBeenCalled();
+                expect(lockSpy).not.toHaveBeenCalled();
+                expect(unlockSpy).not.toHaveBeenCalled();
                 scope.handlers.click(seat, element, reservationState);
-                expect(reserveSpy).toHaveBeenCalled();
-                expect(releaseSpy).not.toHaveBeenCalled();
+                expect(lockSpy).toHaveBeenCalled();
+                expect(unlockSpy).not.toHaveBeenCalled();
             });
 
             it('should release the seat if the seat is locked by myself', function() {
                 var seat = { $id: 's1' };
                 var element = undefined;
                 var reservationState = 'lockedByMyself';
-                expect(reserveSpy).not.toHaveBeenCalled();
-                expect(releaseSpy).not.toHaveBeenCalled();
+                expect(lockSpy).not.toHaveBeenCalled();
+                expect(unlockSpy).not.toHaveBeenCalled();
                 scope.handlers.click(seat, element, reservationState);
-                expect(reserveSpy).not.toHaveBeenCalled();
-                expect(releaseSpy).toHaveBeenCalled();
+                expect(lockSpy).not.toHaveBeenCalled();
+                expect(unlockSpy).toHaveBeenCalled();
             });
 
             it('should do nothing if the seat is locked', function() {
                 var seat = { $id: 's1' };
                 var element = undefined;
                 var reservationState = 'locked';
-                expect(reserveSpy).not.toHaveBeenCalled();
-                expect(releaseSpy).not.toHaveBeenCalled();
+                expect(lockSpy).not.toHaveBeenCalled();
+                expect(unlockSpy).not.toHaveBeenCalled();
                 scope.handlers.click(seat, element, reservationState);
-                expect(reserveSpy).not.toHaveBeenCalled();
-                expect(releaseSpy).not.toHaveBeenCalled();
+                expect(lockSpy).not.toHaveBeenCalled();
+                expect(unlockSpy).not.toHaveBeenCalled();
             });
         });
     });

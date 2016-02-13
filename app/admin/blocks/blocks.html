@@ -1,17 +1,23 @@
 <div class="row">
     <div class="twelve columns">
         <h1>Blocks</h1>
-        <form ng-submit="add(newBlockName, newSeatplan)">
+        <form ng-submit="add(newBlockName, newBlockDisplayName, newSeatplan)">
             <table class="table-with-images">
                 <tr>
-                    <td><input type="text" ng-model="newBlockName" placeholder="New Block Name"></td>
+                    <td>
+                        <input type="text" ng-model="newBlockName" placeholder="New Block Name"><br>
+                        <input type="text" ng-model="newBlockDisplayName" placeholder="New Block Display Name">
+                    </td>
                     <td>
                         <ng-image-upload image="newSeatplan"></ng-image-upload>
                     </td>
                     <td class="buttons"><input type="submit" class="button button-primary" value="Save"></td>
                 </tr>
                 <tr ng-repeat="block in blocks">
-                    <td>{{block.name}}</td>
+                    <td>
+                        {{block.name}}<br>
+                        <b>{{block.displayName}}</b>
+                    </td>
                     <td><img ng-src="{{block.seatplan}}"></td>
                     <td class="buttons"><a ng-click="remove(block)" class="button">Remove</a></td>
                 </tr>

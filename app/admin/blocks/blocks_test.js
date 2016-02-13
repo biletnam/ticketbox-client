@@ -42,7 +42,7 @@ describe('ticketbox.admin.blocks', function () {
         describe('$scope.add()', function () {
             it('should add an item', function () {
                 var initialDataLength = scope.blocks.length;
-                scope.add('new block name', null);
+                scope.add('new block name', 'new block display name', null);
                 _flush();
                 var eventualDataLength = scope.blocks.length;
                 expect(eventualDataLength).toEqual(initialDataLength + 1);
@@ -50,9 +50,23 @@ describe('ticketbox.admin.blocks', function () {
 
             it('should empty the newBlockName variable', function () {
                 scope.newBlockName = 'newBlockNameValue';
-                scope.add('new block name', null);
+                scope.add('new block name', 'new block display name', null);
                 _flush();
                 expect(scope.newBlockName).toEqual('');
+            });
+
+            it('should empty the newBlockDisplayName variable', function () {
+                scope.newBlockDisplayName = 'newBlockDisplayNameValue';
+                scope.add('new block name', 'new block display name', null);
+                _flush();
+                expect(scope.newBlockDisplayName).toEqual('');
+            });
+
+            it('should empty the newSeatPlan variable', function () {
+                scope.newSeatplan = 'newSeatPlanValue';
+                scope.add('new block name', 'new block display name', null);
+                _flush();
+                expect(scope.newSeatplan).toEqual('');
             });
         });
 

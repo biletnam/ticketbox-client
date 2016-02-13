@@ -1,0 +1,49 @@
+<div class="row">
+    <div class="twelve columns">
+        <h1>Checkout</h1>
+    </div>
+</div>
+<form ng-submit="createOrder(firstname, lastname, email, reservations)">
+    <div class="row">
+        <div class="six columns">
+            <h4>Personal information</h4>
+            <table>
+                <tr>
+                    <td><input type="text" ng-model="firstname" placeholder="First name"></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><input type="text" ng-model="lastname" placeholder="Last name"></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><input type="email" ng-model="email" placeholder="Email"></td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+        <div class="six columns">
+            <h4>Seats</h4>
+            <table>
+                <tr ng-repeat="lock in locks">
+                    <td>
+                        {{lock | eventNameFilter : events}}<br>
+                        <b>{{lock | blockDisplayNameFilter : seats : blocks}}, {{lock | seatNameFilter : seats}}</b>
+                    </td>
+                    <td class="buttons"><a ng-click="unlock(lock)" class="button">Remove</a></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="twelve columns">
+            <table>
+                <tr>
+                    <td class="buttons">
+                        <input type="submit" class="button button-primary" value="Book"/>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</form>

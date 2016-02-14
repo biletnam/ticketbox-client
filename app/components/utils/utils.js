@@ -28,14 +28,22 @@ angular.module('ticketbox.components.utils', [ 'ticketbox.components.firebase' ]
         }
     })
 
-    .service('locker', function(fbref, $rootScope, fbarray, fbobject, separator, error) {
+    .service('serverValue', function() {
+        return {
+            timestamp: function() {
+                return Firebase.ServerValue.TIMESTAMP;
+            }
+        };
+    })
+
+    .service('locker', function(fbref, $rootScope, fbarray, separator, serverValue, error) {
         return {
             lock: function(eventId, seatId) {
                 var ref = fbref('/reservations/' + eventId + separator + seatId);
                 ref.set({
                     'eventId': eventId,
                     'uid': $rootScope.authData.uid,
-                    'timestamp': Firebase.ServerValue.TIMESTAMP
+                    'timestamp': serverValue.timestamp()
                 }, function(e) {
                     if (e) {
                         error(e);
@@ -60,8 +68,8 @@ angular.module('ticketbox.components.utils', [ 'ticketbox.components.firebase' ]
     })
 
     .filter('nameFilter', function() {
-        return function(id, dictionary) {
-            var item = _.find(dictionary, function(i) { return i.$id === id; });
+        return function(id, list) {
+            var item = _.find(list, function(i) { return i.$id === id; });
             if (item !== undefined) {
                 return item.name;
             } else {

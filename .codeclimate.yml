@@ -21,6 +21,6 @@ ratings:
   - "app/customer/**.js"
   - "app/components/**.js"
 exclude_paths:
-  - "app/admin/*_test.js"
-  - "app/customer/*_test.js"
-  - "app/components/*_test.js"
+  - "app/admin/**_test.js"
+  - "app/customer/**_test.js"
+  - "app/components/**_test.js"

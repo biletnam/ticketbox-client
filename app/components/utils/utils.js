@@ -67,6 +67,19 @@ angular.module('ticketbox.components.utils', [ 'ticketbox.components.firebase' ]
         }
     })
 
+    .service('coordinates', function() {
+        return {
+            seatToCoordinates: function(seat) {
+                return [
+                    { x: seat.x0, y: seat.y0 },
+                    { x: seat.x1, y: seat.y1 },
+                    { x: seat.x2, y: seat.y2 },
+                    { x: seat.x3, y: seat.y3 }
+                ];
+            }
+        };
+    })
+
     .filter('nameFilter', function() {
         return function(id, list) {
             var item = _.find(list, function(i) { return i.$id === id; });

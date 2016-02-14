@@ -108,4 +108,32 @@ describe('ticketbox.components.utils', function () {
             return new MockFirebase('Mock://');
         }
     });
+
+    describe('coordinates', function () {
+        var coordinates;
+
+        beforeEach(module('ticketbox.components.utils'));
+
+        beforeEach(inject(function (_coordinates_) {
+            coordinates = _coordinates_;
+        }));
+
+        describe('seatToCoordiantes()', function() {
+            it('should return array of x-y-coordinates', function() {
+                var seat = {
+                    x0: 0, y0: 1,
+                    x1: 2, y1: 3,
+                    x2: 4, y2: 5,
+                    x3: 6, y3: 7
+                };
+                var c = coordinates.seatToCoordinates(seat);
+                expect(c).toEqual([
+                    { x: 0, y: 1 },
+                    { x: 2, y: 3 },
+                    { x: 4, y: 5 },
+                    { x: 6, y: 7 }
+                ]);
+            });
+        });
+    });
 });

@@ -28,14 +28,14 @@ angular.module('ticketbox.customer.seats', [
                 element.opacity = style.opacity;
             },
             click: function(seat, element, reservationState) {
-                if (reservationState == 'free') {
+                if (reservationState === 'free') {
                     locker.lock($scope.event.$id, seat.$id);
-                } else if (reservationState == 'lockedByMyself') {
+                } else if (reservationState === 'lockedByMyself') {
                     locker.unlock($scope.event.$id, seat.$id);
                 }
             },
             mouseenter: function(seat, element, reservationState) {
-                if (reservationState == 'free') {
+                if (reservationState === 'free') {
                     element.fill = '#33f';
                 }
             },
@@ -48,19 +48,19 @@ angular.module('ticketbox.customer.seats', [
         };
 
         function _getSeatStyle(reservationState) {
-            if (reservationState == 'free') {
+            if (reservationState === 'free') {
                 return {
                     'background': '#3f3',
                     'stroke': '1px solid #aaa',
                     'opacity': 0.4
                 };
-            } else if (reservationState == 'lockedByMyself') {
+            } else if (reservationState === 'lockedByMyself') {
                 return {
                     'background': '#f33',
                     'stroke': '2px solid #aaa',
                     'opacity': 0.4
                 };
-            } else if (reservationState == 'locked') {
+            } else if (reservationState === 'locked') {
                 return {
                     'background': '#000',
                     'stroke': '1px solid #000',
@@ -70,7 +70,7 @@ angular.module('ticketbox.customer.seats', [
         }
     })
 
-    .directive('ngSeatSelection', function (canvasImage, $rootScope, separator) {
+    .directive('ngSeatSelection', function (canvasImage, $rootScope, separator, coordinates) {
         var currentPolygons = [];
 
         function _refreshSeats(scope, canvas, seats, reservations) {
@@ -81,7 +81,7 @@ angular.module('ticketbox.customer.seats', [
 
             _.each(seats, function (seat) {
                 var reservation = _.find(reservations, function(r) {
-                    return r.$id.split(separator)[1] == seat.$id;
+                    return r.$id.split(separator)[1] === seat.$id;
                 });
                 var reservationState = '';
                 if (reservation === undefined) {
@@ -99,13 +99,7 @@ angular.module('ticketbox.customer.seats', [
         }
 
         function _drawSeat(scope, canvas, seat, reservationState) {
-            var coordinates = [
-                { x: seat.x0, y: seat.y0 },
-                { x: seat.x1, y: seat.y1 },
-                { x: seat.x2, y: seat.y2 },
-                { x: seat.x3, y: seat.y3 }
-            ];
-            var polygon = canvasImage.drawPolygon(canvas, coordinates, '#333', '2px #000');
+            var polygon = canvasImage.drawPolygon(canvas, coordinates.seatToCoordinates(seat), '#333', '2px #000');
             scope.handlers.draw(seat, polygon, reservationState);
             _bind(scope, canvas, polygon, seat, reservationState);
             return polygon;
@@ -135,8 +129,8 @@ angular.module('ticketbox.customer.seats', [
             scope.$watch('src', function (newSrc, oldSrc) {
                 if (newSrc !== undefined) {
                     canvas = canvasImage.createCanvasObject(newSrc, canvasId);
-                    if (seats != null) {
-                        _refreshSeats(scope, canvas, seats);
+                    if (seats !== null) {
+                        _refreshSeats(scope, canvas, seats, reservations);
                     }
                 }
             }, true);
@@ -144,7 +138,7 @@ angular.module('ticketbox.customer.seats', [
             scope.$watch('seats', function (newSeats, oldSeats) {
                 if (newSeats !== undefined) {
                     seats = newSeats;
-                    if (canvas != null) {
+                    if (canvas !== null) {
                         _refreshSeats(scope, canvas, newSeats, reservations);
                     }
                 }
@@ -153,7 +147,7 @@ angular.module('ticketbox.customer.seats', [
             scope.$watch('reservations', function(newReservations, oldReservations) {
                 if (newReservations !== undefined) {
                     reservations = newReservations;
-                    if (canvas != null) {
+                    if (canvas !== null) {
                         _refreshSeats(scope, canvas, seats, newReservations);
                     }
                 }

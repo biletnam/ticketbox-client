@@ -30,7 +30,7 @@ angular.module('ticketbox.admin.seats', [
             var promises = [];
             for (var seatNumber = startNumber; seatNumber <= endNumber; seatNumber += 1) {
                 var name = '';
-                if (namePattern.indexOf('{i}') != -1) {
+                if (namePattern.indexOf('{i}') !== -1) {
                     name = namePattern.replace('{i}', seatNumber);
                 } else {
                     name = namePattern;
@@ -96,24 +96,18 @@ angular.module('ticketbox.admin.seats', [
         }
     })
 
-    .directive('ngSeatDefinition', function (canvasImage) {
+    .directive('ngSeatDefinition', function (canvasImage, coordinates) {
         var coordinateMarkers = [];
         var currentPolygons = [];
-        var coordinates;
+        var selectedCoordinates;
 
         function _refreshSeats(canvas, seats) {
             _.each(currentPolygons, function (p) {
                 canvas.removeChild(p, false);
             });
             currentPolygons = [];
-            _.each(seats, function (s) {
-                var coordinates = [
-                    { x: s.x0, y: s.y0 },
-                    { x: s.x1, y: s.y1 },
-                    { x: s.x2, y: s.y2 },
-                    { x: s.x3, y: s.y3 }
-                ];
-                var polygon = canvasImage.drawPolygon(canvas, coordinates, '#333', '2px #000');
+            _.each(seats, function (seat) {
+                var polygon = canvasImage.drawPolygon(canvas, coordinates.seatToCoordinates(seat), '#333', '2px #000');
                 currentPolygons.push(polygon);
             });
             canvas.redraw();
@@ -121,17 +115,17 @@ angular.module('ticketbox.admin.seats', [
 
         function _bindClick(canvas) {
             canvas.bind("click tap", function () {
-                if (coordinates.length < 4) {
+                if (selectedCoordinates.length < 4) {
                     var circle = canvasImage.drawCoordinate(canvas);
                     var point = {x: circle.x, y: circle.y};
                     coordinateMarkers.push({ point: point, marker: circle });
-                    coordinates.push(point);
+                    selectedCoordinates.push(point);
                 }
             });
         }
 
         function _create(scope, element, attrs) {
-            coordinates = scope.coordinates;
+            selectedCoordinates = scope.coordinates;
             var canvas = null;
             var canvasId = 'ngClickableImageCanvas';
 
@@ -141,18 +135,18 @@ angular.module('ticketbox.admin.seats', [
             }, true);
 
             scope.$watch('seats', function (newSeats, oldSeats) {
-                if (canvas != null) {
+                if (canvas !== null) {
                     _refreshSeats(canvas, newSeats);
                 }
             }, true);
 
             scope.$watch('coordinates', function (newCoordinates, oldCoordinates) {
-                coordinates = newCoordinates;
+                selectedCoordinates = newCoordinates;
                 var removedCoordinates = _.filter(oldCoordinates, function(c) { return !_.contains(newCoordinates, c); });
                 _.each(removedCoordinates, function(c) {
-                    var coordinateMarker = _.find(coordinateMarkers, function(m) { return m.point.x == c.x && m.point.y == c.y; });
-                    if (coordinateMarker != undefined) {
-                        if (canvas != null) {
+                    var coordinateMarker = _.find(coordinateMarkers, function(m) { return m.point.x === c.x && m.point.y === c.y; });
+                    if (coordinateMarker !== undefined) {
+                        if (canvas !== null) {
                             canvas.removeChild(coordinateMarker.marker);
                         }
                         coordinateMarkers.splice(coordinateMarker, 1);

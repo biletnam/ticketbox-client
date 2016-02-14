@@ -1,0 +1,26 @@
+---
+engines:
+  csslint:
+    enabled: true
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - ruby
+      - javascript
+      - python
+      - php
+  eslint:
+    enabled: true
+  fixme:
+    enabled: true
+ratings:
+  paths:
+  - "**.css"
+  - "app/admin/**.js"
+  - "app/customer/**.js"
+  - "app/components/**.js"
+exclude_paths:
+  - "app/admin/*_test.js"
+  - "app/customer/*_test.js"
+  - "app/components/*_test.js"

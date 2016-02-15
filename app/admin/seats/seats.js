@@ -36,7 +36,7 @@ angular.module('ticketbox.admin.seats', [
                     name = namePattern;
                 }
                 var data = {'blockId': blockId, 'name': name};
-                if (coordinates.length == 4) {
+                if (coordinates.length === 4) {
                     var seatCoordinates = geometry.calculateSeatCoordinates(coordinates, endNumber - startNumber + 1, seatNumber - startNumber);
                     data.x0 = seatCoordinates.x0;
                     data.y0 = seatCoordinates.y0;

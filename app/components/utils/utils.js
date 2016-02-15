@@ -13,9 +13,9 @@ angular.module('ticketbox.components.utils', [ 'ticketbox.components.firebase' ]
                     itemsToBeRemoved.push(i);
                 });
                 var promises = [];
-                for (var key in itemsToBeRemoved) {
-                    promises.push(items.$remove(itemsToBeRemoved[key]));
-                }
+                _.each(itemsToBeRemoved, function(itemToBeRemoved) {
+                    promises.push(items.$remove(itemToBeRemoved));
+                });
                 return $q.all(promises);
             }
         }

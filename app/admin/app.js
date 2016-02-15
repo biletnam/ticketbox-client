@@ -19,7 +19,7 @@ angular.module('ticketbox.admin', [
     .run(function($rootScope, $location, fbauth) {
         $rootScope.$on('$locationChangeStart', function(event, next, current) {
             if ($rootScope.loggedIn !== undefined && !$rootScope.loggedIn) {
-                if (next.controller == 'LoginCtrl') {
+                if (next.controller === 'LoginCtrl') {
                     // already going to login, do nothing and go further
                 } else {
                     $location.path('/login');

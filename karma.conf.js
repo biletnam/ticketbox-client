@@ -18,6 +18,12 @@ module.exports = function (config) {
             'app/customer/*/*.js'
         ],
 
+        preprocessors: {
+            'app/{admin/*/!(*_test).js,customer/*/!(*_test).js,components/*/!(*_test).js}': [ 'coverage' ]
+        },
+
+        reporters: [ 'progress', 'coverage' ],
+
         autoWatch: true,
 
         frameworks: ['jasmine'],
@@ -28,13 +34,18 @@ module.exports = function (config) {
             'karma-chrome-launcher',
             'karma-firefox-launcher',
             'karma-jasmine',
-            'karma-junit-reporter'
+            'karma-junit-reporter',
+            'karma-coverage'
         ],
 
         junitReporter: {
             outputFile: 'test_out/unit.xml',
             suite: 'unit'
-        }
+        },
 
+        coverageReporter: {
+            type: 'lcov',
+            dir: 'coverage'
+        }
     });
 };

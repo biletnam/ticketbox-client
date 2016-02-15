@@ -14,3 +14,8 @@ script:
   - ./test.sh
   - cd ..
   - node_modules/.bin/karma start karma.conf.js --no-auto-watch --single-run --reporters=dots --browsers=Firefox
+  - codeclimate-test-reporter < coverage/lcov.info
+
+addons:
+    code_climate:
+        repo_token: ac4b4b5bdc1fbcd214b5844b92cc07145667cf09d58d68d6c842653b007eaf4c

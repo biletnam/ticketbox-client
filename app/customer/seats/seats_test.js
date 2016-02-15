@@ -13,7 +13,9 @@ describe('ticketbox.customer.seats', function () {
         byChildValueSpy,
         byIdSpy,
         lockSpy,
-        unlockSpy;
+        unlockSpy,
+        draw,
+        applySeatStyleSpy;
     var FIXTURE_DATA = {
         'id1': {
             'name': 'This is the first object'
@@ -26,7 +28,7 @@ describe('ticketbox.customer.seats', function () {
     beforeEach(function () {
         module('ticketbox.customer.seats');
 
-        inject(function (_$firebaseArray_, _$firebaseObject_, _$timeout_, _$rootScope_, _fbarray_, _fbobject_, _locker_, $controller) {
+        inject(function (_$firebaseArray_, _$firebaseObject_, _$timeout_, _$rootScope_, _fbarray_, _fbobject_, _locker_, _draw_, $controller) {
             $firebaseArray = _$firebaseArray_;
             $firebaseObject = _$firebaseObject_;
             $timeout = _$timeout_;
@@ -43,6 +45,9 @@ describe('ticketbox.customer.seats', function () {
             locker = _locker_;
             lockSpy = spyOn(locker, 'lock');
             unlockSpy = spyOn(locker, 'unlock');
+
+            draw = _draw_;
+            applySeatStyleSpy = spyOn(draw, 'applySeatStyle');
 
             var routeParams = {
                 eventId: 'eid1',
@@ -86,6 +91,17 @@ describe('ticketbox.customer.seats', function () {
             });
         });
 
+        describe('$scope.handlers.draw()', function() {
+            it('should use draw.applySeatStyle()', function() {
+                var seat = { '$id': 's1' };
+                var element = {};
+                var reservationState = 'free';
+                expect(applySeatStyleSpy).not.toHaveBeenCalled();
+                scope.handlers.draw(seat, element, reservationState);
+                expect(applySeatStyleSpy).toHaveBeenCalledWith(element, reservationState, false);
+            });
+        });
+
         describe('$scope.handlers.click()', function() {
             it('should reserve seat if the seat is free', function() {
                 var seat = { $id: 's1' };
@@ -118,6 +134,28 @@ describe('ticketbox.customer.seats', function () {
                 scope.handlers.click(seat, element, reservationState);
                 expect(lockSpy).not.toHaveBeenCalled();
                 expect(unlockSpy).not.toHaveBeenCalled();
+            });
+        });
+
+        describe('$scope.handlers.mouseenter()', function() {
+            it('should use draw.applySeatStyle()', function() {
+                var seat = { '$id': 's1' };
+                var element = {};
+                var reservationState = 'free';
+                expect(applySeatStyleSpy).not.toHaveBeenCalled();
+                scope.handlers.mouseenter(seat, element, reservationState);
+                expect(applySeatStyleSpy).toHaveBeenCalledWith(element, reservationState, true);
+            });
+        });
+
+        describe('$scope.handlers.mouseleave()', function() {
+            it('should use draw.applySeatStyle()', function() {
+                var seat = { '$id': 's1' };
+                var element = {};
+                var reservationState = 'free';
+                expect(applySeatStyleSpy).not.toHaveBeenCalled();
+                scope.handlers.mouseleave(seat, element, reservationState);
+                expect(applySeatStyleSpy).toHaveBeenCalledWith(element, reservationState, false);
             });
         });
     });
@@ -156,4 +194,86 @@ describe('ticketbox.customer.seats', function () {
         ref.flush();
         $timeout.flush();
     }
+});
+
+describe('ticketbox.customer.seats', function() {
+    describe('draw', function () {
+        var draw;
+
+        beforeEach(module('ticketbox.customer.seats', function($provide) {
+            var styles = {
+                'free': { 'background': 'fb', 'stroke': 'fs', 'opacity': 0.0 },
+                'freeHover': { 'background': 'fhb', 'stroke': 'fhs', 'opacity': 0.1 },
+                'locked': { 'background': 'lb', 'stroke': 'ls', 'opacity': 0.2 },
+                'lockedByMyself': { 'background': 'lbmsb', 'stroke': 'lbmss', 'opacity': 0.3 }
+            };
+            $provide.value('styles', styles);
+        }));
+
+        beforeEach(inject(function (_draw_) {
+            draw = _draw_;
+        }));
+
+        describe('applySeatStyle()', function() {
+            it('should apply free style if state is free and it is not hovered', function() {
+                var element = {};
+                var reservationState = 'free';
+                var isHovered = false;
+                draw.applySeatStyle(element, reservationState, isHovered);
+                expect(element.fill).toEqual('fb');
+                expect(element.stroke).toEqual('fs');
+                expect(element.opacity).toEqual(0.0);
+            });
+
+            it('should apply freeHover style if state is free and it is hovered', function() {
+                var element = {};
+                var reservationState = 'free';
+                var isHovered = true;
+                draw.applySeatStyle(element, reservationState, isHovered);
+                expect(element.fill).toEqual('fhb');
+                expect(element.stroke).toEqual('fhs');
+                expect(element.opacity).toEqual(0.1);
+            });
+
+            it('should apply locked style if state is locked and it is not hovered', function() {
+                var element = {};
+                var reservationState = 'locked';
+                var isHovered = false;
+                draw.applySeatStyle(element, reservationState, isHovered);
+                expect(element.fill).toEqual('lb');
+                expect(element.stroke).toEqual('ls');
+                expect(element.opacity).toEqual(0.2);
+            });
+
+            it('should apply locked style if state is locked and it is hovered', function() {
+                var element = {};
+                var reservationState = 'locked';
+                var isHovered = true;
+                draw.applySeatStyle(element, reservationState, isHovered);
+                expect(element.fill).toEqual('lb');
+                expect(element.stroke).toEqual('ls');
+                expect(element.opacity).toEqual(0.2);
+            });
+
+            it('should apply lockedByMyself style if state is lockedByMyself and it is not hovered', function() {
+                var element = {};
+                var reservationState = 'lockedByMyself';
+                var isHovered = false;
+                draw.applySeatStyle(element, reservationState, isHovered);
+                expect(element.fill).toEqual('lbmsb');
+                expect(element.stroke).toEqual('lbmss');
+                expect(element.opacity).toEqual(0.3);
+            });
+
+            it('should apply lockedByMyself style if state is lockedByMyself and it is hovered', function() {
+                var element = {};
+                var reservationState = 'lockedByMyself';
+                var isHovered = true;
+                draw.applySeatStyle(element, reservationState, isHovered);
+                expect(element.fill).toEqual('lbmsb');
+                expect(element.stroke).toEqual('lbmss');
+                expect(element.opacity).toEqual(0.3);
+            });
+        });
+    });
 });

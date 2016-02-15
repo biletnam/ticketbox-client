@@ -13,7 +13,16 @@ angular.module('ticketbox.customer.seats', [
         });
     }])
 
-    .controller('SeatsCtrl', function ($scope, $routeParams, fbarray, fbobject, locker, error) {
+    .factory('styles', function() {
+        return {
+            'free': { 'background': '#3f3', 'stroke': '1px solid #aaa', 'opacity': 0.4 },
+            'freeHover': { 'background': '#3f3', 'stroke': '1px solid #aaa', 'opacity': 0.4 },
+            'locked': { 'background': '#000', 'stroke': '1px solid #000', 'opacity': 1 },
+            'lockedByMyself': { 'background': '#f33', 'stroke': '2px solid #aaa', 'opacity': 0.4 }
+        };
+    })
+
+    .controller('SeatsCtrl', function ($scope, $routeParams, fbarray, fbobject, locker, draw, styles) {
         $scope.event = fbobject.byId('/events', $routeParams.eventId);
         $scope.category = fbobject.byId('/categories', $routeParams.categoryId);
         $scope.block = fbobject.byId('/blocks', $routeParams.blockId);
@@ -22,10 +31,7 @@ angular.module('ticketbox.customer.seats', [
 
         $scope.handlers = {
             draw: function(seat, element, reservationState) {
-                var style = _getSeatStyle(reservationState);
-                element.fill = style.background;
-                element.stroke = style.stroke;
-                element.opacity = style.opacity;
+                draw.applySeatStyle(element, reservationState, false);
             },
             click: function(seat, element, reservationState) {
                 if (reservationState === 'free') {
@@ -35,39 +41,34 @@ angular.module('ticketbox.customer.seats', [
                 }
             },
             mouseenter: function(seat, element, reservationState) {
-                if (reservationState === 'free') {
-                    element.fill = '#33f';
-                }
+                draw.applySeatStyle(element, reservationState, true);
             },
             mouseleave: function(seat, element, reservationState) {
-                var style = _getSeatStyle(reservationState);
+                draw.applySeatStyle(element, reservationState, false);
+            }
+        };
+    })
+
+    .service('draw', function(styles) {
+        return {
+            applySeatStyle: function(element, reservationState, isHovered) {
+                var style = {};
+                if (reservationState === 'free') {
+                    if (isHovered) {
+                        style = styles.freeHover;
+                    } else {
+                        style = styles.free;
+                    }
+                } else if (reservationState === 'lockedByMyself') {
+                    style = styles.lockedByMyself;
+                } else if (reservationState === 'locked') {
+                    style = styles.locked;
+                }
                 element.fill = style.background;
                 element.stroke = style.stroke;
                 element.opacity = style.opacity;
             }
         };
-
-        function _getSeatStyle(reservationState) {
-            if (reservationState === 'free') {
-                return {
-                    'background': '#3f3',
-                    'stroke': '1px solid #aaa',
-                    'opacity': 0.4
-                };
-            } else if (reservationState === 'lockedByMyself') {
-                return {
-                    'background': '#f33',
-                    'stroke': '2px solid #aaa',
-                    'opacity': 0.4
-                };
-            } else if (reservationState === 'locked') {
-                return {
-                    'background': '#000',
-                    'stroke': '1px solid #000',
-                    'opacity': 1
-                };
-            }
-        }
     })
 
     .directive('ngSeatSelection', function (canvasImage, $rootScope, separator, coordinates) {

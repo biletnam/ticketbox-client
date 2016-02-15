@@ -13,7 +13,7 @@ script:
   - cd rules
   - ./test.sh
   - cd ..
-  - node_modules/.bin/karma start karma.conf.js --no-auto-watch --single-run --reporters=dots --browsers=Firefox
+  - node_modules/.bin/karma start karma.conf.js --no-auto-watch --single-run --browsers=Firefox
   - codeclimate-test-reporter < coverage/*/lcov.info
 
 addons:

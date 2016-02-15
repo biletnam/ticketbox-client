@@ -89,64 +89,120 @@ describe('ticketbox.customer.checkout', function () {
     }
 });
 
-describe('ticketbox.customer.checkout', function() {
+describe('ticketbox.customer.checkout', function () {
     var eventNameFilter, seatNameFilter, blockDisplayNameFilter;
 
-    beforeEach(function() {
-        angular.mock.module('ticketbox.customer.checkout', function($provide) {
+    beforeEach(function () {
+        angular.mock.module('ticketbox.customer.checkout', function ($provide) {
             $provide.value('separator', ':');
         });
 
-        inject(function($filter) {
+        inject(function ($filter) {
             eventNameFilter = $filter('eventNameFilter', {});
             seatNameFilter = $filter('seatNameFilter', {});
             blockDisplayNameFilter = $filter('blockDisplayNameFilter', {});
         });
     });
 
-    describe('eventNameFilter', function() {
-        it('should select event and return its name', function() {
+    describe('eventNameFilter', function () {
+        it('should select event and return its name', function () {
             var lock = {
-                "$id": "eid1:sid1"
+                '$id': 'eid1:sid1'
             };
             var events = [
-                { "$id": "eid2", "name": "Event 2" },
-                { "$id": "eid1", "name": "Event 1" }
+                {'$id': 'eid2', 'name': 'Event 2'},
+                {'$id': 'eid1', 'name': 'Event 1'}
             ];
             var eventName = eventNameFilter(lock, events);
-            expect(eventName).toEqual("Event 1");
+            expect(eventName).toEqual('Event 1');
+        });
+
+        it('should return empty string if event cannot be found', function () {
+            var lock = {
+                '$id': 'eid3:sid1'
+            };
+            var events = [
+                {'$id': 'eid2', 'name': 'Event 2'},
+                {'$id': 'eid1', 'name': 'Event 1'}
+            ];
+            var eventName = eventNameFilter(lock, events);
+            expect(eventName).toEqual('');
         });
     });
 
-    describe('seatNameFilter', function() {
-        it('should select seat and return its name', function() {
+    describe('seatNameFilter', function () {
+        it('should select seat and return its name', function () {
             var lock = {
-                "$id": "eid1:sid1"
+                '$id': 'eid1:sid1'
             };
             var seats = [
-                { "$id": "sid2", "name": "Seat 2" },
-                { "$id": "sid1", "name": "Seat 1" }
+                {'$id': 'sid2', 'name': 'Seat 2'},
+                {'$id': 'sid1', 'name': 'Seat 1'}
             ];
             var seatName = seatNameFilter(lock, seats);
-            expect(seatName).toEqual("Seat 1");
+            expect(seatName).toEqual('Seat 1');
+        });
+
+        it('should return empty string if seat cannot be found', function () {
+            var lock = {
+                '$id': 'eid1:sid3'
+            };
+            var seats = [
+                {'$id': 'sid2', 'name': 'Seat 2'},
+                {'$id': 'sid1', 'name': 'Seat 1'}
+            ];
+            var seatName = seatNameFilter(lock, seats);
+            expect(seatName).toEqual('');
         });
     });
 
-    describe('blockDisplayNameFilter', function() {
-        it('should select block and return its display name', function() {
+    describe('blockDisplayNameFilter', function () {
+        it('should select block and return its display name', function () {
             var lock = {
-                "$id": "eid1:sid1"
+                '$id': 'eid1:sid1'
             };
             var seats = [
-                { "$id": "sid2", "name": "Seat 2", "blockId": "bid2" },
-                { "$id": "sid1", "name": "Seat 1", "blockId": "bid1" }
+                {'$id': 'sid2', 'name': 'Seat 2', 'blockId': 'bid2'},
+                {'$id': 'sid1', 'name': 'Seat 1', 'blockId': 'bid1'}
             ];
             var blocks = [
-                { "$id": "bid2", "displayName": "Block 2" },
-                { "$id": "bid1", "displayName": "Block 1" }
+                {'$id': 'bid2', 'displayName': 'Block 2'},
+                {'$id': 'bid1', 'displayName': 'Block 1'}
             ];
             var eventName = blockDisplayNameFilter(lock, seats, blocks);
-            expect(eventName).toEqual("Block 1");
+            expect(eventName).toEqual('Block 1');
+        });
+
+        it('should return empty string if seat cannot be found', function () {
+            var lock = {
+                '$id': 'eid1:sid3'
+            };
+            var seats = [
+                {'$id': 'sid2', 'name': 'Seat 2', 'blockId': 'bid2'},
+                {'$id': 'sid1', 'name': 'Seat 1', 'blockId': 'bid1'}
+            ];
+            var blocks = [
+                {'$id': 'bid2', 'displayName': 'Block 2'},
+                {'$id': 'bid1', 'displayName': 'Block 1'}
+            ];
+            var eventName = blockDisplayNameFilter(lock, seats, blocks);
+            expect(eventName).toEqual('');
+        });
+
+        it('should return empty string if block cannot be found', function () {
+            var lock = {
+                '$id': 'eid1:sid1'
+            };
+            var seats = [
+                {'$id': 'sid2', 'name': 'Seat 2', 'blockId': 'bid2'},
+                {'$id': 'sid1', 'name': 'Seat 1', 'blockId': 'bid3'}
+            ];
+            var blocks = [
+                {'$id': 'bid2', 'displayName': 'Block 2'},
+                {'$id': 'bid1', 'displayName': 'Block 1'}
+            ];
+            var eventName = blockDisplayNameFilter(lock, seats, blocks);
+            expect(eventName).toEqual('');
         });
     });
 });

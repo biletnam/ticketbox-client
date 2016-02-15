@@ -23,6 +23,9 @@ describe('ticketbox.admin.blocks', function () {
             fbarray = {
                 byPath: function () {
                     return _makeArray(FIXTURE_DATA, ref);
+                },
+                byChildValue: function() {
+                    return _makeArray(FIXTURE_DATA, ref);
                 }
             };
 
@@ -71,20 +74,11 @@ describe('ticketbox.admin.blocks', function () {
         });
 
         describe('$scope.remove()', function () {
-            var arrayModification;
+            var arrayModification, byChildValueSpy;
             beforeEach(function() {
-                inject(function (_$firebaseArray_, _$timeout_, _$rootScope_, $controller, $q) {
-                    arrayModification = {
-                        removeAll: function () {
-                        }
-                    };
-                    fbarray.byChildValue = function() {
-                        return {
-                            $loaded: function() {
-                                arrayModification.removeAll();
-                            }
-                        }
-                    };
+                inject(function (_$firebaseArray_, _$timeout_, _$rootScope_, $controller, _arrayModification_) {
+                    arrayModification = _arrayModification_;
+                    byChildValueSpy = spyOn(fbarray, 'byChildValue').and.returnValue({ $loaded: function() { arrayModification.removeAll(); } });
 
                     $controller('BlocksCtrl', {$scope: scope, fbarray: fbarray, arrayModification: arrayModification});
                     scope.$digest();
@@ -96,6 +90,7 @@ describe('ticketbox.admin.blocks', function () {
                 var item = scope.blocks.$getRecord('id1');
                 var removeAllSpy = spyOn(arrayModification, 'removeAll');
                 scope.remove(item);
+                expect(byChildValueSpy).toHaveBeenCalled();
                 expect(removeAllSpy).toHaveBeenCalled();
             });
         });

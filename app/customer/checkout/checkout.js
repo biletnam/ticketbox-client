@@ -12,7 +12,7 @@ angular.module('ticketbox.customer.checkout', [
         });
     }])
 
-    .controller('CheckoutCtrl', function ($rootScope, $scope, fbarray, locker, separator) {
+    .controller('CheckoutCtrl', function ($rootScope, $scope, fbarray, fbobject, locker, separator, error) {
         $scope.locks = locker.getMyLocks();
         $scope.events = fbarray.byPath('/events');
         $scope.seats = fbarray.byPath('/seats');
@@ -22,7 +22,20 @@ angular.module('ticketbox.customer.checkout', [
             var eventId = lock.$id.split(separator)[0];
             var seatId = lock.$id.split(separator)[1];
             locker.unlock(eventId, seatId);
-        }
+        };
+
+        $scope.checkout = function(firstname, lastname, email) {
+            var data = {
+                'firstname': firstname,
+                'lastname': lastname,
+                'email': email
+            };
+            var orderRef = fbobject.create('/orders', data);
+            _.each($scope.locks, function(lock) {
+                lock.orderId = orderRef.key();
+                $scope.locks.$save(lock);
+            });
+        };
     })
 
     .filter('eventNameFilter', function(separator) {

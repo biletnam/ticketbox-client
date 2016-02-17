@@ -30,6 +30,9 @@ angular.module('ticketbox.components.firebase', ['firebase', 'ticketbox.config']
                 var query = fbref(path + '/' + id);
                 var fbobject = $firebaseObject(query);
                 return fbobject;
+            },
+            create: function(path, data) {
+                return fbref(path).push(data);
             }
         }
     })

@@ -15,10 +15,10 @@ angular.module('ticketbox.customer.seats', [
 
     .factory('styles', function() {
         return {
-            'free': { 'background': '#3f3', 'stroke': '1px solid #aaa', 'opacity': 0.4 },
-            'freeHover': { 'background': '#3f3', 'stroke': '1px solid #aaa', 'opacity': 0.4 },
+            'free': { 'background': '#3f3', 'stroke': '1px solid #000', 'opacity': 0.2 },
+            'freeHover': { 'background': '#282', 'stroke': '1px solid #000', 'opacity': 0.5 },
             'locked': { 'background': '#000', 'stroke': '1px solid #000', 'opacity': 1 },
-            'lockedByMyself': { 'background': '#f33', 'stroke': '2px solid #aaa', 'opacity': 0.4 }
+            'lockedByMyself': { 'background': '#f33', 'stroke': '1px solid #000', 'opacity': 0.4 }
         };
     })
 
@@ -87,7 +87,7 @@ angular.module('ticketbox.customer.seats', [
                 var reservationState = '';
                 if (reservation === undefined) {
                     reservationState = 'free';
-                } else if (reservation.uid === $rootScope.authData.uid) {
+                } else if (reservation.uid === $rootScope.authData.uid && reservation.orderId === undefined) {
                     reservationState = 'lockedByMyself';
                 } else {
                     reservationState = 'locked';

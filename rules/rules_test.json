@@ -131,8 +131,25 @@
     },
     "reservations/e1_s1": {
       "canRead": [ "anonymous1", "anonymous2" ],
-      "canWrite": [ { "auth": "anonymous1", "data": 123456 } ],
-      "cannotWrite": [ { "auth": "anonymous2", "data": 123456 } ]
+      "canWrite": [ { "auth": "anonymous1", "data": { "orderId": "o1" } } ],
+      "cannotWrite": [
+        { "auth": "anonymous1", "data": { "orderId": "o3" } },
+        { "auth": "anonymous1", "data": null },
+        { "auth": "anonymous2", "data": null },
+        { "auth": "anonymous2", "data": { "orderId": "o1" } }
+      ]
+    },
+    "reservations/e1_s2": {
+      "canRead": [ "anonymous1", "anonymous2" ],
+      "canWrite": [
+        { "auth": "anonymous2", "data": { "orderId": "o1" } },
+        { "auth": "anonymous2", "data": null }
+      ],
+      "cannotWrite": [
+        { "auth": "anonymous2", "data": { "orderId": "o3" } },
+        { "auth": "anonymous1", "data": null },
+        { "auth": "anonymous1", "data": { "orderId": "o1" } }
+      ]
     },
     "reservations/e1_s3": {
       "canRead": [ "anonymous1", "anonymous2" ],

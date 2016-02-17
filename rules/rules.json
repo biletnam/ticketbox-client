@@ -35,8 +35,7 @@
       ],
       ".read": true,
       "$eventId_seatId": {
-        ".write": true,
-        ".validate": "!data.exists() || data.child('uid').val() === auth.uid || (!newData.exists() && data.child('uid').val() === auth.uid && data.child('orderId').val().length == 0)",
+        ".write": "!data.exists() || (data.child('uid').val() === auth.uid && !(data.child('orderId').exists() && !newData.exists()))",
         "timestamp": {
           ".validate": "newData.isNumber()"
         },

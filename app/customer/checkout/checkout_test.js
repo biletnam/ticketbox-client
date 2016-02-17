@@ -1,7 +1,7 @@
 'use strict';
 
 describe('ticketbox.customer.checkout', function () {
-    var $firebaseArray, $firebaseObject, $timeout, scope, ref, fbarray, locker, byPathSpy, getMyLocksSpy, unlockSpy;
+    var $firebaseArray, $firebaseObject, $timeout, scope, ref, fbarray, fbobject, locker, byPathSpy, getMyLocksSpy, unlockSpy;
     var FIXTURE_DATA = {
         'id1': {
             'name': 'This is the first object'
@@ -15,7 +15,7 @@ describe('ticketbox.customer.checkout', function () {
         module('ticketbox.components.utils');
         module('ticketbox.customer.checkout');
 
-        inject(function (_$firebaseArray_, _$firebaseObject_, _$timeout_, _$rootScope_, _fbarray_, _locker_, $controller) {
+        inject(function (_$firebaseArray_, _$firebaseObject_, _$timeout_, _$rootScope_, _fbarray_, _fbobject_, _locker_, $controller) {
             $firebaseArray = _$firebaseArray_;
             $firebaseObject = _$firebaseObject_;
             $timeout = _$timeout_;
@@ -24,6 +24,8 @@ describe('ticketbox.customer.checkout', function () {
 
             fbarray = _fbarray_;
             byPathSpy = spyOn(fbarray, 'byPath').and.returnValue(_makeArray(FIXTURE_DATA, ref));
+
+            fbobject = _fbobject_;
 
             locker = _locker_;
             getMyLocksSpy = spyOn(locker, 'getMyLocks').and.returnValue(_makeArray(FIXTURE_DATA, ref));
@@ -67,6 +69,30 @@ describe('ticketbox.customer.checkout', function () {
                 expect(unlockSpy).not.toHaveBeenCalled();
                 scope.unlock(lock);
                 expect(unlockSpy).toHaveBeenCalledWith('eid1', 'sid1');
+            });
+        });
+
+        describe('$scope.checkout()', function () {
+            it('should add an order', function () {
+                var createSpy = spyOn(fbobject, 'create').and.returnValue(_stubRef());
+                scope.checkout('firstname', 'lastname', 'john.doe@example.com');
+                var data = {'firstname': 'firstname', 'lastname': 'lastname', 'email': 'john.doe@example.com'};
+                expect(createSpy).toHaveBeenCalledWith('/orders', data);
+            });
+
+            it('should add order id to all locks', function () {
+                _.each(scope.locks, function (lock) {
+                    expect(lock.orderId).toEqual(undefined);
+                });
+                var createSpy = spyOn(fbobject, 'create').and.returnValue({
+                    key: function () {
+                        return 'oid1';
+                    }
+                });
+                scope.checkout('firstname', 'lastname', 'john.doe@example.com');
+                _.each(scope.locks, function (lock) {
+                    expect(lock.orderId).toEqual('oid1');
+                });
             });
         });
     });

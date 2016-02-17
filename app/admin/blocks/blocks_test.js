@@ -15,7 +15,7 @@ describe('ticketbox.admin.blocks', function () {
     beforeEach(function () {
         module('ticketbox.admin.blocks');
 
-        inject(function (_$firebaseArray_, _$timeout_, _$rootScope_, $controller, $q) {
+        inject(function (_$firebaseArray_, _$timeout_, _$rootScope_, $controller) {
             $firebaseArray = _$firebaseArray_;
             $timeout = _$timeout_;
             scope = _$rootScope_.$new();

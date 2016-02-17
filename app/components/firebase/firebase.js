@@ -52,4 +52,18 @@ angular.module('ticketbox.components.firebase', ['firebase', 'ticketbox.config']
                 return promise;
             }
         };
+    })
+
+    .service('anonymousAuth', function(fbauth) {
+        return {
+            isLoggedIn: function() {
+                return !!fbauth.$getAuth();
+            },
+            getAuthData: function() {
+                return fbauth.$getAuth();
+            },
+            login: function () {
+                return fbauth.$authAnonymously();
+            }
+        };
     });

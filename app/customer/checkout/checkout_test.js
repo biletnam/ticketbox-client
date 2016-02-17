@@ -1,7 +1,23 @@
 'use strict';
 
 describe('ticketbox.customer.checkout', function () {
-    var $firebaseArray, $firebaseObject, $timeout, scope, ref, fbarray, fbobject, locker, byPathSpy, getMyLocksSpy, unlockSpy;
+    var $firebaseArray,
+        $firebaseObject,
+        $timeout,
+        scope,
+        ref,
+        fbarray,
+        fbobject,
+        locker,
+        byPathSpy,
+        getMyLocksSpy,
+        unlockSpy,
+        deferred,
+        anonymousAuth,
+        createSpy,
+        loginSpy,
+        pathSpy,
+        location;
     var FIXTURE_DATA = {
         'id1': {
             'name': 'This is the first object'
@@ -15,7 +31,7 @@ describe('ticketbox.customer.checkout', function () {
         module('ticketbox.components.utils');
         module('ticketbox.customer.checkout');
 
-        inject(function (_$firebaseArray_, _$firebaseObject_, _$timeout_, _$rootScope_, _fbarray_, _fbobject_, _locker_, $controller) {
+        inject(function (_$firebaseArray_, _$firebaseObject_, _$timeout_, _$rootScope_, _fbarray_, _fbobject_, _locker_, _$q_, _$location_, $controller) {
             $firebaseArray = _$firebaseArray_;
             $firebaseObject = _$firebaseObject_;
             $timeout = _$timeout_;
@@ -31,7 +47,23 @@ describe('ticketbox.customer.checkout', function () {
             getMyLocksSpy = spyOn(locker, 'getMyLocks').and.returnValue(_makeArray(FIXTURE_DATA, ref));
             unlockSpy = spyOn(locker, 'unlock');
 
-            $controller('CheckoutCtrl', {$scope: scope, fbarray: fbarray, locker: locker});
+            deferred = _$q_.defer();
+            anonymousAuth = {
+                login: function() {}
+            };
+
+            createSpy = spyOn(fbobject, 'create').and.returnValue({
+                key: function () {
+                    return 'oid1';
+                }
+            });
+
+            loginSpy = spyOn(anonymousAuth, 'login').and.returnValue(deferred.promise);
+
+            location = _$location_;
+            pathSpy = spyOn(location, 'path');
+
+            $controller('CheckoutCtrl', {$scope: scope, fbarray: fbarray, locker: locker, anonymousAuth: anonymousAuth});
             scope.$digest();
         });
     });
@@ -74,7 +106,6 @@ describe('ticketbox.customer.checkout', function () {
 
         describe('$scope.checkout()', function () {
             it('should add an order', function () {
-                var createSpy = spyOn(fbobject, 'create').and.returnValue(_stubRef());
                 scope.checkout('firstname', 'lastname', 'john.doe@example.com');
                 var data = {'firstname': 'firstname', 'lastname': 'lastname', 'email': 'john.doe@example.com'};
                 expect(createSpy).toHaveBeenCalledWith('/orders', data);
@@ -84,15 +115,25 @@ describe('ticketbox.customer.checkout', function () {
                 _.each(scope.locks, function (lock) {
                     expect(lock.orderId).toEqual(undefined);
                 });
-                var createSpy = spyOn(fbobject, 'create').and.returnValue({
-                    key: function () {
-                        return 'oid1';
-                    }
-                });
                 scope.checkout('firstname', 'lastname', 'john.doe@example.com');
                 _.each(scope.locks, function (lock) {
                     expect(lock.orderId).toEqual('oid1');
                 });
+            });
+
+            it('should renew authentication', function() {
+                expect(loginSpy).not.toHaveBeenCalled();
+                scope.checkout('firstname', 'lastname', 'john.doe@example.com');
+                expect(loginSpy).toHaveBeenCalled();
+            });
+
+            it('should redirect to /events if authentication is successful', function() {
+                expect(pathSpy).not.toHaveBeenCalled();
+                scope.checkout('firstname', 'lastname', 'john.doe@example.com');
+                expect(pathSpy).not.toHaveBeenCalled();
+                deferred.resolve({ 'uid': 'uid' });
+                scope.$apply();
+                expect(pathSpy).toHaveBeenCalledWith('/events');
             });
         });
     });

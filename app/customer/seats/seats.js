@@ -22,7 +22,7 @@ angular.module('ticketbox.customer.seats', [
         };
     })
 
-    .controller('SeatsCtrl', function ($scope, $routeParams, fbarray, fbobject, locker, draw, styles) {
+    .controller('SeatsCtrl', function ($scope, $routeParams, fbarray, fbobject, locker, draw) {
         $scope.event = fbobject.byId('/events', $routeParams.eventId);
         $scope.category = fbobject.byId('/categories', $routeParams.categoryId);
         $scope.block = fbobject.byId('/blocks', $routeParams.blockId);
@@ -71,7 +71,27 @@ angular.module('ticketbox.customer.seats', [
         };
     })
 
-    .directive('ngSeatSelection', function (canvasImage, $rootScope, separator, coordinates) {
+    .service('reservationState', function(separator) {
+        return {
+            get: function(seat, uid, reservations) {
+                if (reservations === null) {
+                    return 'free';
+                }
+                var reservation = _.find(reservations, function(r) {
+                    return r.$id.split(separator)[1] === seat.$id;
+                });
+                if (reservation === undefined) {
+                    return 'free';
+                } else if (reservation.uid === uid && reservation.orderId === undefined) {
+                    return 'lockedByMyself';
+                } else {
+                    return 'locked';
+                }
+            }
+        }
+    })
+
+    .directive('ngSeatSelection', function (canvasImage, $rootScope, separator, coordinates, reservationState) {
         var currentPolygons = [];
 
         function _refreshSeats(scope, canvas, seats, reservations) {
@@ -81,18 +101,8 @@ angular.module('ticketbox.customer.seats', [
             currentPolygons = [];
 
             _.each(seats, function (seat) {
-                var reservation = _.find(reservations, function(r) {
-                    return r.$id.split(separator)[1] === seat.$id;
-                });
-                var reservationState = '';
-                if (reservation === undefined) {
-                    reservationState = 'free';
-                } else if (reservation.uid === $rootScope.authData.uid && reservation.orderId === undefined) {
-                    reservationState = 'lockedByMyself';
-                } else {
-                    reservationState = 'locked';
-                }
-                var polygon = _drawSeat(scope, canvas, seat, reservationState);
+                var state = reservationState.get(seat, $rootScope.authData.uid, reservations);
+                var polygon = _drawSeat(scope, canvas, seat, state);
                 currentPolygons.push(polygon);
             });
 

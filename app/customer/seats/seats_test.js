@@ -276,4 +276,68 @@ describe('ticketbox.customer.seats', function() {
             });
         });
     });
+
+    describe('reservationState', function () {
+        var reservationState;
+
+        beforeEach(module('ticketbox.customer.seats', function($provide) {
+            $provide.value('separator', ':');
+        }));
+
+        beforeEach(inject(function (_reservationState_) {
+            reservationState = _reservationState_;
+        }));
+
+        describe('get()', function() {
+            it('should return free if reservations is null', function() {
+                var seat = {
+                    '$id' : 'sid1'
+                };
+                var uid = 'uid1';
+                var reservations = null;
+                var state = reservationState.get(seat, uid, reservations);
+                expect(state).toEqual('free');
+            });
+
+            it('should return free if no reservation can be found for given seat', function() {
+                var seat = {
+                    '$id' : 'sid1'
+                };
+                var uid = 'uid1';
+                var reservations = [{ '$id': 'eid1:sid2' }];
+                var state = reservationState.get(seat, uid, reservations);
+                expect(state).toEqual('free');
+            });
+
+            it('should return lockedByMyself if a reservation is found and the uid is the given uid', function() {
+                var seat = {
+                    '$id' : 'sid1'
+                };
+                var uid = 'uid1';
+                var reservations = [{ '$id': 'eid1:sid1', 'uid': 'uid1' }];
+                var state = reservationState.get(seat, uid, reservations);
+                expect(state).toEqual('lockedByMyself');
+            });
+
+            it('should return locked if a reservation is found and the uid is not the given uid', function() {
+                var seat = {
+                    '$id' : 'sid1'
+                };
+                var uid = 'uid1';
+                var reservations = [{ '$id': 'eid1:sid1', 'uid': 'uid2' }];
+                var state = reservationState.get(seat, uid, reservations);
+                expect(state).toEqual('locked');
+            });
+
+            it('should return locked if a reservation is found and the orderId is not undefined', function() {
+                var seat = {
+                    '$id' : 'sid1'
+                };
+                var uid = 'uid1';
+                var reservations = [{ '$id': 'eid1:sid1', 'uid': 'uid1', 'orderId': 'oid1' }];
+                var state = reservationState.get(seat, uid, reservations);
+                expect(state).toEqual('locked');
+            });
+        });
+    });
 });

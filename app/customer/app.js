@@ -3,6 +3,7 @@
 angular.module('ticketbox.customer', [
         'ticketbox.config',
         'ticketbox.components.utils',
+        'ticketbox.components.seatplan',
         'ticketbox.customer.events',
         'ticketbox.customer.blocks',
         'ticketbox.customer.seats',

@@ -15,11 +15,12 @@ module.exports = function (config) {
             'app/components/*/*.js',
             'app/admin/app.js',
             'app/admin/*/*.js',
+            'app/boxoffice/*/*.js',
             'app/customer/*/*.js'
         ],
 
         preprocessors: {
-            'app/{admin/*/!(*_test).js,customer/*/!(*_test).js,components/*/!(*_test).js}': [ 'coverage' ]
+            'app/{admin/*/!(*_test).js,boxoffice/*/!(*_test).js,customer/*/!(*_test).js,components/*/!(*_test).js}': [ 'coverage' ]
         },
 
         reporters: [ 'progress', 'coverage' ],

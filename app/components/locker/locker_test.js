@@ -57,15 +57,15 @@ describe('ticketbox.components.locker', function () {
         });
 
         describe('locker.getMyLocks()', function() {
-            it('should fetch all locks with my uid when getMyLocks', function() {
+            it('should fetch all locks with my uid', function() {
                 expect(byChildValueSpy).not.toHaveBeenCalled();
                 locker.getMyLocks();
                 expect(byChildValueSpy).toHaveBeenCalledWith('/reservations', 'uid', 'uid');
             });
         });
 
-        describe('locker.getMyLocks()', function() {
-            it('should fetch all locks with my uid when getMyLocks', function() {
+        describe('locker.getLocksOfEvent()', function() {
+            it('should fetch all locks for event eid when', function() {
                 expect(byChildValueSpy).not.toHaveBeenCalled();
                 locker.getLocksOfEvent('eid');
                 expect(byChildValueSpy).toHaveBeenCalledWith('/reservations', 'eventId', 'eid');

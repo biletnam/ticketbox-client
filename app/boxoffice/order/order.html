@@ -1,0 +1,47 @@
+<div class="row">
+    <div class="twelve columns">
+        <p ng-show="order.isSold">
+            <strong>This order is sold, it cannot be edited anymore.</strong>&nbsp;
+            <a ng-show="order.isSold" ng-click="resend(order, reservations)" class="button button-primary">Re-send Informations</a>
+        </p>
+    </div>
+</div>
+<div class="row ng-class: { 'inactive': order.isSold }">
+    <div class="twelve columns">
+        <h1>{{order.firstname}} {{order.lastname}} - {{order.timestamp | date:'dd.MM.yyyy, HH:mm'}}</h1>
+    </div>
+</div>
+<div class="row ng-class: { 'inactive': order.isSold }">
+    <div class="six columns">
+        <table>
+            <tr>
+                <td><strong>Firstname:</strong></td>
+                <td>{{order.firstname}}</td>
+            </tr>
+            <tr>
+                <td><strong>Lastname:</strong></td>
+                <td>{{order.lastname}}</td>
+            </tr>
+            <tr>
+                <td><strong>Email:</strong></td>
+                <td>{{order.email}}</td>
+            </tr>
+        </table>
+    </div>
+    <div class="six columns">
+        <table>
+            <tr ng-repeat="reservation in reservations">
+                <td>
+                    {{reservation | eventNameFilter : events}}<br>
+                    <b>{{reservation | blockDisplayNameFilter : seats : blocks}}, {{reservation | seatNameFilter : seats}}</b>
+                </td>
+                <td class="buttons"><a ng-hide="order.isSold" ng-click="unlock(reservation)" class="button">Remove</a></td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div ng-hide="order.isSold" class="row">
+    <div class="twelve columns buttons">
+        <a ng-click="sell(order, reservations)" class="button button-primary">Sell Order</a>
+    </div>
+</div>

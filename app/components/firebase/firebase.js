@@ -20,6 +20,10 @@ angular.module('ticketbox.components.firebase', ['firebase', 'ticketbox.config']
                 var query = fbref(path).orderByChild(child).startAt(value).endAt(value);
                 var fbarray = $firebaseArray(query);
                 return fbarray;
+            },
+            byQuery: function(query) {
+                var fbarray = $firebaseArray(query);
+                return fbarray;
             }
         }
     })

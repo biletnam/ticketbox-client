@@ -3,6 +3,7 @@
 angular.module('ticketbox.customer', [
         'ticketbox.config',
         'ticketbox.components.utils',
+        'ticketbox.components.locker',
         'ticketbox.components.seatplan',
         'ticketbox.customer.events',
         'ticketbox.customer.blocks',
@@ -15,12 +16,14 @@ angular.module('ticketbox.customer', [
         });
     })
 
-    .run(function ($rootScope, $location, anonymousAuth, error) {
+    .run(function ($rootScope, $location, $interval, anonymousAuth, error, locker) {
         if (anonymousAuth.isLoggedIn()) {
             $rootScope.authData = anonymousAuth.getAuthData();
+            $interval(locker.deleteStaleLocks, 5 * 1000);
         } else {
             anonymousAuth.login().then(function (authData) {
                 $rootScope.authData = authData;
+                $interval(locker.deleteStaleLocks, 5 * 1000);
             }, error);
         }
     });

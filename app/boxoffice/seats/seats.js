@@ -3,6 +3,7 @@
 angular.module('ticketbox.boxoffice.seats', [
         'ticketbox.components.firebase',
         'ticketbox.components.utils',
+        'ticketbox.components.locker',
         'ticketbox.components.seatplan',
         'ngRoute'])
 

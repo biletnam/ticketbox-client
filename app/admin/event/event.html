@@ -1,29 +1,30 @@
 <div class="row">
-    <div class="twelve columns">&nbsp;</div>
-    <h1>Event {{event.name}}</h1>
-    <form ng-submit="addBlock(newBlockId, newCategoryId)">
-        <table>
-            <tr>
-                <td>
-                    <select ng-model="newBlockId" required>
-                        <option ng-repeat="block in blocks" value="{{block.$id}}">{{block.name}}</option>
-                    </select>
-                </td>
-                <td>
-                    <select ng-model="newCategoryId" required>
-                        <option ng-repeat="category in categories" value="{{category.$id}}">{{category.name}}</option>
-                    </select>
-                </td>
-                <td class="buttons"><input type="submit" class="button button-primary" value="Save"></td>
-            </tr>
-            <tr ng-repeat="eventBlock in eventBlocks">
-                <td>{{eventBlock.blockId | nameFilter:blocks}}</td>
-                <td>{{eventBlock.categoryId | nameFilter:categories}}</td>
-                <td class="buttons">
-                    <a ng-click="removeBlock(eventBlock)" class="button">Remove</a>
-                </td>
-            </tr>
-        </table>
-    </form>
-</div>
+    <div class="twelve columns">
+        <h1>Event {{event.name}}</h1>
+        <form ng-submit="addBlock(newBlockId, newCategoryId)">
+            <table>
+                <tr>
+                    <td>
+                        <select ng-model="newBlockId" required>
+                            <option ng-repeat="block in blocks" value="{{block.$id}}">{{block.name}}</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select ng-model="newCategoryId" required>
+                            <option ng-repeat="category in categories" value="{{category.$id}}">{{category.name}}
+                            </option>
+                        </select>
+                    </td>
+                    <td class="buttons"><input type="submit" class="button button-primary" value="Save"></td>
+                </tr>
+                <tr ng-repeat="eventBlock in eventBlocks">
+                    <td>{{eventBlock.blockId | nameFilter:blocks}}</td>
+                    <td>{{eventBlock.categoryId | nameFilter:categories}}</td>
+                    <td class="buttons">
+                        <a ng-click="removeBlock(eventBlock)" class="button">Remove</a>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
 </div>

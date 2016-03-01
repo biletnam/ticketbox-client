@@ -2,23 +2,40 @@
     <div class="twelve columns">
         <h1>Seats</h1>
         <p>{{event.name}}, {{block.displayName}}</p>
+    </div>
+</div>
+<div class="row">
+    <div class="six columns">
         <div ng-show="block != null && block.seatplan != ''">
-            <ng-seat-selection ng-if="block != null && block.seatplan != ''" src="block.seatplan" event="event" seats="seats" reservations="reservations" handlers="handlers">
+            <ng-seat-selection ng-if="block != null && block.seatplan != ''" src="block.seatplan" event="event"
+                               seats="seats" reservations="reservations" handlers="handlers">
         </div>
         <div ng-show="block != null && block.seatplan == ''">
             <form ng-submit="reserve(numberOfSeats)">
                 <table>
                     <tr>
-                        <td><input type="number" ng-model="numberOfSeats" placeholder="Number of seats" min="1" max="20"></td>
+                        <td><input type="number" ng-model="numberOfSeats" placeholder="Number of seats" min="1"
+                                   max="20"></td>
                         <td class="buttons"><input type="submit" class="button button-primary" value="Reserve"></td>
                     </tr>
                 </table>
             </form>
         </div>
     </div>
+    <div class="six columns">
+        <table>
+            <tr ng-repeat="lock in myLocks">
+                <td>
+                    {{lock | eventNameFilter : allEvents}}<br>
+                    <b>{{lock | blockDisplayNameFilter : allSeats : allBlocks}}, {{lock | seatNameFilter : allSeats}}</b>
+                </td>
+                <td class="buttons"><a ng-click="unlock(lock)" class="button">Remove</a></td>
+            </tr>
+        </table>
+    </div>
 </div>
 <div class="row">
-    <div class="twelve columns">
-        <a href="#/checkout" class="button button-primary">Checkout</a>
+    <div class="twelve columns buttons">
+        <a ng-show="myLocks.length > 0" href="#/checkout" class="button button-primary">Checkout</a>
     </div>
 </div>

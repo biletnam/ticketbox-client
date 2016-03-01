@@ -1,6 +1,6 @@
 'use strict';
 
-describe('ticketbox.boxoffice.events', function () {
+describe('ticketbox.boxoffice.orders', function () {
     var $firebaseArray, $firebaseObject, $timeout, scope, ref, fbarray, byPathSpy;
     var FIXTURE_DATA = {
         'id1': {
@@ -12,7 +12,7 @@ describe('ticketbox.boxoffice.events', function () {
     };
 
     beforeEach(function () {
-        module('ticketbox.boxoffice.events');
+        module('ticketbox.boxoffice.orders');
 
         inject(function (_$firebaseArray_, _$firebaseObject_, _$timeout_, _$rootScope_, $controller) {
             $firebaseArray = _$firebaseArray_;
@@ -28,15 +28,15 @@ describe('ticketbox.boxoffice.events', function () {
 
             byPathSpy = spyOn(fbarray, 'byPath').and.returnValue(_makeArray(FIXTURE_DATA, ref));
 
-            $controller('EventsCtrl', {$scope: scope, fbarray: fbarray});
+            $controller('OrdersCtrl', {$scope: scope, fbarray: fbarray});
             scope.$digest();
         });
     });
 
-    describe('EventsCtrl', function () {
-        describe('$scope.events', function () {
-            it('should fetch events', function () {
-                expect(byPathSpy).toHaveBeenCalledWith('/events');
+    describe('OrdersCtrl', function () {
+        describe('$scope.orders', function () {
+            it('should fetch orders', function () {
+                expect(byPathSpy).toHaveBeenCalledWith('/orders');
             });
         });
     });

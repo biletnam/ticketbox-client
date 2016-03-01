@@ -1,5 +1,9 @@
 table {
-    width:100%;
+    width: 100%;
+}
+
+.inactive {
+    color: #aaaaaa;
 }
 
 .table-with-images td {
@@ -7,9 +11,9 @@ table {
 }
 
 .buttons {
-    text-align:right;
+    text-align: right;
 }
 
 input.narrow {
-    width:100px;
+    width: 100px;
 }

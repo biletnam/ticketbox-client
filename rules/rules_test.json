@@ -18,7 +18,11 @@
         "orderId": "o1"
       },
       "e1_s2": {
-        "timestamp": 1234567890,
+        "timestamp": 123,
+        "uid": "anonymous2"
+      },
+      "e1_s4": {
+        "timestamp": { ".sv": "timestamp" },
         "uid": "anonymous2"
       }
     },
@@ -143,22 +147,35 @@
       "canRead": [ "anonymous1", "anonymous2" ],
       "canWrite": [
         { "auth": "anonymous2", "data": { "orderId": "o1" } },
-        { "auth": "anonymous2", "data": null }
+        { "auth": "anonymous2", "data": null },
+        { "auth": "anonymous1", "data": null },
+        { "auth": "boxoffice", "data": { "isSold": true } },
+        { "auth": "admin", "data": { "isSold": true } }
       ],
       "cannotWrite": [
         { "auth": "anonymous2", "data": { "orderId": "o3" } },
-        { "auth": "anonymous1", "data": null },
-        { "auth": "anonymous1", "data": { "orderId": "o1" } }
+        { "auth": "anonymous1", "data": { "orderId": "o1" } },
+        { "auth": "anonymous1", "data": { "isSold": true } },
+        { "auth": "anonymous2", "data": { "isSold": true } }
+      ]
+    },
+    "reservations/e1_s4": {
+      "canRead": [ "anonymous1", "anonymous2" ],
+      "canWrite": [
+        { "auth": "anonymous2", "data": null }
+      ],
+      "cannotWrite": [
+        { "auth": "anonymous1", "data": null }
       ]
     },
     "reservations/e1_s3": {
       "canRead": [ "anonymous1", "anonymous2" ],
       "canWrite": [
-        { "auth": "anonymous1", "data": { "uid": "anonymous1", "timestamp": 123456 } },
-        { "auth": "anonymous2", "data": { "uid": "anonymous2", "timestamp": 123456 } }
+        { "auth": "anonymous1", "data": { "uid": "anonymous1", "timestamp": { ".sv": "timestamp" } } },
+        { "auth": "anonymous2", "data": { "uid": "anonymous2", "timestamp": { ".sv": "timestamp" } } }
       ],
       "cannotWrite": [
-        { "auth": "anonymous1", "data": { "uid": "anonymous2", "timestamp": 123456 } }
+        { "auth": "anonymous1", "data": { "uid": "anonymous2", "timestamp": { ".sv": "timestamp" } } }
       ]
     },
     "orders": {
@@ -170,7 +187,13 @@
       "canRead": [ "admin", "boxoffice", "anonymous1" ],
       "cannotRead": [ "anonymous2" ],
       "canWrite": [
-        { "auth": "anonymous1", "data": { "uid": "anonymous1", "firstname": "John", "lastname": "Doe", "email": "john.doe@example.com" } }
+        { "auth": "anonymous1", "data": { "uid": "anonymous1", "firstname": "John", "lastname": "Doe", "email": "john.doe@example.com" } },
+        { "auth": "boxoffice", "data": { "isSold": true } },
+        { "auth": "admin", "data": { "isSold": true } }
+      ],
+      "cannotWrite": [
+        { "auth": "anonymous1", "data": { "isSold": true } },
+        { "auth": "anonymous2", "data": { "isSold": true } }
       ]
     },
     "blocks": {

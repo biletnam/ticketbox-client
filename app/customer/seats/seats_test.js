@@ -1,53 +1,32 @@
 'use strict';
 
 describe('ticketbox.customer.seats', function () {
-    var $firebaseArray,
-        $firebaseObject,
-        $timeout,
-        scope,
-        ref,
+    var scope,
         fbarray,
         fbobject,
         locker,
         byPathSpy,
         byChildValueSpy,
         byIdSpy,
-        lockSpy,
         unlockSpy,
-        draw,
-        applySeatStyleSpy;
-    var FIXTURE_DATA = {
-        'id1': {
-            'name': 'This is the first object'
-        },
-        'id2': {
-            'name': 'This is the second object'
-        }
-    };
+        getMyLocksSpy;
 
     beforeEach(function () {
         module('ticketbox.customer.seats');
 
-        inject(function (_$firebaseArray_, _$firebaseObject_, _$timeout_, _$rootScope_, _fbarray_, _fbobject_, _locker_, _draw_, $controller) {
-            $firebaseArray = _$firebaseArray_;
-            $firebaseObject = _$firebaseObject_;
-            $timeout = _$timeout_;
+        inject(function (_$rootScope_, _fbarray_, _fbobject_, _locker_, $controller) {
             scope = _$rootScope_.$new();
-            ref = _stubRef();
 
             fbarray = _fbarray_;
-            byPathSpy = spyOn(fbarray, 'byPath').and.returnValue(_makeArray(FIXTURE_DATA, ref));
-            byChildValueSpy = spyOn(fbarray, 'byChildValue').and.returnValue(_makeArray(FIXTURE_DATA, ref));
+            byPathSpy = spyOn(fbarray, 'byPath');
+            byChildValueSpy = spyOn(fbarray, 'byChildValue');
 
             fbobject = _fbobject_;
-            byIdSpy = spyOn(fbobject, 'byId').and.returnValue(_makeObject(FIXTURE_DATA, ref));
+            byIdSpy = spyOn(fbobject, 'byId');
 
             locker = _locker_;
-            lockSpy = spyOn(locker, 'lock');
             unlockSpy = spyOn(locker, 'unlock');
-
-            draw = _draw_;
-            applySeatStyleSpy = spyOn(draw, 'applySeatStyle');
+            getMyLocksSpy = spyOn(locker, 'getMyLocks');
 
             var routeParams = {
                 eventId: 'eid1',
@@ -90,35 +69,42 @@ describe('ticketbox.customer.seats', function () {
                 expect(byChildValueSpy).toHaveBeenCalledWith('/reservations', 'eventId', 'eid1');
             });
         });
+
+        describe('$scope.myLocks', function () {
+            it('should fetch locks from locker', function() {
+                expect(getMyLocksSpy).toHaveBeenCalled();
+            });
+        });
+
+        describe('$scope.allEvents', function () {
+            it('should fetch all events', function() {
+                expect(byPathSpy).toHaveBeenCalledWith('/events');
+            });
+        });
+
+        describe('$scope.allSeats', function () {
+            it('should fetch all seats', function() {
+                expect(byPathSpy).toHaveBeenCalledWith('/seats');
+            });
+        });
+
+        describe('$scope.allBlocks', function () {
+            it('should fetch all blocks', function() {
+                expect(byPathSpy).toHaveBeenCalledWith('/blocks');
+            });
+        });
+
+        describe('$scope.unlock()', function () {
+            it('should unlock the given seat', function () {
+                var lock = {
+                    '$id': 'eid1:sid1'
+                };
+
+                expect(unlockSpy).not.toHaveBeenCalled();
+                scope.unlock(lock);
+                expect(unlockSpy).toHaveBeenCalledWith('eid1', 'sid1');
+            });
+        });
     });
 
-    function _makeArray(initialData, fbref) {
-        if (!fbref) {
-            fbref = _stubRef();
-        }
-        var fbarray = $firebaseArray(fbref);
-        if (angular.isDefined(initialData)) {
-            fbref.ref().set(initialData);
-            fbref.flush();
-            $timeout.flush();
-        }
-        return fbarray;
-    }
-
-    function _makeObject(initialData, fbref) {
-        if (!fbref) {
-            fbref = _stubRef();
-        }
-        var obj = $firebaseObject(fbref);
-        if (angular.isDefined(initialData)) {
-            fbref.ref().set(initialData);
-            fbref.flush();
-            $timeout.flush();
-        }
-        return obj;
-    }
-
-    function _stubRef() {
-        return new MockFirebase('Mock://');
-    }
 });

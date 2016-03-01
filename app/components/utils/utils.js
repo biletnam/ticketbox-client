@@ -30,41 +30,13 @@ angular.module('ticketbox.components.utils', [ 'ticketbox.components.firebase' ]
 
     .service('serverValue', function() {
         return {
-            timestamp: function() {
+            currentTimestamp: function() {
                 return Firebase.ServerValue.TIMESTAMP;
+            },
+            staleTimestamp: function() {
+                return Date.now() - (10 * 60 * 1000);
             }
         };
-    })
-
-    .service('locker', function(fbref, $rootScope, fbarray, separator, serverValue, error) {
-        return {
-            lock: function(eventId, seatId) {
-                var ref = fbref('/reservations/' + eventId + separator + seatId);
-                ref.set({
-                    'eventId': eventId,
-                    'uid': $rootScope.authData.uid,
-                    'timestamp': serverValue.timestamp()
-                }, function(e) {
-                    if (e) {
-                        error(e);
-                    }
-                });
-            },
-            unlock: function(eventId, seatId) {
-                var ref = fbref('/reservations/' + eventId + separator + seatId);
-                ref.remove(function(e) {
-                    if (e) {
-                        error(e);
-                    }
-                });
-            },
-            getMyLocks: function() {
-                return fbarray.byChildValue('/reservations', 'uid', $rootScope.authData.uid);
-            },
-            getLocksOfEvent: function(eventId) {
-                return fbarray.byChildValue('/reservations', 'eventId', eventId);
-            }
-        }
     })
 
     .service('coordinates', function() {

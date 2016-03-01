@@ -21,6 +21,8 @@
 <body>
 <div class="container">
     <ul>
+        <li ng-show="loggedIn"><a href="#/events">Sell seats</a></li>
+        <li ng-show="loggedIn"><a href="#/orders">Sell orders</a></li>
         <li ng-show="loggedIn"><a href="#/logout">logout</a></li>
     </ul>
     <div ng-view></div>
@@ -36,14 +38,18 @@
 <script src="components/polygonfrompoints/polygonfrompoints.js"></script>
 <script src="components/firebase/firebase.js"></script>
 <script src="components/utils/utils.js"></script>
+<script src="components/locker/locker.js"></script>
 <script src="components/upload/upload.js"></script>
 <script src="components/canvas/canvas.js"></script>
 <script src="components/seatplan/seatplan.js"></script>
+<script src="components/seatlist/seatlist.js"></script>
 <script src="boxoffice/app.js"></script>
 <script src="boxoffice/login/login.js"></script>
 <script src="boxoffice/logout/logout.js"></script>
 <script src="boxoffice/events/events.js"></script>
 <script src="boxoffice/blocks/blocks.js"></script>
 <script src="boxoffice/seats/seats.js"></script>
+<script src="boxoffice/orders/orders.js"></script>
+<script src="boxoffice/order/order.js"></script>
 </body>
 </html>

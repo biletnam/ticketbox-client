@@ -31,11 +31,12 @@
     "reservations": {
       ".indexOn": [
         "uid",
-        "eventId"
+        "eventId",
+        "orderId"
       ],
       ".read": true,
       "$eventId_seatId": {
-        ".write": "!data.exists() || (data.child('uid').val() === auth.uid && !(data.child('orderId').exists() && !newData.exists()))",
+        ".write": "auth.provider === 'password' || !data.exists() || (data.child('uid').val() === auth.uid && !(data.child('orderId').exists() && !newData.exists())) || (data.child('timestamp').val() < now - (10 * 60 * 1000) && !data.child('orderId').exists() && !newData.exists())",
         "timestamp": {
           ".validate": "newData.isNumber()"
         },
@@ -43,10 +44,13 @@
           ".validate": "newData.isString() && root.child('events').child(newData.val()).exists()"
         },
         "uid": {
-          ".validate": "newData.isString() && newData.val() === auth.uid"
+          ".validate": "auth.provider === 'password' || (auth.provider === 'anonymous' && newData.isString() && newData.val() === auth.uid)"
         },
         "orderId": {
           ".validate": "newData.isString() && root.child('orders').child(newData.val()).exists()"
+        },
+        "isSold": {
+          ".validate": "newData.isBoolean() && auth.provider === 'password'"
         },
         "$other": {
           ".validate": false
@@ -55,10 +59,13 @@
     },
     "orders": {
       ".read": "auth !== null && ((auth.provider === 'anonymous' && auth.uid === data.child('uid').val()) || auth.provider === 'password')",
-      ".write": "auth !== null && auth.provider === 'anonymous' && (!data.exists() || data.exists())",
+      ".write": "auth.provider === 'password' || (auth.provider === 'anonymous' && (!data.exists() || data.exists()))",
       "$orderId": {
+        "timestamp": {
+          ".validate": "newData.isNumber()"
+        },
         "uid": {
-          ".validate": "newData.isString() && newData.val() === auth.uid"
+          ".validate": "auth.provider === 'password' || (auth.provider === 'anonymous' && newData.isString() && newData.val() === auth.uid)"
         },
         "firstname": {
           ".validate": "newData.isString() && newData.val().length > 0"
@@ -68,6 +75,9 @@
         },
         "email": {
           ".validate": "newData.isString() && newData.val().matches(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}$/i)"
+        },
+        "isSold": {
+          ".validate": "newData.isBoolean() && auth.provider === 'password'"
         },
         "$other": {
           ".validate": false

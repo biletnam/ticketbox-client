@@ -65,7 +65,7 @@ describe('ticketbox.components.locker', function () {
         });
 
         describe('locker.getLocksOfEvent()', function() {
-            it('should fetch all locks for event eid when', function() {
+            it('should fetch all locks for event eid', function() {
                 expect(byChildValueSpy).not.toHaveBeenCalled();
                 locker.getLocksOfEvent('eid');
                 expect(byChildValueSpy).toHaveBeenCalledWith('/reservations', 'eventId', 'eid');

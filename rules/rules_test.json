@@ -189,11 +189,14 @@
       "canWrite": [
         { "auth": "anonymous1", "data": { "uid": "anonymous1", "firstname": "John", "lastname": "Doe", "email": "john.doe@example.com" } },
         { "auth": "boxoffice", "data": { "isSold": true } },
-        { "auth": "admin", "data": { "isSold": true } }
+        { "auth": "admin", "data": { "isSold": true } },
+        { "auth": "boxoffice", "data": { "uid": "anonymous2", "email": "john.doe@example.com" } },
+        { "auth": "admin", "data": { "uid": "anonymous2", "email": "john.doe@example.com" } }
       ],
       "cannotWrite": [
         { "auth": "anonymous1", "data": { "isSold": true } },
-        { "auth": "anonymous2", "data": { "isSold": true } }
+        { "auth": "anonymous2", "data": { "isSold": true } },
+        { "auth": "anonymous1", "data": { "uid": "anonymous2", "email": "john.doe@example.com" } }
       ]
     },
     "blocks": {

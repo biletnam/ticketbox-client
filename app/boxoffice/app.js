@@ -8,6 +8,7 @@ angular.module('ticketbox.boxoffice', [
         'ticketbox.boxoffice.events',
         'ticketbox.boxoffice.blocks',
         'ticketbox.boxoffice.seats',
+        'ticketbox.boxoffice.checkout',
         'ticketbox.boxoffice.orders',
         'ticketbox.boxoffice.order'])
 
@@ -17,7 +18,7 @@ angular.module('ticketbox.boxoffice', [
         });
     })
 
-    .run(function($rootScope, $location, fbauth, locker) {
+    .run(function($rootScope, $location, $interval, fbauth, locker) {
         $rootScope.$on('$locationChangeStart', function(event, next, current) {
             if ($rootScope.loggedIn !== undefined && !$rootScope.loggedIn) {
                 if (next.controller === 'LoginCtrl') {

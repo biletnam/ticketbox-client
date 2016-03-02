@@ -3,19 +3,11 @@
         <h1>Checkout</h1>
     </div>
 </div>
-<form ng-submit="checkout(firstname, lastname, email)">
+<form ng-submit="sell(email)">
     <div class="row">
         <div class="six columns">
             <h4>Personal information</h4>
             <table>
-                <tr>
-                    <td><input type="text" ng-model="firstname" placeholder="First name"></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td><input type="text" ng-model="lastname" placeholder="Last name"></td>
-                    <td></td>
-                </tr>
                 <tr>
                     <td><input type="email" ng-model="email" placeholder="Email"></td>
                     <td></td>
@@ -37,7 +29,7 @@
     </div>
     <div class="row">
         <div class="twelve columns buttons">
-            <input type="submit" class="button button-primary" value="Book"/>
+            <input type="submit" class="button button-primary" value="Sell Seats"/>
         </div>
     </div>
 </form>

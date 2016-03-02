@@ -68,10 +68,10 @@
           ".validate": "auth.provider === 'password' || (auth.provider === 'anonymous' && newData.isString() && newData.val() === auth.uid)"
         },
         "firstname": {
-          ".validate": "newData.isString() && newData.val().length > 0"
+          ".validate": "auth.provider === 'password' || (auth.provider === 'anonymous' && newData.isString() && newData.val().length > 0)"
         },
         "lastname": {
-          ".validate": "newData.isString() && newData.val().length > 0"
+          ".validate": "auth.provider === 'password' || (auth.provider === 'anonymous' && newData.isString() && newData.val().length > 0)"
         },
         "email": {
           ".validate": "newData.isString() && newData.val().matches(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}$/i)"
@@ -83,10 +83,6 @@
           ".validate": false
         }
       }
-    },
-    "anonymousOrders": {
-      ".read": "auth !== null && auth.provider === 'password'",
-      "$anonymousOrderId": { }
     },
     "blocks": {
       ".read": true,

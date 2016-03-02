@@ -1,6 +1,10 @@
 <div class="row">
     <div class="twelve columns">
         <h1>Seats</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="six columns">
         <p>{{event.name}}, {{block.displayName}}</p>
         <div ng-show="block != null && block.seatplan != ''">
             <ng-seat-selection ng-if="block != null && block.seatplan != ''" src="block.seatplan" event="event" seats="seats" reservations="reservations" handlers="handlers">
@@ -15,6 +19,17 @@
                 </table>
             </form>
         </div>
+    </div>
+    <div class="six columns">
+        <table>
+            <tr ng-repeat="lock in myLocks">
+                <td>
+                    {{lock | eventNameFilter : allEvents}}<br>
+                    <b>{{lock | blockDisplayNameFilter : allSeats : allBlocks}}, {{lock | seatNameFilter : allSeats}}</b>
+                </td>
+                <td class="buttons"><a ng-click="unlock(lock)" class="button">Remove</a></td>
+            </tr>
+        </table>
     </div>
 </div>
 <div class="row">

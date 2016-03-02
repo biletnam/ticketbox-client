@@ -21,6 +21,15 @@ angular.module('ticketbox.components.utils', [ 'ticketbox.components.firebase' ]
         }
     })
 
+    .service('messages', function($rootScope, $timeout) {
+        return {
+            notify:  function(message) {
+                $rootScope.notification = message;
+                $timeout(function() { $rootScope.notification = ''; }, 2000);
+            }
+        };
+    })
+
     .service('error', function($rootScope, $timeout) {
         return function(err) {
             $rootScope.error = angular.isObject(err) && err.code ? err.code : err + '';

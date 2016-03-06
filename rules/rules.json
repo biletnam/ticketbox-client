@@ -41,7 +41,10 @@
           ".validate": "newData.isNumber()"
         },
         "eventId": {
-          ".validate": "newData.isString() && root.child('events').child(newData.val()).exists()"
+          ".validate": "newData.isString() && newData.val().length > 0 && root.child('events').child(newData.val()).exists()"
+        },
+        "seatId": {
+          ".validate": "newData.isString() && newData.val().length > 0 && root.child('seats').child(newData.val()).exists()"
         },
         "uid": {
           ".validate": "auth.provider === 'password' || (auth.provider === 'anonymous' && newData.isString() && newData.val() === auth.uid)"

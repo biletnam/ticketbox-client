@@ -8,6 +8,7 @@ angular.module('ticketbox.components.locker', [ 'ticketbox.components.firebase',
                 var ref = fbref('/reservations/' + eventId + separator + seatId);
                 ref.set({
                     'eventId': eventId,
+                    'seatId': seatId,
                     'uid': $rootScope.authData.uid,
                     'timestamp': serverValue.currentTimestamp()
                 }, function(e) {

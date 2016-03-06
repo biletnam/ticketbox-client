@@ -135,9 +135,10 @@
     },
     "reservations/e1_s1": {
       "canRead": [ "anonymous1", "anonymous2" ],
-      "canWrite": [ { "auth": "anonymous1", "data": { "orderId": "o1" } } ],
+      "canWrite": [ { "auth": "anonymous1", "data": { "orderId": "o1", "seatId": "s1" } } ],
       "cannotWrite": [
         { "auth": "anonymous1", "data": { "orderId": "o3" } },
+        { "auth": "anonymous1", "data": { "orderId": "o1", "seatId": "s4" } },
         { "auth": "anonymous1", "data": null },
         { "auth": "anonymous2", "data": null },
         { "auth": "anonymous2", "data": { "orderId": "o1" } }

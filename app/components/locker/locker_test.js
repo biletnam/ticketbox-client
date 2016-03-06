@@ -44,7 +44,7 @@ describe('ticketbox.components.locker', function () {
             it('should call ref.set()', function () {
                 expect(refSetSpy).not.toHaveBeenCalled();
                 locker.lock('eid', 'sid');
-                expect(refSetSpy).toHaveBeenCalledWith({'eventId': 'eid', 'uid': 'uid', 'timestamp': 123}, jasmine.any(Function));
+                expect(refSetSpy).toHaveBeenCalledWith({'eventId': 'eid', 'seatId': 'sid', 'uid': 'uid', 'timestamp': 123}, jasmine.any(Function));
             });
         });
 

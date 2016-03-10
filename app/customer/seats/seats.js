@@ -25,6 +25,20 @@ angular.module('ticketbox.customer.seats', [
         $scope.allSeats = fbarray.byPath('/seats');
         $scope.allBlocks = fbarray.byPath('/blocks');
 
+        $scope.reserve = function(numberOfSeatsToBeLocked) {
+            var eventId = $routeParams.eventId;
+            var numberOfFetchedLocks = 0;
+            locker.getLocksOfEvent(eventId).$loaded(function(locks) {
+                _.each($scope.seats, function(seat) {
+                    var lockedSeatIds = _.map(locks, function(lock) { return lock.seatId; });
+                    if (numberOfFetchedLocks < numberOfSeatsToBeLocked && !_.contains(lockedSeatIds, seat.$id)) {
+                        locker.lock(eventId, seat.$id);
+                        numberOfFetchedLocks += 1;
+                    }
+                });
+            });
+        };
+
         $scope.unlock = function (lock) {
             var eventId = lock.$id.split(separator)[0];
             var seatId = lock.$id.split(separator)[1];

@@ -7,14 +7,18 @@ describe('ticketbox.boxoffice.checkout', function () {
         scope,
         ref,
         fbarray,
+        byPathSpy,
         fbobject,
         serverValue,
         currentTimestampSpy,
         locker,
-        byPathSpy,
+        saveDeferred,
+        locksSaveSpy,
         getMyLocksSpy,
         unlockSpy,
-        deferred,
+        mailer,
+        sellSpy,
+        loginDeferred,
         anonymousAuth,
         createSpy,
         loginSpy,
@@ -49,10 +53,26 @@ describe('ticketbox.boxoffice.checkout', function () {
             currentTimestampSpy = spyOn(serverValue, 'currentTimestamp').and.returnValue(123);
 
             locker = _locker_;
-            getMyLocksSpy = spyOn(locker, 'getMyLocks').and.returnValue(_makeArray(FIXTURE_DATA, ref));
+            var locks = {
+                $save: function() {},
+                0: {
+                    '$id': 'lock0'
+                },
+                1: {
+                    '$id': 'lock1'
+                }
+            };
+            saveDeferred = _$q_.defer();
+            locksSaveSpy = spyOn(locks, '$save').and.returnValue(saveDeferred.promise);
+            getMyLocksSpy = spyOn(locker, 'getMyLocks').and.returnValue(locks);
             unlockSpy = spyOn(locker, 'unlock');
 
-            deferred = _$q_.defer();
+            mailer = {
+                sell: function() { }
+            };
+            sellSpy = spyOn(mailer, 'sell');
+
+            loginDeferred = _$q_.defer();
             anonymousAuth = {
                 login: function() {}
             };
@@ -63,12 +83,12 @@ describe('ticketbox.boxoffice.checkout', function () {
                 }
             });
 
-            loginSpy = spyOn(anonymousAuth, 'login').and.returnValue(deferred.promise);
+            loginSpy = spyOn(anonymousAuth, 'login').and.returnValue(loginDeferred.promise);
 
             location = _$location_;
             pathSpy = spyOn(location, 'path');
 
-            $controller('CheckoutCtrl', {$scope: scope, fbarray: fbarray, serverValue: serverValue, locker: locker, anonymousAuth: anonymousAuth});
+            $controller('CheckoutCtrl', {$scope: scope, fbarray: fbarray, serverValue: serverValue, locker: locker, mailer: mailer, anonymousAuth: anonymousAuth});
             scope.$digest();
         });
     });
@@ -135,6 +155,16 @@ describe('ticketbox.boxoffice.checkout', function () {
                 _.each(scope.locks, function (lock) {
                     expect(lock.isSold).toBeTruthy();
                 });
+            });
+
+            it('should send a mail using the mailer', function() {
+                expect(sellSpy).not.toHaveBeenCalled();
+                scope.sell('firstname', 'lastname', 'john.doe@example.com');
+                expect(locksSaveSpy).toHaveBeenCalled();
+                expect(sellSpy).not.toHaveBeenCalled();
+                saveDeferred.resolve();
+                scope.$digest();
+                expect(sellSpy).toHaveBeenCalledWith('oid1');
             });
         });
     });

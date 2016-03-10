@@ -4,6 +4,7 @@ angular.module('ticketbox.boxoffice.checkout', [
         'ticketbox.components.firebase',
         'ticketbox.components.utils',
         'ticketbox.components.locker',
+        'ticketbox.components.mailer',
         'ticketbox.components.seatlist',
         'ngRoute'])
 
@@ -14,7 +15,7 @@ angular.module('ticketbox.boxoffice.checkout', [
         });
     }])
 
-    .controller('CheckoutCtrl', function ($rootScope, $scope, $location, $q, fbarray, fbobject, serverValue, locker, separator, messages) {
+    .controller('CheckoutCtrl', function ($rootScope, $scope, $location, $q, fbarray, fbobject, serverValue, locker, mailer, separator, messages, error) {
         $scope.locks = locker.getMyLocks();
         $scope.events = fbarray.byPath('/events');
         $scope.seats = fbarray.byPath('/seats');
@@ -39,8 +40,10 @@ angular.module('ticketbox.boxoffice.checkout', [
                 lock.isSold = true;
                 promises.push($scope.locks.$save(lock));
             });
-            $q.all(promises).then(messages.notify(promises.length + ' seats sold succesfully.'))
 
-            // TODO: Send a confirmation mail
+            $q.all(promises).then(function() {
+                mailer.sell(orderRef.key());
+                messages.notify('Order processed successfully.');
+            }, error);
         };
     });

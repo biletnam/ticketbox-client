@@ -1,7 +1,17 @@
 'use strict';
 
 describe('ticketbox.admin.seats', function () {
-    var $firebaseArray, $firebaseObject, $timeout, scope, ref, fbarray, fbobject, arrayModification, blockId, geometry;
+    var $firebaseArray,
+        $firebaseObject,
+        $timeout,
+        scope,
+        ref,
+        fbarray,
+        fbobject,
+        arrayModification,
+        blockId,
+        geometry,
+        calculateSeatCoordinatesSpy;
 
     var FIXTURE_DATA = {
         'id1': {
@@ -46,6 +56,8 @@ describe('ticketbox.admin.seats', function () {
             scope.filterSeats(blockId);
 
             geometry = _geometry_;
+            var seatCoordinates = {'x0': 0, 'y0': 1, 'x1': 2, 'y1': 3, 'x2': 4, 'y2': 5, 'x3': 6, 'y3': 7};
+            calculateSeatCoordinatesSpy = spyOn(geometry, 'calculateSeatCoordinates').and.returnValue(seatCoordinates);
         });
     });
 
@@ -105,6 +117,19 @@ describe('ticketbox.admin.seats', function () {
                 _flush();
                 expect(scope.endSeatNumber).toEqual(1);
             });
+
+            it('should calculate seat coordinates when 4 coordinates are set', function() {
+                var coordinates = [
+                    { 'x': 0, 'y': 1 },
+                    { 'x': 2, 'y': 3 },
+                    { 'x': 4, 'y': 5 },
+                    { 'x': 6, 'y': 7 }
+                ];
+                scope.add(blockId, 'new seat {i}', 1, 3, coordinates);
+                expect(calculateSeatCoordinatesSpy).toHaveBeenCalledWith(coordinates, 3, 0);
+                expect(calculateSeatCoordinatesSpy).toHaveBeenCalledWith(coordinates, 3, 1);
+                expect(calculateSeatCoordinatesSpy).toHaveBeenCalledWith(coordinates, 3, 2);
+            });
         });
 
         describe('$scope.remove()', function () {
@@ -122,43 +147,6 @@ describe('ticketbox.admin.seats', function () {
                 var removeAllSpy = spyOn(arrayModification, 'removeAll').and.returnValue({ then: function() {}});
                 scope.removeAll(scope.seats);
                 expect(removeAllSpy).toHaveBeenCalledWith(scope.seats);
-            });
-        });
-    });
-
-    describe('geometry', function () {
-        describe('calculateSeatCoordinates', function() {
-            it('should return given coordinates when one seat is given', function() {
-                var coordinates = [
-                    { x: 0, y: 1 },
-                    { x: 1, y: 1 },
-                    { x: 1, y: 0 },
-                    { x: 0, y: 0 }
-                ];
-                var seatCoordinates = geometry.calculateSeatCoordinates(coordinates, 1, 0);
-                expect(seatCoordinates).toEqual({ x0: 0, y0: 1, x1: 0, y1: 0, x2: 1, y2: 0, x3: 1, y3: 1 });
-            });
-
-            it('should return coordinates of first seat', function() {
-                var coordinates = [
-                    { x: 0, y: 1 },
-                    { x: 2, y: 1 },
-                    { x: 2, y: 0 },
-                    { x: 0, y: 0 }
-                ];
-                var seatCoordinates = geometry.calculateSeatCoordinates(coordinates, 2, 0);
-                expect(seatCoordinates).toEqual({ x0: 0, y0: 1, x1: 0, y1: 0, x2: 1, y2: 0, x3: 1, y3: 1 });
-            });
-
-            it('should return coordinates of second seat', function() {
-                var coordinates = [
-                    { x: 0, y: 1 },
-                    { x: 2, y: 1 },
-                    { x: 2, y: 0 },
-                    { x: 0, y: 0 }
-                ];
-                var seatCoordinates = geometry.calculateSeatCoordinates(coordinates, 2, 1);
-                expect(seatCoordinates).toEqual({ x0: 1, y0: 1, x1: 1, y1: 0, x2: 2, y2: 0, x3: 2, y3: 1 });
             });
         });
     });
@@ -197,4 +185,51 @@ describe('ticketbox.admin.seats', function () {
         ref.flush();
         $timeout.flush();
     }
+});
+
+describe('ticketbox.admin.seats', function () {
+    describe('geometry', function () {
+        var geometry;
+
+        beforeEach(module('ticketbox.admin.seats'));
+
+        beforeEach(inject(function (_geometry_) {
+            geometry = _geometry_;
+        }));
+
+        describe('calculateSeatCoordinates', function () {
+            it('should return given coordinates when one seat is given', function () {
+                var coordinates = [
+                    {x: 0, y: 1},
+                    {x: 1, y: 1},
+                    {x: 1, y: 0},
+                    {x: 0, y: 0}
+                ];
+                var seatCoordinates = geometry.calculateSeatCoordinates(coordinates, 1, 0);
+                expect(seatCoordinates).toEqual({x0: 0, y0: 1, x1: 0, y1: 0, x2: 1, y2: 0, x3: 1, y3: 1});
+            });
+
+            it('should return coordinates of first seat', function () {
+                var coordinates = [
+                    {x: 0, y: 1},
+                    {x: 2, y: 1},
+                    {x: 2, y: 0},
+                    {x: 0, y: 0}
+                ];
+                var seatCoordinates = geometry.calculateSeatCoordinates(coordinates, 2, 0);
+                expect(seatCoordinates).toEqual({x0: 0, y0: 1, x1: 0, y1: 0, x2: 1, y2: 0, x3: 1, y3: 1});
+            });
+
+            it('should return coordinates of second seat', function () {
+                var coordinates = [
+                    {x: 0, y: 1},
+                    {x: 2, y: 1},
+                    {x: 2, y: 0},
+                    {x: 0, y: 0}
+                ];
+                var seatCoordinates = geometry.calculateSeatCoordinates(coordinates, 2, 1);
+                expect(seatCoordinates).toEqual({x0: 1, y0: 1, x1: 1, y1: 0, x2: 2, y2: 0, x3: 2, y3: 1});
+            });
+        });
+    });
 });

@@ -7,7 +7,7 @@
     <div class="six columns">
         <h2>Pending</h2>
         <table>
-            <tr ng-repeat="order in orders | status:'pending'">
+            <tr ng-repeat="order in orders | statusFilter:'pending'">
                 <td><a href="#/order/{{order.$id}}">{{order.firstname}} {{order.lastname}} - {{order.timestamp |
                     date:'dd.MM.yyyy, HH:mm'}}</a></td>
             </tr>
@@ -16,7 +16,7 @@
     <div class="six columns">
         <h2>Sold</h2>
         <table>
-            <tr ng-repeat="order in orders | status:'sold'">
+            <tr ng-repeat="order in orders | statusFilter:'sold'">
                 <td><a href="#/order/{{order.$id}}">{{order.firstname}} {{order.lastname}} - {{order.timestamp |
                     date:'dd.MM.yyyy, HH:mm'}}</a></td>
             </tr>

@@ -58,3 +58,52 @@ describe('ticketbox.boxoffice.orders', function () {
         return new MockFirebase('Mock://');
     }
 });
+
+describe('ticketbox.boxoffice.orders', function () {
+    describe('statusFilter', function () {
+        var statusFilter;
+
+        beforeEach(function () {
+            angular.mock.module('ticketbox.boxoffice.orders', function ($provide) {
+                $provide.value('separator', ':');
+            });
+
+            inject(function ($filter) {
+                statusFilter = $filter('statusFilter', {});
+            });
+        });
+
+        it('should select pending orders', function () {
+            var status = "pending";
+            var pendingOrder = {"isSold": false};
+            var soldOrder = {"isSold": true};
+            var orders = [
+                pendingOrder,
+                soldOrder
+            ];
+            var pendingOrders = statusFilter(orders, status);
+            expect(pendingOrders).toContain(pendingOrder);
+            expect(pendingOrders).not.toContain(soldOrder);
+        });
+
+        it('should select sold orders', function () {
+            var status = "sold";
+            var pendingOrder = {"isSold": false};
+            var soldOrder = {"isSold": true};
+            var orders = [pendingOrder, soldOrder];
+            var pendingOrders = statusFilter(orders, status);
+            expect(pendingOrders).toContain(soldOrder);
+            expect(pendingOrders).not.toContain(pendingOrder);
+        });
+
+        it('should select nothing if status is unknown', function () {
+            var status = "unknown";
+            var pendingOrder = {"isSold": false};
+            var soldOrder = {"isSold": true};
+            var orders = [pendingOrder, soldOrder];
+            var pendingOrders = statusFilter(orders, status);
+            expect(pendingOrders).not.toContain(soldOrder);
+            expect(pendingOrders).not.toContain(pendingOrder);
+        });
+    });
+});

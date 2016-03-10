@@ -1,6 +1,6 @@
 'use strict';
 
-describe('ticketbox.customer.seats', function () {
+describe('ticketbox.boxoffice.seats', function () {
     var scope,
         fbarray,
         fbobject,
@@ -12,7 +12,7 @@ describe('ticketbox.customer.seats', function () {
         getMyLocksSpy;
 
     beforeEach(function () {
-        module('ticketbox.customer.seats');
+        module('ticketbox.boxoffice.seats');
 
         inject(function (_$rootScope_, _fbarray_, _fbobject_, _locker_, $controller) {
             scope = _$rootScope_.$new();

@@ -13,7 +13,7 @@ angular.module('ticketbox.boxoffice.orders', ['ticketbox.components.firebase', '
         $scope.orders = fbarray.byPath('/orders');
     })
 
-    .filter('status', function() {
+    .filter('statusFilter', function() {
         return function(orders, status) {
             return _.filter(orders, function(order) {
                 if (status === 'sold' && order.isSold === true) {

@@ -11,10 +11,14 @@ describe('ticketbox.customer.checkout', function () {
         serverValue,
         currentTimestampSpy,
         locker,
+        saveDeferred,
+        locksSaveSpy,
+        mailer,
+        orderSpy,
         byPathSpy,
         getMyLocksSpy,
         unlockSpy,
-        deferred,
+        loginDeferred,
         anonymousAuth,
         createSpy,
         loginSpy,
@@ -49,10 +53,26 @@ describe('ticketbox.customer.checkout', function () {
             currentTimestampSpy = spyOn(serverValue, 'currentTimestamp').and.returnValue(123);
 
             locker = _locker_;
-            getMyLocksSpy = spyOn(locker, 'getMyLocks').and.returnValue(_makeArray(FIXTURE_DATA, ref));
+            var locks = {
+                $save: function() {},
+                0: {
+                    '$id': 'lock0'
+                },
+                1: {
+                    '$id': 'lock1'
+                }
+            };
+            saveDeferred = _$q_.defer();
+            locksSaveSpy = spyOn(locks, '$save').and.returnValue(saveDeferred.promise);
+            getMyLocksSpy = spyOn(locker, 'getMyLocks').and.returnValue(locks);
             unlockSpy = spyOn(locker, 'unlock');
 
-            deferred = _$q_.defer();
+            mailer = {
+                order: function() { }
+            };
+            orderSpy = spyOn(mailer, 'order');
+
+            loginDeferred = _$q_.defer();
             anonymousAuth = {
                 login: function() {}
             };
@@ -63,12 +83,12 @@ describe('ticketbox.customer.checkout', function () {
                 }
             });
 
-            loginSpy = spyOn(anonymousAuth, 'login').and.returnValue(deferred.promise);
+            loginSpy = spyOn(anonymousAuth, 'login').and.returnValue(loginDeferred.promise);
 
             location = _$location_;
             pathSpy = spyOn(location, 'path');
 
-            $controller('CheckoutCtrl', {$scope: scope, fbarray: fbarray, serverValue: serverValue, locker: locker, anonymousAuth: anonymousAuth});
+            $controller('CheckoutCtrl', {$scope: scope, fbarray: fbarray, serverValue: serverValue, locker: locker, mailer: mailer, anonymousAuth: anonymousAuth});
             scope.$digest();
         });
     });
@@ -127,9 +147,22 @@ describe('ticketbox.customer.checkout', function () {
                 });
             });
 
+            it('should send a mail using the mailer', function() {
+                expect(orderSpy).not.toHaveBeenCalled();
+                scope.checkout('firstname', 'lastname', 'john.doe@example.com');
+                expect(locksSaveSpy).toHaveBeenCalled();
+                expect(orderSpy).not.toHaveBeenCalled();
+                saveDeferred.resolve();
+                scope.$digest();
+                expect(orderSpy).toHaveBeenCalledWith('oid1');
+            });
+
             it('should renew authentication', function() {
                 expect(loginSpy).not.toHaveBeenCalled();
                 scope.checkout('firstname', 'lastname', 'john.doe@example.com');
+                expect(loginSpy).not.toHaveBeenCalled();
+                saveDeferred.resolve();
+                scope.$digest();
                 expect(loginSpy).toHaveBeenCalled();
             });
 
@@ -137,8 +170,9 @@ describe('ticketbox.customer.checkout', function () {
                 expect(pathSpy).not.toHaveBeenCalled();
                 scope.checkout('firstname', 'lastname', 'john.doe@example.com');
                 expect(pathSpy).not.toHaveBeenCalled();
-                deferred.resolve({ 'uid': 'uid' });
-                scope.$apply();
+                saveDeferred.resolve();
+                loginDeferred.resolve({ 'uid': 'uid' });
+                scope.$digest();
                 expect(pathSpy).toHaveBeenCalledWith('/events');
             });
         });

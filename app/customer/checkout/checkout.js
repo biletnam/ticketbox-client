@@ -4,6 +4,7 @@ angular.module('ticketbox.customer.checkout', [
         'ticketbox.components.firebase',
         'ticketbox.components.utils',
         'ticketbox.components.locker',
+        'ticketbox.components.mailer',
         'ticketbox.components.seatlist',
         'ngRoute'])
 
@@ -14,7 +15,7 @@ angular.module('ticketbox.customer.checkout', [
         });
     }])
 
-    .controller('CheckoutCtrl', function ($rootScope, $scope, $location, fbarray, fbobject, serverValue, locker, separator, anonymousAuth, error) {
+    .controller('CheckoutCtrl', function ($rootScope, $scope, $location, $q, fbarray, fbobject, serverValue, locker, mailer, separator, anonymousAuth, messages, error) {
         $scope.locks = locker.getMyLocks();
         $scope.events = fbarray.byPath('/events');
         $scope.seats = fbarray.byPath('/seats');
@@ -34,16 +35,21 @@ angular.module('ticketbox.customer.checkout', [
                 'email': email
             };
             var orderRef = fbobject.create('/orders', data);
+            var promises = [];
             _.each($scope.locks, function (lock) {
                 lock.orderId = orderRef.key();
-                $scope.locks.$save(lock);
+                promises.push($scope.locks.$save(lock));
             });
 
-            // TODO: Send a confirmation mail
+            $q.all(promises).then(function() {
+                mailer.order(orderRef.key());
+                messages.notify(promises.length + ' seats sold succesfully.');
 
-            anonymousAuth.login().then(function (authData) {
-                $rootScope.authData = authData;
-                $location.path('/events');
+                anonymousAuth.login().then(function (authData) {
+                    $rootScope.authData = authData;
+                    $location.path('/events');
+                }, error);
+
             }, error);
         };
     });

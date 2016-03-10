@@ -13,6 +13,9 @@ angular.module('ticketbox.config', [])
     // your Firebase data URL goes here, no trailing slash
     .constant('FBURL', 'https://<app-name>.firebaseio.com')
 
+    // the mailer api URL, no trailing slash
+    .constant('MAILERURL', '<ticketbox-mailer-url>')
+
     // double check that the app has been configured before running it and blowing up space and time
     .run(['FBURL', '$timeout', function (FBURL, $timeout) {
         if (FBURL.match('//INSTANCE.firebaseio.com')) {

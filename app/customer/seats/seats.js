@@ -25,6 +25,8 @@ angular.module('ticketbox.customer.seats', [
         $scope.allSeats = fbarray.byPath('/seats');
         $scope.allBlocks = fbarray.byPath('/blocks');
 
+        $scope.numberOfSeatsToBeLocked = 1;
+
         $scope.reserve = function(numberOfSeatsToBeLocked) {
             var eventId = $routeParams.eventId;
             var numberOfFetchedLocks = 0;

@@ -10,10 +10,10 @@
             <ng-seat-selection ng-if="block != null && block.seatplan != ''" src="block.seatplan" event="event" seats="seats" reservations="reservations" handlers="handlers">
         </div>
         <div ng-show="block != null && block.seatplan == ''">
-            <form ng-submit="reserve(numberOfSeats)">
+            <form ng-submit="reserve(numberOfSeatsToBeLocked)">
                 <table>
                     <tr>
-                        <td><input type="number" ng-model="numberOfSeats" placeholder="Number of seats" min="1" max="20"></td>
+                        <td><input type="number" ng-model="numberOfSeatsToBeLocked" placeholder="Number of seats" min="1" max="20"></td>
                         <td class="buttons"><input type="submit" class="button button-primary" value="Reserve"></td>
                     </tr>
                 </table>
@@ -34,6 +34,6 @@
 </div>
 <div class="row">
     <div class="twelve columns buttons">
-        <a href="#/checkout" class="button button-primary">Checkout</a>
+        <a ng-show="myLocks.length > 0" href="#/checkout" class="button button-primary">Checkout</a>
     </div>
 </div>

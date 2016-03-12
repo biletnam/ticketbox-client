@@ -15,11 +15,11 @@ describe('ticketbox.components.seatplan', function () {
             var locker = {
                 lock: function () {
                 },
-                unlock: function () {
+                unlockWithEventIdAndSeatId: function () {
                 }
             };
             lockSpy = spyOn(locker, 'lock');
-            unlockSpy = spyOn(locker, 'unlock');
+            unlockSpy = spyOn(locker, 'unlockWithEventIdAndSeatId');
             $provide.value('locker', locker);
         }));
 

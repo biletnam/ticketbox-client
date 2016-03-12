@@ -28,7 +28,7 @@ describe('ticketbox.boxoffice.order', function () {
             byIdSpy = spyOn(fbobject, 'byId');
 
             locker = _locker_;
-            unlockSpy = spyOn(locker, 'unlock');
+            unlockSpy = spyOn(locker, 'unlockWithLock');
 
             var routeParams = {
                 orderId: 'id1'
@@ -88,7 +88,7 @@ describe('ticketbox.boxoffice.order', function () {
 
                 expect(unlockSpy).not.toHaveBeenCalled();
                 scope.unlock(lock);
-                expect(unlockSpy).toHaveBeenCalledWith('eid1', 'sid1');
+                expect(unlockSpy).toHaveBeenCalledWith(lock);
             });
         });
 

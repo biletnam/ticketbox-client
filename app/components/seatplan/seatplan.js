@@ -20,7 +20,7 @@ angular.module('ticketbox.components.seatplan', ['ticketbox.components.utils', '
                 if (reservationState === 'free') {
                     locker.lock(event.$id, seat.$id);
                 } else if (reservationState === 'lockedByMyself') {
-                    locker.unlock(event.$id, seat.$id);
+                    locker.unlockWithEventIdAndSeatId(event.$id, seat.$id);
                 }
             },
             mouseenter: function (event, seat, element, reservationState) {

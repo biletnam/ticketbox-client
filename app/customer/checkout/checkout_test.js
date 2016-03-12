@@ -65,7 +65,7 @@ describe('ticketbox.customer.checkout', function () {
             saveDeferred = _$q_.defer();
             locksSaveSpy = spyOn(locks, '$save').and.returnValue(saveDeferred.promise);
             getMyLocksSpy = spyOn(locker, 'getMyLocks').and.returnValue(locks);
-            unlockSpy = spyOn(locker, 'unlock');
+            unlockSpy = spyOn(locker, 'unlockWithLock');
 
             mailer = {
                 order: function() { }
@@ -125,7 +125,7 @@ describe('ticketbox.customer.checkout', function () {
                 };
                 expect(unlockSpy).not.toHaveBeenCalled();
                 scope.unlock(lock);
-                expect(unlockSpy).toHaveBeenCalledWith('eid1', 'sid1');
+                expect(unlockSpy).toHaveBeenCalledWith(lock);
             });
         });
 

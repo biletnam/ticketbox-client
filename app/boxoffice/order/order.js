@@ -26,9 +26,7 @@ angular.module('ticketbox.boxoffice.order', [
         };
 
         $scope.unlock = function (lock) {
-            var eventId = lock.$id.split(separator)[0];
-            var seatId = lock.$id.split(separator)[1];
-            locker.unlock(eventId, seatId);
+            locker.unlockWithLock(lock);
         };
 
         $scope.sell = function (order, reservations) {

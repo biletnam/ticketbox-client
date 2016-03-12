@@ -18,7 +18,12 @@ angular.module('ticketbox.components.locker', [ 'ticketbox.components.firebase',
                     }
                 });
             },
-            unlock: function(eventId, seatId) {
+            unlockWithLock: function(lock) {
+                var eventId = lock.$id.split(separator)[0];
+                var seatId = lock.$id.split(separator)[1];
+                this.unlockWithEventIdAndSeatId(eventId, seatId);
+            },
+            unlockWithEventIdAndSeatId: function(eventId, seatId) {
                 var ref = fbref('/reservations/' + eventId + separator + seatId);
                 ref.remove(function(e) {
                     if (e) {

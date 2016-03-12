@@ -48,10 +48,21 @@ describe('ticketbox.components.locker', function () {
             });
         });
 
-        describe('locker.unlock()', function() {
+        describe('locker.unlockWithLock()', function() {
             it('should call ref.remove() when lock is released', function () {
                 expect(refRemoveSpy).not.toHaveBeenCalled();
-                locker.unlock('eid', 'sid');
+                var lock = {
+                    '$id': 'eid:sid'
+                };
+                locker.unlockWithLock(lock);
+                expect(refRemoveSpy).toHaveBeenCalledWith(jasmine.any(Function));
+            });
+        });
+
+        describe('locker.unlockWithEventIdAndSeatId()', function() {
+            it('should call ref.remove() when lock is released', function () {
+                expect(refRemoveSpy).not.toHaveBeenCalled();
+                locker.unlockWithEventIdAndSeatId('eid', 'sid');
                 expect(refRemoveSpy).toHaveBeenCalledWith(jasmine.any(Function));
             });
         });

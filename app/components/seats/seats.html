@@ -14,9 +14,21 @@
             <form ng-submit="reserve(numberOfSeatsToBeLocked)">
                 <table>
                     <tr>
-                        <td><input type="number" ng-model="numberOfSeatsToBeLocked" placeholder="Number of seats" min="1"
-                                   max="20"></td>
-                        <td class="buttons"><input type="submit" class="button button-primary" value="Reserve"></td>
+                        <td>
+                            <select ng-model="numberOfSeatsToBeLocked" ng-change="reserve(numberOfSeatsToBeLocked)">
+                                <option value="0">Select number of seats...</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                            </select>
+                        </td>
                     </tr>
                 </table>
             </form>

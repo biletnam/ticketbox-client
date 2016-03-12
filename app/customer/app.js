@@ -4,10 +4,9 @@ angular.module('ticketbox.customer', [
         'ticketbox.config',
         'ticketbox.components.utils',
         'ticketbox.components.locker',
-        'ticketbox.components.seatplan',
+        'ticketbox.components.seats',
         'ticketbox.customer.events',
         'ticketbox.customer.blocks',
-        'ticketbox.customer.seats',
         'ticketbox.customer.checkout'])
 
     .config(function ($routeProvider) {

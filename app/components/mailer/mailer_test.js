@@ -20,10 +20,18 @@ describe('ticketbox.components.mailer', function () {
         }));
 
         describe('mailer.order()', function() {
-            it('should post the order to the mailer url', function () {
+            it('should post the order to the order endpoint', function () {
                 expect(postSpy).not.toHaveBeenCalled();
                 mailer.order('oid');
                 expect(postSpy).toHaveBeenCalledWith(mailerUrl + '/order', { 'orderId': 'oid' });
+            });
+        });
+
+        describe('mailer.sell()', function() {
+            it('should post the order to the sell endpoint', function () {
+                expect(postSpy).not.toHaveBeenCalled();
+                mailer.sell('oid');
+                expect(postSpy).toHaveBeenCalledWith(mailerUrl + '/sell', { 'orderId': 'oid' });
             });
         });
     });

@@ -94,6 +94,19 @@ describe('ticketbox.components.seats', function () {
             });
         });
 
+        describe('$scope.reserve()', function() {
+            it('should fetch all locks for this event')
+        });
+
+        describe('$scope.saveLock()', function() {
+            it('should save the given lock', function() {
+                var lock = { };
+                expect(myLocksSaveSpy).not.toHaveBeenCalled();
+                scope.saveLock(lock);
+                expect(myLocksSaveSpy).toHaveBeenCalledWith(lock);
+            });
+        });
+
         describe('$scope.unlock()', function () {
             it('should unlock the given seat', function () {
                 var lock = {

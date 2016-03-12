@@ -3,11 +3,11 @@
 angular.module('ticketbox.boxoffice', [
         'ticketbox.config',
         'ticketbox.components.locker',
+        'ticketbox.components.seats',
         'ticketbox.boxoffice.login',
         'ticketbox.boxoffice.logout',
         'ticketbox.boxoffice.events',
         'ticketbox.boxoffice.blocks',
-        'ticketbox.boxoffice.seats',
         'ticketbox.boxoffice.checkout',
         'ticketbox.boxoffice.orders',
         'ticketbox.boxoffice.order'])

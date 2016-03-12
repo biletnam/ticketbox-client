@@ -21,3 +21,14 @@ table {
 input.narrow {
     width: 100px;
 }
+
+input.ng-invalid.ng-touched {
+    border-color:#f30;
+    background:#fdc;
+}
+input.button-primary[disabled], input.button[disabled], input.button-primary[disabled]:hover, input.button[disabled]:hover,
+button[disabled], button[disabled]:hover, button.button-primary[disabled], button.button-primary[disabled]:hover {
+    background:#ccc;
+    border-color: #ccc;
+    text-shadow:none;
+}

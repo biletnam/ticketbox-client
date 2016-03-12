@@ -185,7 +185,7 @@ describe('ticketbox.components.seatplan', function () {
     describe('reservationState', function () {
         var reservationState;
 
-        beforeEach(module('ticketbox.customer.seats', function ($provide) {
+        beforeEach(module('ticketbox.components.seats', function ($provide) {
             $provide.value('separator', ':');
         }));
 

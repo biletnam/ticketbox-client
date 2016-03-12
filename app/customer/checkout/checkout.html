@@ -1,3 +1,8 @@
+<div class="row" ng-show="locks.length > 0">
+    <div class="twelve columns">
+        {{locks.length}} seats ({{locks | totalPriceFilter : allSeats : allEvents : allCategories}})
+    </div>
+</div>
 <div class="row">
     <div class="twelve columns">
         <h1>Checkout</h1>

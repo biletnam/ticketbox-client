@@ -17,9 +17,10 @@ angular.module('ticketbox.customer.checkout', [
 
     .controller('CheckoutCtrl', function ($rootScope, $scope, $location, $q, fbarray, fbobject, serverValue, locker, mailer, separator, anonymousAuth, messages, error) {
         $scope.locks = locker.getMyLocks();
-        $scope.events = fbarray.byPath('/events');
-        $scope.seats = fbarray.byPath('/seats');
-        $scope.blocks = fbarray.byPath('/blocks');
+        $scope.allEvents = fbarray.byPath('/events');
+        $scope.allSeats = fbarray.byPath('/seats');
+        $scope.allBlocks = fbarray.byPath('/blocks');
+        $scope.allCategories = fbarray.byPath('/categories');
 
         $scope.saveLock = function(lock) {
             $scope.locks.$save(lock);

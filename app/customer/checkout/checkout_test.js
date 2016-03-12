@@ -100,19 +100,19 @@ describe('ticketbox.customer.checkout', function () {
             });
         });
 
-        describe('$scope.events', function () {
+        describe('$scope.allEvents', function () {
             it('should fetch events', function () {
                 expect(byPathSpy).toHaveBeenCalledWith('/events');
             });
         });
 
-        describe('$scope.seats', function () {
+        describe('$scope.allSeats', function () {
             it('should fetch seats', function () {
                 expect(byPathSpy).toHaveBeenCalledWith('/seats');
             });
         });
 
-        describe('$scope.blocks', function () {
+        describe('$scope.allBlocks', function () {
             it('should fetch blocks', function () {
                 expect(byPathSpy).toHaveBeenCalledWith('/blocks');
             });

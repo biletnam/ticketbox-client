@@ -10,6 +10,10 @@ table {
     vertical-align: top;
 }
 
+.locks-table td {
+    vertical-align: top;
+}
+
 .buttons {
     text-align: right;
 }

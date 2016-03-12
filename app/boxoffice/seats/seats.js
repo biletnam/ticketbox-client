@@ -24,6 +24,7 @@ angular.module('ticketbox.boxoffice.seats', [
         $scope.allEvents = fbarray.byPath('/events');
         $scope.allSeats = fbarray.byPath('/seats');
         $scope.allBlocks = fbarray.byPath('/blocks');
+        $scope.allCategories = fbarray.byPath('/categories');
 
         $scope.numberOfSeatsToBeLocked = 1;
 

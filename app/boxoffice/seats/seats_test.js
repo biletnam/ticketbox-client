@@ -99,6 +99,12 @@ describe('ticketbox.boxoffice.seats', function () {
             });
         });
 
+        describe('$scope.allCategories', function () {
+            it('should fetch all categories', function() {
+                expect(byPathSpy).toHaveBeenCalledWith('/categories');
+            });
+        });
+
         describe('$scope.saveLock()', function() {
             it('should save the given lock', function() {
                 var lock = { };

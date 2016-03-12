@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('ticketbox.components.seatlist', [])
+angular.module('ticketbox.components.seatlist', [ ])
 
     .filter('eventNameFilter', function (separator) {
         return function (lock, events) {
@@ -48,5 +48,33 @@ angular.module('ticketbox.components.seatlist', [])
             } else {
                 return '';
             }
+        }
+    })
+
+    .filter('seatPriceFilter', function (separator, CURRENCY) {
+        return function (lock, seats, events, categories) {
+            var eventId = lock.$id.split(separator)[0];
+            var seatId = lock.$id.split(separator)[1];
+            var seat = _.find(seats, function (s) {
+                return s.$id === seatId;
+            });
+            var event = _.find(events, function(e) {
+                return e.$id === eventId;
+            });
+            if (seat !== undefined && event !== undefined) {
+                var eventBlock = _.find(event.blocks, function(b) {
+                    return b.blockId === seat.blockId;
+                });
+                if (eventBlock !== undefined) {
+                    var category = _.find(categories, function(c) {
+                        return c.$id === eventBlock.categoryId;
+                    });
+                    if (category !== undefined) {
+                        var price = lock.isReduced ? category.reducedPrice : category.price;
+                        return price + ' ' + CURRENCY;
+                    }
+                }
+            }
+            return '';
         }
     });

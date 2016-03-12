@@ -19,11 +19,14 @@
             <table>
                 <tr ng-repeat="lock in locks">
                     <td>
-                        {{lock | eventNameFilter : events}}<br>
-                        <b>{{lock | blockDisplayNameFilter : seats : blocks}}, {{lock | seatNameFilter : seats}}</b><br>
+                        {{lock | eventNameFilter : allEvents}}<br>
+                        <b>{{lock | blockDisplayNameFilter : allSeats : allBlocks}}, {{lock | seatNameFilter : allSeats}}</b>
                         <label for="isReduced{{lock.$id}}"><input type="checkbox" ng-model="lock.isReduced" ng-click="saveLock(lock)" id="isReduced{{lock.$id}}">&nbsp;&nbsp;Reduction</label>
                     </td>
-                    <td class="buttons"><a ng-click="unlock(lock)" class="button">Remove</a></td>
+                    <td class="buttons">
+                        <a ng-click="unlock(lock)" class="button">Remove</a><br>
+                        <b>{{lock | seatPriceFilter : allSeats : allEvents : allCategories}}</b>
+                    </td>
                 </tr>
             </table>
         </div>

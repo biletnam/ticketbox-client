@@ -8,7 +8,7 @@ angular.module('ticketbox.customer.seats', [
         'ngRoute'])
 
     .config(['$routeProvider', function ($routeProvider) {
-        $routeProvider.when('/seats/:eventId/:categoryId/:blockId', {
+        $routeProvider.when('/seats/:eventId/:blockId', {
             controller: 'SeatsCtrl',
             templateUrl: 'customer/seats/seats.html'
         });
@@ -16,7 +16,6 @@ angular.module('ticketbox.customer.seats', [
 
     .controller('SeatsCtrl', function ($scope, $routeParams, fbarray, fbobject, locker, separator) {
         $scope.event = fbobject.byId('/events', $routeParams.eventId);
-        $scope.category = fbobject.byId('/categories', $routeParams.categoryId);
         $scope.block = fbobject.byId('/blocks', $routeParams.blockId);
         $scope.seats = fbarray.byChildValue('/seats', 'blockId', $routeParams.blockId);
         $scope.reservations = locker.getLocksOfEvent($routeParams.eventId);
@@ -24,6 +23,7 @@ angular.module('ticketbox.customer.seats', [
         $scope.allEvents = fbarray.byPath('/events');
         $scope.allSeats = fbarray.byPath('/seats');
         $scope.allBlocks = fbarray.byPath('/blocks');
+        $scope.allCategories = fbarray.byPath('/categories');
 
         $scope.numberOfSeatsToBeLocked = 1;
 

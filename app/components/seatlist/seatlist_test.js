@@ -1,17 +1,21 @@
 'use strict';
 
 describe('ticketbox.components.seatlist', function () {
-    var eventNameFilter, seatNameFilter, blockDisplayNameFilter;
+    var currency, eventNameFilter, seatNameFilter, blockDisplayNameFilter, seatPriceFilter;
 
     beforeEach(function () {
         angular.mock.module('ticketbox.components.seatlist', function ($provide) {
             $provide.value('separator', ':');
+
+            currency = 'USD';
+            $provide.value('CURRENCY', currency);
         });
 
         inject(function ($filter) {
             eventNameFilter = $filter('eventNameFilter', {});
             seatNameFilter = $filter('seatNameFilter', {});
             blockDisplayNameFilter = $filter('blockDisplayNameFilter', {});
+            seatPriceFilter = $filter('seatPriceFilter', {});
         });
     });
 
@@ -114,6 +118,108 @@ describe('ticketbox.components.seatlist', function () {
             ];
             var eventName = blockDisplayNameFilter(lock, seats, blocks);
             expect(eventName).toEqual('');
+        });
+    });
+
+    describe('seatPriceFilter', function () {
+        it('should select price from category and return it with currency', function() {
+            var lock = {
+                '$id': 'eid1:sid1',
+                'isReduced': false
+            };
+            var seats = [
+                {'$id': 'sid1', 'blockId': 'bid1'}
+            ];
+            var events = [
+                {'$id': 'eid1', 'blocks': [
+                    {'blockId': 'bid1', 'categoryId': 'cid1'}
+                ]}
+            ];
+            var categories = [
+                {'$id': 'cid1', 'price': 10, 'reducedPrice': 5}
+            ];
+            var price = seatPriceFilter(lock, seats, events, categories);
+            expect(price).toEqual('10 ' + currency);
+        });
+
+        it('should select reduced price from category and return it with currency', function() {
+            var lock = {
+                '$id': 'eid1:sid1',
+                'isReduced': true
+            };
+            var seats = [
+                {'$id': 'sid1', 'blockId': 'bid1'}
+            ];
+            var events = [
+                {'$id': 'eid1', 'blocks': [
+                    {'blockId': 'bid1', 'categoryId': 'cid1'}
+                ]}
+            ];
+            var categories = [
+                {'$id': 'cid1', 'price': 10, 'reducedPrice': 5}
+            ];
+            var price = seatPriceFilter(lock, seats, events, categories);
+            expect(price).toEqual('5 ' + currency);
+        });
+
+        it('should return empty string if seat cannot be found', function() {
+            var lock = {
+                '$id': 'eid1:sid1',
+                'isReduced': false
+            };
+            var seats = [];
+            var events = [];
+            var categories = [];
+            var price = seatPriceFilter(lock, seats, events, categories);
+            expect(price).toEqual('');
+        });
+
+        it('should return empty string if event cannot be found', function() {
+            var lock = {
+                '$id': 'eid1:sid1',
+                'isReduced': false
+            };
+            var seats = [
+                {'$id': 'sid1', 'blockId': 'bid1'}
+            ];
+            var events = [];
+            var categories = [];
+            var price = seatPriceFilter(lock, seats, events, categories);
+            expect(price).toEqual('');
+        });
+
+        it('should return empty string if eventblock cannot be found', function() {
+            var lock = {
+                '$id': 'eid1:sid1',
+                'isReduced': false
+            };
+            var seats = [
+                {'$id': 'sid1', 'blockId': 'bid1'}
+            ];
+            var events = [
+                {'$id': 'eid1', 'blocks': []}
+            ];
+            var categories = [];
+            var price = seatPriceFilter(lock, seats, events, categories);
+            expect(price).toEqual('');
+        });
+
+        it('should return empty string if category cannot be found', function() {
+            var lock = {
+                '$id': 'eid1:sid1',
+                'isReduced': false
+            };
+            var seats = [
+                {'$id': 'sid1', 'blockId': 'bid1'}
+            ];
+            var events = [
+                {'$id': 'eid1', 'blocks': [
+                    {'blockId': 'bid1', 'categoryId': 'cid1'}
+                ]}
+            ];
+            var categories = [];
+            var price = seatPriceFilter(lock, seats, events, categories);
+            expect(price).toEqual('');
         });
     });
 });

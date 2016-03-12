@@ -4,7 +4,7 @@
         <table>
             <tr ng-repeat="eventBlock in eventBlocks">
                 <td>
-                    <a href="#/seats/{{event.$id}}/{{eventBlock.categoryId}}/{{eventBlock.blockId}}">{{eventBlock.blockId | nameFilter:blocks}} - {{eventBlock.categoryId | nameFilter:categories}}</a>
+                    <a href="#/seats/{{event.$id}}/{{eventBlock.blockId}}">{{eventBlock.blockId | nameFilter : blocks}} - {{eventBlock.categoryId | nameFilter : categories}}</a>
                 </td>
             </tr>
         </table>

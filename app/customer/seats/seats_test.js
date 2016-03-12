@@ -46,12 +46,6 @@ describe('ticketbox.customer.seats', function () {
             });
         });
 
-        describe('$scope.category', function () {
-            it('should fetch category', function () {
-                expect(byIdSpy).toHaveBeenCalledWith('/categories', 'cid1');
-            });
-        });
-
         describe('$scope.block', function () {
             it('should fetch block', function () {
                 expect(byIdSpy).toHaveBeenCalledWith('/blocks', 'bid1');
@@ -91,6 +85,12 @@ describe('ticketbox.customer.seats', function () {
         describe('$scope.allBlocks', function () {
             it('should fetch all blocks', function() {
                 expect(byPathSpy).toHaveBeenCalledWith('/blocks');
+            });
+        });
+
+        describe('$scope.allCategories', function () {
+            it('should fetch all categories', function() {
+                expect(byPathSpy).toHaveBeenCalledWith('/categories');
             });
         });
 

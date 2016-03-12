@@ -20,6 +20,11 @@
 </head>
 <body>
 <div class="container">
+    <div ng-controller="ToolbarCtrl" class="row" ng-show="locks.length > 0">
+        <div class="twelve columns">
+            {{locks.length}} seats ({{locks | totalPriceFilter : allSeats : allEvents : allCategories}})
+        </div>
+    </div>
     <p ng-show="notification != ''">{{notification}}</p>
     <div ng-view></div>
     <p ng-show="error != ''">{{error}}</p>
@@ -41,6 +46,7 @@
 <script src="components/seatlist/seatlist.js"></script>
 <script src="components/seats/seats.js"></script>
 <script src="customer/app.js"></script>
+<script src="customer/toolbar/toolbar.js"></script>
 <script src="customer/events/events.js"></script>
 <script src="customer/blocks/blocks.js"></script>
 <script src="customer/checkout/checkout.js"></script>

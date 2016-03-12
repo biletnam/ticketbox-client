@@ -5,6 +5,7 @@ angular.module('ticketbox.customer', [
         'ticketbox.components.utils',
         'ticketbox.components.locker',
         'ticketbox.components.seats',
+        'ticketbox.customer.toolbar',
         'ticketbox.customer.events',
         'ticketbox.customer.blocks',
         'ticketbox.customer.checkout'])

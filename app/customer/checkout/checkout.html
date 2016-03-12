@@ -1,8 +1,3 @@
-<div class="row" ng-show="locks.length > 0">
-    <div class="twelve columns">
-        {{locks.length}} seats ({{locks | totalPriceFilter : allSeats : allEvents : allCategories}})
-    </div>
-</div>
 <div class="row">
     <div class="twelve columns">
         <h1>Checkout</h1>
@@ -14,15 +9,15 @@
             <h4>Personal information</h4>
             <table>
                 <tr>
-                    <td><input type="text" ng-model="firstname" placeholder="First name"></td>
+                    <td><input type="text" ng-model="firstname" placeholder="First name" required></td>
                     <td></td>
                 </tr>
                 <tr>
-                    <td><input type="text" ng-model="lastname" placeholder="Last name"></td>
+                    <td><input type="text" ng-model="lastname" placeholder="Last name" required></td>
                     <td></td>
                 </tr>
                 <tr>
-                    <td><input type="email" ng-model="email" placeholder="Email"></td>
+                    <td><input type="email" ng-model="email" placeholder="Email" required></td>
                     <td></td>
                 </tr>
             </table>

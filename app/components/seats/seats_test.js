@@ -1,6 +1,6 @@
 'use strict';
 
-describe('ticketbox.boxoffice.seats', function () {
+describe('ticketbox.components.seats', function () {
     var scope,
         fbarray,
         fbobject,
@@ -9,11 +9,10 @@ describe('ticketbox.boxoffice.seats', function () {
         byChildValueSpy,
         byIdSpy,
         unlockSpy,
-        myLocksSaveSpy,
         getMyLocksSpy;
 
     beforeEach(function () {
-        module('ticketbox.boxoffice.seats');
+        module('ticketbox.components.seats');
 
         inject(function (_$rootScope_, _fbarray_, _fbobject_, _locker_, $controller) {
             scope = _$rootScope_.$new();
@@ -27,11 +26,7 @@ describe('ticketbox.boxoffice.seats', function () {
 
             locker = _locker_;
             unlockSpy = spyOn(locker, 'unlock');
-            var myLocks = {
-                '$save': function() {}
-            };
-            myLocksSaveSpy = spyOn(myLocks, '$save');
-            getMyLocksSpy = spyOn(locker, 'getMyLocks').and.returnValue(myLocks);
+            getMyLocksSpy = spyOn(locker, 'getMyLocks');
 
             var routeParams = {
                 eventId: 'eid1',
@@ -48,12 +43,6 @@ describe('ticketbox.boxoffice.seats', function () {
         describe('$scope.event', function () {
             it('should fetch event', function () {
                 expect(byIdSpy).toHaveBeenCalledWith('/events', 'eid1');
-            });
-        });
-
-        describe('$scope.category', function () {
-            it('should fetch category', function () {
-                expect(byIdSpy).toHaveBeenCalledWith('/categories', 'cid1');
             });
         });
 
@@ -102,15 +91,6 @@ describe('ticketbox.boxoffice.seats', function () {
         describe('$scope.allCategories', function () {
             it('should fetch all categories', function() {
                 expect(byPathSpy).toHaveBeenCalledWith('/categories');
-            });
-        });
-
-        describe('$scope.saveLock()', function() {
-            it('should save the given lock', function() {
-                var lock = { };
-                expect(myLocksSaveSpy).not.toHaveBeenCalled();
-                scope.saveLock(lock);
-                expect(myLocksSaveSpy).toHaveBeenCalledWith(lock);
             });
         });
 

@@ -46,6 +46,9 @@
         "seatId": {
           ".validate": "newData.isString() && newData.val().length > 0 && root.child('seats').child(newData.val()).exists()"
         },
+        "isReduced": {
+          ".validate": "newData.isBoolean()"
+        },
         "uid": {
           ".validate": "auth.provider === 'password' || (auth.provider === 'anonymous' && newData.isString() && newData.val() === auth.uid)"
         },

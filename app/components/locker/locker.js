@@ -9,6 +9,7 @@ angular.module('ticketbox.components.locker', [ 'ticketbox.components.firebase',
                 ref.set({
                     'eventId': eventId,
                     'seatId': seatId,
+                    'isReduced': false,
                     'uid': $rootScope.authData.uid,
                     'timestamp': serverValue.currentTimestamp()
                 }, function(e) {

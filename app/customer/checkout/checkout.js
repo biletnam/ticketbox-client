@@ -21,6 +21,10 @@ angular.module('ticketbox.customer.checkout', [
         $scope.seats = fbarray.byPath('/seats');
         $scope.blocks = fbarray.byPath('/blocks');
 
+        $scope.saveLock = function(lock) {
+            $scope.locks.$save(lock);
+        };
+
         $scope.unlock = function (lock) {
             var eventId = lock.$id.split(separator)[0];
             var seatId = lock.$id.split(separator)[1];

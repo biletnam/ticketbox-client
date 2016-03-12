@@ -33,7 +33,8 @@
             <tr ng-repeat="reservation in reservations">
                 <td>
                     {{reservation | eventNameFilter : events}}<br>
-                    <b>{{reservation | blockDisplayNameFilter : seats : blocks}}, {{reservation | seatNameFilter : seats}}</b>
+                    <b>{{reservation | blockDisplayNameFilter : seats : blocks}}, {{reservation | seatNameFilter : seats}}</b><br>
+                    <label for="isReduced{{reservation.$id}}"><input type="checkbox" ng-model="reservation.isReduced" ng-click="saveReservation(reservation)" id="isReduced{{reservation.$id}}">&nbsp;&nbsp;Reduction</label>
                 </td>
                 <td class="buttons"><a ng-hide="order.isSold" ng-click="unlock(reservation)" class="button">Remove</a></td>
             </tr>

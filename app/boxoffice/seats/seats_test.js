@@ -9,6 +9,7 @@ describe('ticketbox.boxoffice.seats', function () {
         byChildValueSpy,
         byIdSpy,
         unlockSpy,
+        myLocksSaveSpy,
         getMyLocksSpy;
 
     beforeEach(function () {
@@ -26,7 +27,11 @@ describe('ticketbox.boxoffice.seats', function () {
 
             locker = _locker_;
             unlockSpy = spyOn(locker, 'unlock');
-            getMyLocksSpy = spyOn(locker, 'getMyLocks');
+            var myLocks = {
+                '$save': function() {}
+            };
+            myLocksSaveSpy = spyOn(myLocks, '$save');
+            getMyLocksSpy = spyOn(locker, 'getMyLocks').and.returnValue(myLocks);
 
             var routeParams = {
                 eventId: 'eid1',
@@ -91,6 +96,15 @@ describe('ticketbox.boxoffice.seats', function () {
         describe('$scope.allBlocks', function () {
             it('should fetch all blocks', function() {
                 expect(byPathSpy).toHaveBeenCalledWith('/blocks');
+            });
+        });
+
+        describe('$scope.saveLock()', function() {
+            it('should save the given lock', function() {
+                var lock = { };
+                expect(myLocksSaveSpy).not.toHaveBeenCalled();
+                scope.saveLock(lock);
+                expect(myLocksSaveSpy).toHaveBeenCalledWith(lock);
             });
         });
 

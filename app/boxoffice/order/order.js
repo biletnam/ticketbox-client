@@ -21,6 +21,10 @@ angular.module('ticketbox.boxoffice.order', [
         $scope.seats = fbarray.byPath('/seats');
         $scope.blocks = fbarray.byPath('/blocks');
 
+        $scope.saveReservation = function(reservation) {
+            $scope.reservations.$save(reservation);
+        };
+
         $scope.unlock = function (lock) {
             var eventId = lock.$id.split(separator)[0];
             var seatId = lock.$id.split(separator)[1];

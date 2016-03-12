@@ -19,7 +19,10 @@ describe('ticketbox.boxoffice.order', function () {
 
             fbarray = _fbarray_;
             byPathSpy = spyOn(fbarray, 'byPath');
-            byChildValueSpy = spyOn(fbarray, 'byChildValue');
+            var list = {
+                '$save': function() {}
+            };
+            byChildValueSpy = spyOn(fbarray, 'byChildValue').and.returnValue(list);
 
             fbobject = _fbobject_;
             byIdSpy = spyOn(fbobject, 'byId');
@@ -64,6 +67,16 @@ describe('ticketbox.boxoffice.order', function () {
         describe('$scope.blocks', function () {
             it('should fetch all blocks', function () {
                 expect(byPathSpy).toHaveBeenCalledWith('/blocks');
+            });
+        });
+
+        describe('$scope.saveLock()', function() {
+            it('should save the given lock', function() {
+                var reservationsSaveSpy = spyOn(scope.reservations, '$save');
+                var reservation = { };
+                expect(reservationsSaveSpy).not.toHaveBeenCalled();
+                scope.saveReservation(reservation);
+                expect(reservationsSaveSpy).toHaveBeenCalledWith(reservation);
             });
         });
 

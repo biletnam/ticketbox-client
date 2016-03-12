@@ -118,6 +118,15 @@ describe('ticketbox.boxoffice.checkout', function () {
             });
         });
 
+        describe('$scope.saveLock()', function() {
+            it('should save the given lock', function() {
+                var lock = { };
+                expect(locksSaveSpy).not.toHaveBeenCalled();
+                scope.saveLock(lock);
+                expect(locksSaveSpy).toHaveBeenCalledWith(lock);
+            });
+        });
+
         describe('$scope.unlock()', function () {
             it('should unlock given lock', function () {
                 var lock = {

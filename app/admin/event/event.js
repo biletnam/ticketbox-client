@@ -9,7 +9,7 @@ angular.module('ticketbox.admin.event', ['ticketbox.components.firebase', 'ticke
         });
     }])
 
-    .controller('EventCtrl', function($scope, $routeParams, fbobject, fbarray, error) {
+    .controller('EventCtrl', function($scope, $routeParams, $location, fbobject, fbarray, error) {
         $scope.event = fbobject.byId('/events', $routeParams.eventId);
         $scope.eventBlocks = fbarray.byPath('/events/' + $routeParams.eventId + '/blocks');
 
@@ -23,6 +23,11 @@ angular.module('ticketbox.admin.event', ['ticketbox.components.firebase', 'ticke
                     $scope.newBlockId = undefined;
                     $scope.newCategoryId = undefined;
                 });
+        };
+
+        $scope.saveAndReturnToList = function(event) {
+            event.$save();
+            $location.path('/events');
         };
 
         $scope.removeBlock = function(eventBlock) {

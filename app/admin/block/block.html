@@ -1,0 +1,26 @@
+<div class="row">
+    <div class="twelve columns">
+        <form ng-submit="saveAndReturnToList(block)">
+            <h3>Block</h3>
+            <p><input type="text" ng-model="block.name"></p>
+            <table class="table-with-images">
+                <tr>
+                    <td>Display Name</td>
+                    <td>Seatplan</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" ng-model="block.displayName" class="u-full-width">
+                    </td>
+                    <td>
+                        <ng-image-upload ng-model="block.seatplan"></ng-image-upload>
+                        <br>
+                        <img ng-src="{{block.seatplan}}">
+                    </td>
+                    <td><input type="submit" class="button button-primary" value="Save"></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

@@ -1,10 +1,10 @@
 <div class="row">
     <div class="twelve columns">
-        <h1>Blocks</h1>
+        <h3>Select where you want to seat</h3>
         <table>
             <tr ng-repeat="eventBlock in eventBlocks">
                 <td>
-                    <a href="#/seats/{{event.$id}}/{{eventBlock.blockId}}">{{eventBlock.blockId | nameFilter : blocks}} - {{eventBlock.categoryId | nameFilter : categories}}</a>
+                    <a href="#/seats/{{event.$id}}/{{eventBlock.blockId}}">{{eventBlock.blockId | displayNameFilter : blocks}} - {{eventBlock.categoryId | nameFilter : categories}}</a>
                 </td>
             </tr>
         </table>

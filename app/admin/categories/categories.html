@@ -15,7 +15,10 @@
                 <tr ng-repeat="category in categories">
                     <td>{{category.name}}</td>
                     <td>{{category.price}}/{{category.reducedPrice}}</td>
-                    <td class="buttons"><a ng-click="remove(category)" class="button">Remove</a></td>
+                    <td class="buttons">
+                        <a href="#/category/{{category.$id}}" class="button">Edit</a>
+                        <a ng-click="remove(category)" class="button">Remove</a>
+                    </td>
                 </tr>
             </table>
         </form>

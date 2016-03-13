@@ -1,7 +1,7 @@
 'use strict';
 
 describe('ticketbox.admin.event', function () {
-    var $firebaseArray, $firebaseObject, $timeout, scope, ref, fbarray, fbobject, byIdSpy, byPathSpy;
+    var $firebaseArray, $firebaseObject, $timeout, scope, ref, location, pathSpy, fbarray, fbobject, byIdSpy, byPathSpy;
     var FIXTURE_DATA = {
         'id1': {
             'name': 'This is the first object'
@@ -14,12 +14,15 @@ describe('ticketbox.admin.event', function () {
     beforeEach(function () {
         module('ticketbox.admin.event');
 
-        inject(function (_$firebaseArray_, _$firebaseObject_, _$timeout_, _$rootScope_, _fbarray_, _fbobject_, $controller) {
+        inject(function (_$firebaseArray_, _$firebaseObject_, _$timeout_, _$rootScope_, _$location_, _fbarray_, _fbobject_, $controller) {
             $firebaseArray = _$firebaseArray_;
             $firebaseObject = _$firebaseObject_;
             $timeout = _$timeout_;
             scope = _$rootScope_.$new();
             ref = _stubRef();
+
+            location = _$location_;
+            pathSpy = spyOn(location, 'path');
 
             fbarray = _fbarray_;
             byPathSpy = spyOn(fbarray, 'byPath').and.returnValue(_makeArray(FIXTURE_DATA, ref));
@@ -39,7 +42,7 @@ describe('ticketbox.admin.event', function () {
     describe('EventCtrl', function () {
         describe('$scope.event', function () {
             it('should fetch the event with id1', function () {
-                expect(byIdSpy).toHaveBeenCalled();
+                expect(byIdSpy).toHaveBeenCalledWith('/events', 'id1');
             });
         });
 
@@ -58,6 +61,25 @@ describe('ticketbox.admin.event', function () {
         describe('$scope.categories', function () {
             it('should fetch the blocks of event id1', function () {
                 expect(byPathSpy).toHaveBeenCalledWith('/categories');
+            });
+        });
+
+        describe('$scope.saveAndReturnToList()', function() {
+            it('should use event.$save()', function() {
+                var event = {
+                    '$save': function() {}
+                };
+                var saveSpy = spyOn(event, '$save');
+                scope.saveAndReturnToList(event);
+                expect(saveSpy).toHaveBeenCalled();
+            });
+
+            it('should redirect to events list', function() {
+                var event = {
+                    '$save': function() {}
+                };
+                scope.saveAndReturnToList(event);
+                expect(pathSpy).toHaveBeenCalledWith('/events');
             });
         });
 

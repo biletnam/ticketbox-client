@@ -14,8 +14,9 @@ angular.module('ticketbox.components.upload', [])
             var reader = new FileReader();
             reader.onload = (function(theFile) {
                 return function(e) {
-                    scope.image = e.target.result;
-                    document.getElementById('ngFileUpload-image').src = e.target.result;
+                    scope.ngModel = e.target.result;
+                    scope.$apply();
+                    //document.getElementById('ngFileUpload-image').src = e.target.result;
                 };
             })(f);
             reader.readAsDataURL(f);
@@ -24,9 +25,9 @@ angular.module('ticketbox.components.upload', [])
         return {
             restrict: 'E',
             scope: {
-                image: '='
+                ngModel: '='
             },
-            template: '<input type="file" accept="image/*" capture="camera" id="ngFileUpload-input"><br><img src="" id="ngFileUpload-image">',
+            template: '<input type="file" accept="image/*" capture="camera" id="ngFileUpload-input">',
             link: _create
         };
     });

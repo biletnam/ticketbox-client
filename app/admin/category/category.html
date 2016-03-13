@@ -1,0 +1,15 @@
+<div class="row">
+    <div class="twelve columns">
+        <form ng-submit="saveAndReturnToList(category)">
+            <h3>Category</h3>
+            <p><input type="text" ng-model="category.name" class="u-full-width"></p>
+            <table>
+                <tr>
+                    <td><input type="number" ng-model="category.price" placeholder="Price" class="narrow"></td>
+                    <td><input type="number" ng-model="category.reducedPrice" placeholder="Red. Pr." class="narrow"></td>
+                    <td class="buttons"><input type="submit" class="button button-primary" value="Save"></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

@@ -70,4 +70,15 @@ angular.module('ticketbox.components.utils', [ 'ticketbox.components.firebase' ]
                 return '';
             }
         }
+    })
+
+    .filter('displayNameFilter', function() {
+        return function(id, list) {
+            var item = _.find(list, function(i) { return i.$id === id; });
+            if (item !== undefined) {
+                return item.displayName;
+            } else {
+                return '';
+            }
+        }
     });

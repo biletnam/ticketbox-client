@@ -7,7 +7,9 @@ angular.module('ticketbox.admin', [
         'ticketbox.admin.events',
         'ticketbox.admin.event',
         'ticketbox.admin.blocks',
+        'ticketbox.admin.block',
         'ticketbox.admin.categories',
+        'ticketbox.admin.category',
         'ticketbox.admin.seats'])
 
     .config(function ($routeProvider) {

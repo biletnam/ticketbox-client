@@ -8,6 +8,12 @@
         "name": {
           ".validate": "newData.isString() && newData.val().length > 0"
         },
+        "relativeBoxofficeReduction": {
+          ".validate": "newData.isNumber()"
+        },
+        "absoluteBoxofficeReduction": {
+          ".validate": "newData.isNumber()"
+        },
         "blocks": {
           ".read": true,
           ".write": "auth !== null && auth.provider === 'password' && root.child('users').child(auth.uid).child('kind').val() === 'admin'",

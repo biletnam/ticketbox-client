@@ -4,8 +4,22 @@
             <h3>Event</h3>
             <table>
                 <tr>
-                    <td><input type="text" ng-model="event.name" class="u-full-width"></td>
-                    <td><input type="submit" value="Save" class="button button-primary"></td>
+                    <td colspan="2">
+                        <label for="name">Name</label>
+                        <input id="name" type="text" ng-model="event.name" class="u-full-width">
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="relativeBoxofficeReduction">Rel. Boxoffice Reduction</label>
+                        <input id="relativeBoxofficeReduction" type="number" ng-model="event.relativeBoxofficeReduction">
+                    </td>
+                    <td>
+                        <label for="absoluteBoxofficeReduction">Abs. Boxoffice Reduction</label>
+                        <input id="absoluteBoxofficeReduction" type="number" ng-model="event.absoluteBoxofficeReduction">
+                    </td>
+                    <td class="buttons"><input type="submit" value="Save" class="button button-primary"></td>
                 </tr>
             </table>
         </form>
@@ -23,7 +37,7 @@
                             </option>
                         </select>
                     </td>
-                    <td class="buttons"><input type="submit" class="button button-primary" value="Add block"></td>
+                    <td class="buttons"><input type="submit" class="button button-primary" value="Add block" ng-disabled="newBlockId === undefined || newCategoryId === undefined"></td>
                 </tr>
                 <tr ng-repeat="eventBlock in eventBlocks">
                     <td>{{eventBlock.blockId | nameFilter:blocks}}</td>

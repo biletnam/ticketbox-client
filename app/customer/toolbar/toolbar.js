@@ -1,6 +1,10 @@
 'use strict';
 
-angular.module('ticketbox.customer.toolbar', ['ticketbox.components.firebase', 'ticketbox.components.locker'])
+angular.module('ticketbox.customer.toolbar', [
+    'ticketbox.components.firebase',
+    'ticketbox.components.locker',
+    'ticketbox.components.price',
+    'ticketbox.customer.price'])
 
     .controller('ToolbarCtrl', function ($scope, fbarray, locker) {
         $scope.locks = locker.getMyLocks();

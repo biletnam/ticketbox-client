@@ -4,6 +4,8 @@ angular.module('ticketbox.customer', [
         'ticketbox.config',
         'ticketbox.components.utils',
         'ticketbox.components.locker',
+        'ticketbox.components.price',
+        'ticketbox.customer.price',
         'ticketbox.components.seats',
         'ticketbox.customer.toolbar',
         'ticketbox.customer.events',

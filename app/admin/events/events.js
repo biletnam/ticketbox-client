@@ -15,7 +15,7 @@ angular.module('ticketbox.admin.events', ['ticketbox.components.firebase', 'tick
         $scope.newEventName = '';
 
         $scope.add = function(name) {
-            $scope.events.$add({ 'name': name })
+            $scope.events.$add({ 'name': name, 'relativeBoxofficeReduction': 0, 'absoluteBoxofficeReduction': 0 })
                 .then(function () { }, error)
                 .finally(function() {
                     $scope.newEventName = '';

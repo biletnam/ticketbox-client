@@ -6,7 +6,7 @@ angular.module('ticketbox.customer', [
         'ticketbox.components.locker',
         'ticketbox.components.price',
         'ticketbox.customer.price',
-        'ticketbox.components.seats',
+        'ticketbox.customer.seats',
         'ticketbox.customer.toolbar',
         'ticketbox.customer.events',
         'ticketbox.customer.blocks',

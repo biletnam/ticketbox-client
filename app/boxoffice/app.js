@@ -6,7 +6,7 @@ angular.module('ticketbox.boxoffice', [
         'ticketbox.components.price',
         'ticketbox.boxoffice.reduction',
         'ticketbox.boxoffice.price',
-        'ticketbox.components.seats',
+        'ticketbox.boxoffice.seats',
         'ticketbox.boxoffice.login',
         'ticketbox.boxoffice.logout',
         'ticketbox.boxoffice.events',

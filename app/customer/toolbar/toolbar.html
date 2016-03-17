@@ -1,0 +1,6 @@
+<div class="ten columns" ng-controller="ToolbarCtrl">
+    <p ng-show="locks.length > 0">{{locks.length}} seats ({{locks | totalPriceFilter : allSeats : allEvents : allCategories}})</p>
+</div>
+<div class="two columns">
+    <a ng-click="cancel()" class="button">Cancel</a>
+</div>

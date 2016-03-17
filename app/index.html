@@ -14,17 +14,14 @@
     <link rel="apple-touch-icon" sizes="128x128" href="ticketbox-admin-128.png">
     <link rel="apple-touch-icon-precomposed" sizes="128x128" href="ticketbox-admin-128.png">-->
 
+    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
     <link rel="stylesheet" href="app.css">
 </head>
 <body>
 <div class="container">
-    <div ng-controller="ToolbarCtrl" class="row" ng-show="locks.length > 0">
-        <div class="twelve columns">
-            {{locks.length}} seats ({{locks | totalPriceFilter : allSeats : allEvents : allCategories}})
-        </div>
-    </div>
     <p ng-show="notification != ''">{{notification}}</p>
     <div ng-view></div>
     <p ng-show="error != ''">{{error}}</p>
@@ -47,6 +44,7 @@
 <script src="components/price/price.js"></script>
 <script src="customer/price/price.js"></script>
 <script src="components/seats/seats.js"></script>
+<script src="customer/seats/seats.js"></script>
 <script src="customer/app.js"></script>
 <script src="customer/toolbar/toolbar.js"></script>
 <script src="customer/events/events.js"></script>
